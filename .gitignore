@@ -1,0 +1,85 @@
+# intellij specific
+*.iml
+*.ipr
+modules.xml
+.idea/
+.idea_modules/
+
+# sonar scanner
+.scannerwork/
+
+# java
+*.class
+out/
+build/
+
+# event log file
+*.event
+
+# log file
+*.log
+
+# package files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# crash dump
+hs_err_pid*
+
+# maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# avoid ignoring maven wrapper jar file
+!/.mvn/wrapper/maven-wrapper.jar
+
+# node module
+node_modules/
+dist/
+
+# mac & win
+.DS_Store
+thumbs.db
+
+# cmake
+cmake-build-*/
+
+# file-based project format
+*.iws
+
+# jira plugin
+atlassian-ide-plugin.xml
+
+# crashlytics plugin
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# gradle
+.gradle/
+gradlew*
+
+# cache of project
+.gradletasknamecache
+
+# gradle patch
+**/build/
+**/out/
+
+# eclipse
+.project
+
+# nara
+.studio

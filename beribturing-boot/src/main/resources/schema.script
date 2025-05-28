@@ -1,0 +1,9 @@
+## DB 스키마 생성
+
+use mysql;
+CREATE DATABASE beribturing CHARACTER SET utf8 COLLATE utf8_general_ci;
+Create user 'beribturing'@'%' identified by 'beribturing';
+Create user 'beribturing'@'localhost' identified by 'beribturing';
+Grant all privileges on beribturing.* to beribturing@'%';
+Grant all privileges on beribturing.* to beribturing@'localhost';
+Flush privileges;

@@ -1,0 +1,19 @@
+{
+  "id": "beribturing",
+  "name": "Beribturing",
+  "version": "4.0.1",
+  "roles": [
+    {
+      "code": "director",
+      "name": "Director",
+      "description": "Director",
+      "defaultRole": false
+    },
+    {
+      "code": "user",
+      "name": "User",
+      "description": "User",
+      "defaultRole": true
+    }
+  ]
+}
