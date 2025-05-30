@@ -6,9 +6,9 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/${spring.application.name}
-    username: ${spring.application.name}
-    password: ${spring.application.name}1234
+    url: jdbc:postgresql://localhost:5432/beribturingdb2
+    username: postgres
+    password: root123
   jpa:
     hibernate.ddl-auto: none
     generate-ddl: true

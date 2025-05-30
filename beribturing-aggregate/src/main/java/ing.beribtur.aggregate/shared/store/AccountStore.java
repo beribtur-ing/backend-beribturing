@@ -13,4 +13,5 @@ public interface AccountStore {
     List<Account> retrieveAll(List<Long> ids);
     Account update(Account account);
     void delete(Long id);
+    Account findByPhoneNumber(String phoneNumber);
 }

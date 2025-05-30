@@ -5,6 +5,7 @@ repositories {
 
 dependencies {
     api project(':beribturing-aggregate')
+    api project(':beribturing-provision')
     implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     implementation ("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
     implementation("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
