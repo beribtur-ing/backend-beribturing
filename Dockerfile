@@ -2,11 +2,8 @@ FROM gradle:jdk21 AS build
 
 WORKDIR /app
 
-COPY gradle/ ./gradle/
-COPY gradlew gradlew.bat ./
 COPY build.gradle settings.gradle ./
 
-RUN chmod +x ./gradlew
 
 COPY beribturing-accent/ ./beribturing-accent/
 COPY beribturing-aggregate/ ./beribturing-aggregate/
@@ -17,7 +14,7 @@ COPY beribturing-provision/ ./beribturing-provision/
 COPY beribturing-store-jpa/ ./beribturing-store-jpa/
 COPY gradle/wrapper/ ./gradle/wrapper/
 
-RUN ./gradlew build -x test
+RUN gradlew build -x test
 
 FROM eclipse-temurin:21-jre-jammy
 

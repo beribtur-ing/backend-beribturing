@@ -3,7 +3,7 @@ package ing.beribtur.config.security;
 import ing.beribtur.accent.context.SpaceContext;
 import ing.beribtur.aggregate.shared.entity.Account;
 import ing.beribtur.aggregate.shared.store.AccountStore;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceLogic implements UserDetailsService {
     //
-    @Autowired
-    AccountStore userAccountStore;
+    private final AccountStore userAccountStore;
 
     @Override
     @Transactional
