@@ -3,8 +3,10 @@ package ing.beribtur.accent.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @MappedSuperclass
@@ -12,19 +14,24 @@ import java.util.Objects;
 @Setter
 public abstract class DomainEntityJpo implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    protected String id;
     @Version
     protected long entityVersion;
     private String registeredBy;
-    private long registeredOn;
     private String modifiedBy;
-    private long modifiedOn;
+
+    @CreationTimestamp
+    @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE default now()")
+    private LocalDateTime registeredOn;
+
+    @CreationTimestamp
+    @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE default now()")
+    private LocalDateTime modifiedOn;
 
     public DomainEntityJpo() {
         //
         this.entityVersion = 0L;
-        this.registeredOn  = System.currentTimeMillis();
+        this.registeredOn  = LocalDateTime.now();
     }
 
     protected DomainEntityJpo(DomainEntity domainEntity) {
@@ -37,7 +44,7 @@ public abstract class DomainEntityJpo implements Serializable {
         this.modifiedOn = domainEntity.getModifiedOn();
     }
 
-    protected DomainEntityJpo(Long id) {
+    protected DomainEntityJpo(String id) {
         //
         this();
         this.id = id;

@@ -5,29 +5,30 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
 @Setter
 public abstract class DomainEntity implements Serializable {
     //
-    protected Long id;
+    protected String id;
     protected long entityVersion;
     private String registeredBy;
-    private long registeredOn;
+    private LocalDateTime registeredOn;
     private String modifiedBy;
-    private long modifiedOn;
+    private LocalDateTime modifiedOn;
 
     public DomainEntity() {
         //
         this.entityVersion = 0L;
-        this.registeredOn = System.currentTimeMillis();
+        this.registeredOn = LocalDateTime.now();
         this.registeredBy = SpaceContext.get().getUsername();
         this.modifiedBy = registeredBy;
         this.modifiedOn = registeredOn;
     }
 
-    protected DomainEntity(Long id) {
+    protected DomainEntity(String id) {
         //
         this();
         this.id = id;
