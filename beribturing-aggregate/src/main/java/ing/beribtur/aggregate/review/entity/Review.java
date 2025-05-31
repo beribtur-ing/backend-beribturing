@@ -18,6 +18,7 @@ public class Review extends DomainEntity {
     private String reviewerId;
     private int rating;
     private String comment;
+    private String recordId;
 
     // Domain relationships
     private transient Lendee reviewer;
