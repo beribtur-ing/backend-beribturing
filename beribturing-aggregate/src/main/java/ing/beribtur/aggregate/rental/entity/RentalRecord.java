@@ -36,7 +36,7 @@ public class RentalRecord extends DomainEntity {
     private transient ItemConditionCheck afterReturned;
 
 
-    private static String genId(String reservationId) {
+    public static String genId(String reservationId) {
         //
         return reservationId == null ? UUID.randomUUID().toString() : UUID.nameUUIDFromBytes(reservationId.getBytes()).toString();
     }
