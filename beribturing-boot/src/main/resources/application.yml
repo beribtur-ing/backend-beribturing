@@ -9,11 +9,31 @@ spring:
     url: jdbc:postgresql://localhost:5432/${spring.application.name}
     username: ${spring.application.name}
     password: ${spring.application.name}1234
+    hikari:
+      pool-name: HikariCP
+      minimum-idle: 10
+      maximum-pool-size: 20
+      auto-commit: true
+      idle-timeout: 30000
+      connection-timeout: 30000
+      max-lifetime: 1800000
+      validation-timeout: 5000
+      leak-detection-threshold: 15000
+      connection-test-query: SELECT 1
   jpa:
-    hibernate.ddl-auto: none
-    generate-ddl: true
-    show-sql: true
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    database: postgresql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        show_sql: false
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    databasePlatform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
   flyway:
     out-of-order: true
 
@@ -21,7 +41,7 @@ server:
   port: 9093
 
 beribturing:
-  jwtSecret: ThisIsASecretKeySoLongThatEvenHackersWillGetBoredAndGiveUpBigIt12345YouShallNotPassMayTheTokenBeWithYouWhyAreYouStillReadingThisJustUseOAuth2Already
+  jwtSecret: 333aae7133c19eda8f781c295df67681b1ed47c9c270a488f94d0ce07e64281c295df67681b1ed47c9c270a488f94d0
   expiration: 86400000 #24 hours
   refresh-expiration: 604800000 # week
 

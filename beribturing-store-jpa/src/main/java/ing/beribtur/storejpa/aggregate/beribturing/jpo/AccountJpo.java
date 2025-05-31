@@ -2,6 +2,7 @@ package ing.beribtur.storejpa.aggregate.beribturing.jpo;
 
 import ing.beribtur.accent.domain.DomainEntityJpo;
 import ing.beribtur.aggregate.shared.entity.Account;
+import ing.beribtur.aggregate.shared.entity.vo.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
@@ -40,12 +41,14 @@ public class AccountJpo extends DomainEntityJpo implements UserDetails {
     public AccountJpo(Account account) {
         //
         BeanUtils.copyProperties(account, this);
+        this.role = account.getRole().name();
     }
 
     public Account toDomain() {
         //
         Account account = new Account();
         BeanUtils.copyProperties(this, account);
+        account.setRole(Role.valueOf(role));
         return account;
     }
 

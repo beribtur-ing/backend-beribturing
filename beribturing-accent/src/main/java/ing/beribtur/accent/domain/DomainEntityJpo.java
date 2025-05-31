@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 @MappedSuperclass
 @Getter
@@ -30,6 +31,7 @@ public abstract class DomainEntityJpo implements Serializable {
 
     public DomainEntityJpo() {
         //
+        this.id = UUID.randomUUID().toString();
         this.entityVersion = 0L;
         this.registeredOn  = LocalDateTime.now();
     }

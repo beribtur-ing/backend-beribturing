@@ -21,11 +21,11 @@ import java.util.function.Function;
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${jwt.secret-key}")
+    @Value("${beribturing.jwtSecret}")
     private String secret; // Use environment variable in production
-    @Value("${jwt.expiration}")
+    @Value("${beribturing.expiration}")
     private int jwtExpiration; // 24 hours
-    @Value("${jwt.refresh-expiration}")
+    @Value("${beribturing.refresh-expiration}")
     private int refreshExpiration; // week
 
     private SecretKey key;
