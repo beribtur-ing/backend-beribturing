@@ -2,6 +2,7 @@ package ing.beribtur.aggregate.user.entity;
 
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.item.entity.Product;
 import ing.beribtur.aggregate.user.entity.vo.LanderType;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
@@ -30,5 +31,10 @@ public class Lender extends DomainEntity {
 
     public static String genId(String accountId) {
         return accountId;
+    }
+
+    @Override
+    protected void modifyAttributes(NameValueList var1) {
+
     }
 }

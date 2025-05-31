@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.notification.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.notification.entity.vo.NotificationType;
 import ing.beribtur.aggregate.user.entity.vo.Notifiable;
 import lombok.AllArgsConstructor;
@@ -24,4 +25,9 @@ public class Notification extends DomainEntity {
 
     // Domain relationships
     private transient Notifiable recipient;
+
+    @Override
+    protected void modifyAttributes(NameValueList var1) {
+
+    }
 }

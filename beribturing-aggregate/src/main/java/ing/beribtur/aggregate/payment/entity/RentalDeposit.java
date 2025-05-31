@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.payment.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.payment.entity.vo.Currency;
 import ing.beribtur.aggregate.payment.entity.vo.DepositStatus;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
@@ -29,4 +30,9 @@ public class RentalDeposit extends DomainEntity {
     // Domain relationships
     private transient RentalRecord rentalRecord; // The rental record this deposit is associated with
     private transient Lendee payer;              // The Lendee who paid the deposit
+
+    @Override
+    protected void modifyAttributes(NameValueList var1) {
+
+    }
 }

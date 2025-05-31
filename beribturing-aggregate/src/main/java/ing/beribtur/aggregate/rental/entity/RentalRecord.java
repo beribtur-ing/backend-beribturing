@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.rental.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.item.entity.ProductVariant;
 import ing.beribtur.aggregate.payment.entity.Discount;
 import ing.beribtur.aggregate.payment.entity.RentalDeposit;
@@ -47,5 +48,10 @@ public class RentalRecord extends DomainEntity {
     public static String genId(String reservationId) {
         //
         return reservationId == null ? UUID.randomUUID().toString() : UUID.nameUUIDFromBytes(reservationId.getBytes()).toString();
+    }
+
+    @Override
+    protected void modifyAttributes(NameValueList var1) {
+
     }
 }

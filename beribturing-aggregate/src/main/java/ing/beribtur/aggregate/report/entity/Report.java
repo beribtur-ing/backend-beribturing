@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.report.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
 import ing.beribtur.aggregate.user.entity.Lendee;
 import lombok.AllArgsConstructor;
@@ -25,4 +26,9 @@ public class Report extends DomainEntity {
     // Domain relationships
     private transient Lendee reporter;
     private transient RentalRecord record;
+
+    @Override
+    protected void modifyAttributes(NameValueList var1) {
+
+    }
 }

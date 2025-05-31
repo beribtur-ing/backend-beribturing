@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.item.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.item.entity.vo.Price;
 import ing.beribtur.aggregate.item.entity.vo.ProductAvailability;
 import ing.beribtur.aggregate.item.entity.vo.Size;
@@ -39,4 +40,9 @@ public class ProductVariant extends DomainEntity implements Discountable {
     private transient Product product;
     private transient List<Reservation> reservations;
     private transient List<ProductImage> images;
+
+    @Override
+    protected void modifyAttributes(NameValueList var1) {
+
+    }
 }

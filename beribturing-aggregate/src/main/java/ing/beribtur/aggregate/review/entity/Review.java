@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.review.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
 import ing.beribtur.aggregate.user.entity.Lendee;
 import lombok.AllArgsConstructor;
@@ -23,4 +24,9 @@ public class Review extends DomainEntity {
     // Domain relationships
     private transient Lendee reviewer;
     private transient RentalRecord record;
+
+    @Override
+    protected void modifyAttributes(NameValueList var1) {
+
+    }
 }
