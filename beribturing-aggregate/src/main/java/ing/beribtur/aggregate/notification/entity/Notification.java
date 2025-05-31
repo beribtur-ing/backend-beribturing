@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Setter
 @Getter
@@ -17,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Notification extends DomainEntity {
     //
-    private UUID recipientId;
+    private String recipientId;
     private String message;
     private NotificationType type;
     private boolean isRead;

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.UUID;
 
 @Setter
 @Getter
@@ -17,10 +16,10 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Product extends DomainEntity implements Discountable {
     //
-    private UUID ownerId; // Reference to User (Lender)
+    private String ownerId; // Reference to User (Lender)
     private String title;
     private String description;
-    private UUID categoryId; // Reference to ProductCategory
+    private String categoryId; // Reference to ProductCategory
 
     // Domain relationships
     private transient Landee owner;

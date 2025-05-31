@@ -1,13 +1,13 @@
 package ing.beribtur.aggregate.payment.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.aggregate.payment.entity.vo.Currency;
 import ing.beribtur.aggregate.payment.entity.vo.PaymentStatus;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
 import ing.beribtur.aggregate.user.entity.Landee;
 import ing.beribtur.aggregate.user.entity.Lander;
 
 import java.time.LocalDateTime;
-import java.util.Currency;
 import java.util.UUID;
 
 public class Transaction extends DomainEntity {

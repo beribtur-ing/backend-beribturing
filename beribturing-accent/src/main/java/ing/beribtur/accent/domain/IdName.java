@@ -13,10 +13,10 @@ import java.io.Serializable;
 @Setter
 public class IdName implements Serializable {
     //
-    private Long id;
+    private String id;
     private String name;
 
-    public static IdName of(Long id, String name) {
+    public static IdName of(String id, String name) {
         //
         return new IdName(id, name);
     }

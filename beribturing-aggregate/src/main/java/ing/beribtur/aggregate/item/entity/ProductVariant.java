@@ -8,11 +8,10 @@ import ing.beribtur.aggregate.payment.entity.vo.Discountable;
 import ing.beribtur.aggregate.rental.entity.Reservation;
 
 import java.util.List;
-import java.util.UUID;
 
 public class ProductVariant extends DomainEntity implements Discountable {
     //
-    private UUID productId;
+    private String productId;
     private Price price;
     private Size size;                              // For clothing/accessories
     private String color;

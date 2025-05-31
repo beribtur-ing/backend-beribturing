@@ -17,12 +17,12 @@ public class RentalRecord extends DomainEntity {
     private LocalDateTime rentedAt;       // The date and time when the product was rented
     private LocalDateTime returnedAt;     // The date when the product was returned
     private LocalDateTime cancelledAt;    // The date when the rental was canceled
-    private UUID productVariantId;              // Reference to Product Variant
+    private String productVariantId;              // Reference to Product Variant
     private RentalStatus status;
-    private UUID landeeId;                      // Reference to the Reservation that this rental is associated with
+    private String landeeId;                      // Reference to the Reservation that this rental is associated with
     private Double fee;
-    private UUID discountId;                    // Reference to any discount applied to the rental
-    private UUID depositId;                     // Rental Deposit id
+    private String discountId;                    // Reference to any discount applied to the rental
+    private String depositId;                     // Rental Deposit id
 
     // Domain relationships
     private transient ProductVariant productVariant;    // The product variant being rented
@@ -35,8 +35,8 @@ public class RentalRecord extends DomainEntity {
     private transient ItemConditionCheck afterReturned;
 
 
-    private static UUID genId(UUID reservationId) {
+    private static String genId(String reservationId) {
         //
-        return reservationId == null ? UUID.randomUUID() : UUID.nameUUIDFromBytes(reservationId.toString().getBytes());
+        return reservationId == null ? UUID.randomUUID().toString() : UUID.nameUUIDFromBytes(reservationId.getBytes()).toString();
     }
 }

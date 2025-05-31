@@ -1,18 +1,17 @@
 package ing.beribtur.aggregate.payment.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.aggregate.payment.entity.vo.Currency;
 import ing.beribtur.aggregate.payment.entity.vo.DepositStatus;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
 import ing.beribtur.aggregate.user.entity.Landee;
 
 import java.time.LocalDateTime;
-import java.util.Currency;
-import java.util.UUID;
 
 public class RentalDeposit extends DomainEntity {
     //
-    private UUID rentalRecordId;
-    private UUID payerId;                 // Lendee who paid
+    private String rentalRecordId;
+    private String payerId;                 // Lendee who paid
     private Currency amount;
     private DepositStatus status;
     private LocalDateTime paidAt;

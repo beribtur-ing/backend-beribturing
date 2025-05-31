@@ -57,7 +57,7 @@ public abstract class DomainEntityJpo implements Serializable {
         if (this == target) {
             return true;
         } else if (target != null && this.getClass() == target.getClass()) {
-            DomainEntityJpo entity = (DomainEntityJpo)target;
+            DomainEntityJpo entity = (DomainEntityJpo) target;
             return Objects.equals(this.id, entity.id);
         } else {
             return false;

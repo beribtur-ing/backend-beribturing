@@ -7,7 +7,6 @@ import ing.beribtur.aggregate.payment.entity.vo.Discountable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 public class Discount extends DomainEntity {
     //
@@ -15,7 +14,7 @@ public class Discount extends DomainEntity {
     private DiscountType type;                // PERCENTAGE or FIXED_AMOUNT
     private BigDecimal amount;                // 10% or $5
     private DiscountScope scope;              // PRODUCT, VARIANT, CATEGORY, USER, GLOBAL
-    private UUID targetId;                    // UUID of Product, Variant, Category, etc.
+    private String targetId;                    // UUID of Product, Variant, Category, etc.
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private boolean active;

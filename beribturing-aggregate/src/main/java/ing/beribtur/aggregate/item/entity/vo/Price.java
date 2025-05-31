@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 
 @Setter
 @Getter
@@ -16,7 +15,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class Price implements ValueObject {
     //
-    private BigDecimal amount;
     private Currency currency;
     private PriceUnit unit; // HOURLY, DAILY, WEEKLY
 }

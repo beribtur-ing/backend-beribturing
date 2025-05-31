@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,6 +22,7 @@ public abstract class DomainEntity implements Serializable {
 
     public DomainEntity() {
         //
+        this.id = UUID.randomUUID().toString();
         this.entityVersion = 0L;
         this.registeredOn = LocalDateTime.now();
         this.registeredBy = SpaceContext.get().getUsername();
@@ -49,6 +51,6 @@ public abstract class DomainEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(new Object[]{this.id});
+        return Objects.hash(this.id);
     }
 }

@@ -20,8 +20,7 @@ public class AccountJpaStore implements AccountStore {
 
     @Override
     public Account create(Account account) {
-        AccountJpo accountJpo = new AccountJpo();
-        BeanUtils.copyProperties(account, accountJpo);
+        AccountJpo accountJpo = new AccountJpo(account);
 
         accountRepository.save(accountJpo);
         account.setId(accountJpo.getId());

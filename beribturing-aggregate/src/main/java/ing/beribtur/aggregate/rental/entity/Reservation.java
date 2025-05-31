@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
 
 @Setter
 @Getter
@@ -18,8 +17,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Reservation extends DomainEntity {
     //
-    private UUID productVariantId;      // Reference to Product Variant
-    private UUID requesterId;           // Reference to the Landee who made the reservation
+    private String productVariantId;      // Reference to Product Variant
+    private String requesterId;           // Reference to the Landee who made the reservation
     private Period period;              // The period for which the product is reserved
     private ReservationStatus status;
     private String note;

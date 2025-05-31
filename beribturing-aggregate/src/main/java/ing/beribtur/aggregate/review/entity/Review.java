@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
 
 @Setter
 @Getter
@@ -16,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Review extends DomainEntity {
     //
-    private UUID reviewerId;
+    private String reviewerId;
     private int rating;
     private String comment;
 

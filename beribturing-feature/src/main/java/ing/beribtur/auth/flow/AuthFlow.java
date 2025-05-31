@@ -24,7 +24,7 @@ public class AuthFlow {
         Account account = accountLogic.findByPhoneNumber(phoneNumber);
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(phoneNumber, password)
+                new UsernamePasswordAuthenticationToken(phoneNumber, null)
         );
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();

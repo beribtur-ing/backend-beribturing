@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Setter
 @Getter
@@ -17,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Report extends DomainEntity {
     //
-    private UUID reporterId;
+    private String reporterId;
     private String reason;
     private LocalDateTime reportDate;
     private boolean resolved;
