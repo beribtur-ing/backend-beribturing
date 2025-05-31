@@ -4,13 +4,15 @@ package ing.beribtur.aggregate.account.entity;
 import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.aggregate.account.entity.sdo.AccountCdo;
 import ing.beribtur.aggregate.account.entity.vo.Role;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
-@Getter
 @Setter
+@Getter
+@AllArgsConstructor
 @NoArgsConstructor
 public class Account extends DomainEntity {
     //
@@ -24,7 +26,7 @@ public class Account extends DomainEntity {
     private boolean credentialsNonExpired;
 
     public Account(AccountCdo accountCdo) {
-        super();
+        super(accountCdo.genId());
         BeanUtils.copyProperties(accountCdo, this);
     }
 }

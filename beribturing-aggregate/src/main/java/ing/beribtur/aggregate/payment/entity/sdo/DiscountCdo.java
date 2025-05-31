@@ -1,22 +1,19 @@
-package ing.beribtur.aggregate.payment.entity;
+package ing.beribtur.aggregate.payment.entity.sdo;
 
-import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.CreationDataObject;
 import ing.beribtur.aggregate.payment.entity.vo.DiscountScope;
 import ing.beribtur.aggregate.payment.entity.vo.DiscountType;
-import ing.beribtur.aggregate.payment.entity.vo.Discountable;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-public class Discount extends DomainEntity {
+@Setter
+@Builder
+public class DiscountCdo extends CreationDataObject {
     //
     private String name;                      // e.g., "Summer Promo", "VIP Discount"
     private DiscountType type;                // PERCENTAGE or FIXED_AMOUNT
@@ -26,8 +23,4 @@ public class Discount extends DomainEntity {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private boolean active;
-
-    // Domain relationships
-    private transient Discountable target;     // The entity this discount applies to, e.g., Product, Variant, User
 }
-

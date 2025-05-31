@@ -1,24 +1,19 @@
-package ing.beribtur.aggregate.payment.entity;
+package ing.beribtur.aggregate.payment.entity.sdo;
 
-import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.CreationDataObject;
 import ing.beribtur.aggregate.payment.entity.vo.Currency;
 import ing.beribtur.aggregate.payment.entity.vo.PaymentStatus;
-import ing.beribtur.aggregate.rental.entity.RentalRecord;
-import ing.beribtur.aggregate.user.entity.Lendee;
-import ing.beribtur.aggregate.user.entity.Lender;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Setter
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class Transaction extends DomainEntity {
+@AllArgsConstructor
+@Builder
+public class TransactionCdo extends CreationDataObject {
     //
     private UUID rentalRecordId;              // The ID of the RentalRecord this transaction is associated with
     private UUID payerId;                       // Lendee
@@ -30,9 +25,4 @@ public class Transaction extends DomainEntity {
     private LocalDateTime initiatedAt;
     private LocalDateTime completedAt;
     private String paymentProvider;              // External gateway ref
-
-    // Domain relationships
-    private transient RentalRecord rentalRecord;
-    private transient Lendee payer;
-    private transient Lender payee;
 }

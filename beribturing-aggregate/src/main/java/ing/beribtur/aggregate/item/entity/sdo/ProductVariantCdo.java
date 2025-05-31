@@ -1,24 +1,17 @@
-package ing.beribtur.aggregate.item.entity;
+package ing.beribtur.aggregate.item.entity.sdo;
 
-import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.CreationDataObject;
 import ing.beribtur.aggregate.item.entity.vo.Price;
 import ing.beribtur.aggregate.item.entity.vo.ProductAvailability;
 import ing.beribtur.aggregate.item.entity.vo.Size;
-import ing.beribtur.aggregate.payment.entity.vo.Discountable;
-import ing.beribtur.aggregate.rental.entity.Reservation;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
-@Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-public class ProductVariant extends DomainEntity implements Discountable {
-    //
+@Setter
+@Builder
+public class ProductVariantCdo extends CreationDataObject {
     private String productId;
     private Price price;
     private Size size;                              // For clothing/accessories
@@ -32,11 +25,4 @@ public class ProductVariant extends DomainEntity implements Discountable {
     private String manual;
     private ProductAvailability availability;
     private boolean isActive;
-
-    private String notes;                           // Optional extra info
-
-    // Domain relationships
-    private transient Product product;
-    private transient List<Reservation> reservations;
-    private transient List<ProductImage> images;
 }

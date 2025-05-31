@@ -38,7 +38,7 @@ public class UserDetailsLogic implements UserDetails {
 
         return new UserDetailsLogic(
                 user.getId(),
-                user.getPassword(),
+                user.getPhoneNumber(),
                 user.getPassword(),
                 authorities,
                 user.isEnabled(),

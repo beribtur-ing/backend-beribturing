@@ -23,7 +23,6 @@ public abstract class DomainEntity implements Serializable {
 
     public DomainEntity() {
         //
-        this.id = UUID.randomUUID().toString();
         this.entityVersion = 0L;
         this.registeredOn = LocalDateTime.now();
         this.registeredBy = SpaceContext.get().getUsername();

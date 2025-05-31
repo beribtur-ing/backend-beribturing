@@ -20,6 +20,7 @@ public class Report extends DomainEntity {
     private String reason;
     private LocalDateTime reportDate;
     private boolean resolved;
+    private String recordId;
 
     // Domain relationships
     private transient Lendee reporter;

@@ -27,4 +27,8 @@ public class Lender extends DomainEntity {
 
     // Domain relationships
     private transient List<Product> listedItems;
+
+    public static String genId(String accountId) {
+        return accountId;
+    }
 }

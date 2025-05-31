@@ -1,4 +1,9 @@
 package ing.beribtur.accent.domain;
 
-public interface CreationDataObject {
+import java.util.UUID;
+
+public class CreationDataObject {
+    public String genId() {
+        return UUID.randomUUID().toString();
+    }
 }

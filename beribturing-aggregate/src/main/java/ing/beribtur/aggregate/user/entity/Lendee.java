@@ -33,4 +33,8 @@ public class Lendee extends DomainEntity implements Discountable {
     private transient List<RentalRecord> rentalRecords;
     private transient List<Reservation> reservations; // Products listed by the Lendee
     private transient List<RentalDeposit> deposits;
+
+    public static String genId(String accountId) {
+        return accountId;
+    }
 }
