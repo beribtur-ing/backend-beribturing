@@ -1,8 +1,8 @@
 package ing.beribtur.storejpa.aggregate.beribturing.jpo;
 
 import ing.beribtur.accent.domain.DomainEntityJpo;
-import ing.beribtur.aggregate.shared.entity.Account;
-import ing.beribtur.aggregate.shared.entity.vo.Role;
+import ing.beribtur.aggregate.account.entity.Account;
+import ing.beribtur.aggregate.account.entity.vo.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.beans.BeanUtils;

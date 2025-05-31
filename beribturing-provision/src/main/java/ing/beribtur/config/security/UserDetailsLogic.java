@@ -1,7 +1,7 @@
 package ing.beribtur.config.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import ing.beribtur.aggregate.shared.entity.Account;
+import ing.beribtur.aggregate.account.entity.Account;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

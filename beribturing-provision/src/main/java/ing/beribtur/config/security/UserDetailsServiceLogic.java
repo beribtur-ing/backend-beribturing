@@ -1,8 +1,8 @@
 package ing.beribtur.config.security;
 
 import ing.beribtur.accent.context.SpaceContext;
-import ing.beribtur.aggregate.shared.entity.Account;
-import ing.beribtur.aggregate.shared.store.AccountStore;
+import ing.beribtur.aggregate.account.entity.Account;
+import ing.beribtur.aggregate.account.store.AccountStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

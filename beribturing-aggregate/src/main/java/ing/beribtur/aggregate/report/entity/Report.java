@@ -1,0 +1,28 @@
+package ing.beribtur.aggregate.report.entity;
+
+import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.aggregate.rental.entity.RentalRecord;
+import ing.beribtur.aggregate.user.entity.Landee;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Report extends DomainEntity {
+    //
+    private UUID reporterId;
+    private String reason;
+    private LocalDateTime reportDate;
+    private boolean resolved;
+
+    // Domain relationships
+    private transient Landee reporter;
+    private transient RentalRecord record;
+}

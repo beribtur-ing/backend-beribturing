@@ -1,0 +1,29 @@
+package ing.beribtur.aggregate.user.entity;
+
+
+import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.aggregate.user.entity.vo.LanderType;
+import ing.beribtur.aggregate.user.entity.vo.Profile;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Lander extends DomainEntity {
+    //
+    private String name;
+    private String phoneNumber;    //can be used as username
+    private String passwordHash;
+    private LanderType landerType;
+    private boolean isActive;
+    private Profile profile;
+
+    // Domain relationships
+    private transient List<Product> listedItems;
+}

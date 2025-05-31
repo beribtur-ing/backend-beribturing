@@ -1,7 +1,7 @@
 package ing.beribtur.auth.flow;
 
-import ing.beribtur.aggregate.shared.entity.Account;
-import ing.beribtur.aggregate.shared.logic.AccountLogic;
+import ing.beribtur.aggregate.account.entity.Account;
+import ing.beribtur.aggregate.account.logic.AccountLogic;
 import ing.beribtur.auth.rdo.AccountSignInTokenRdo;
 import ing.beribtur.config.security.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;

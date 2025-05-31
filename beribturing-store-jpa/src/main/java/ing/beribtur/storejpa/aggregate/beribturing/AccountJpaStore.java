@@ -1,7 +1,7 @@
 package ing.beribtur.storejpa.aggregate.beribturing;
 
-import ing.beribtur.aggregate.shared.entity.Account;
-import ing.beribtur.aggregate.shared.store.AccountStore;
+import ing.beribtur.aggregate.account.entity.Account;
+import ing.beribtur.aggregate.account.store.AccountStore;
 import ing.beribtur.storejpa.aggregate.beribturing.jpo.AccountJpo;
 import ing.beribtur.storejpa.aggregate.beribturing.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
