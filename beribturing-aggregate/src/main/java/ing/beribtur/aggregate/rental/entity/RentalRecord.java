@@ -4,9 +4,9 @@ import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.aggregate.item.entity.ProductVariant;
 import ing.beribtur.aggregate.payment.entity.Discount;
 import ing.beribtur.aggregate.payment.entity.RentalDeposit;
+import ing.beribtur.aggregate.rental.entity.vo.Period;
 import ing.beribtur.aggregate.rental.entity.vo.RentalStatus;
-import ing.beribtur.aggregate.shared.entity.Period;
-import ing.beribtur.aggregate.user.entity.Landee;
+import ing.beribtur.aggregate.user.entity.Lendee;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -27,7 +27,7 @@ public class RentalRecord extends DomainEntity {
     // Domain relationships
     private transient ProductVariant productVariant;    // The product variant being rented
     private transient Reservation reservation;          // The reservation that this rental is associated with
-    private transient Landee landee;                    // The Landee who made the rental
+    private transient Lendee landee;                    // The Lendee who made the rental
     private transient Discount discount;
     private transient RentalDeposit deposit;            // The deposit associated with this rental
 

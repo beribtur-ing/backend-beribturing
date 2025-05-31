@@ -6,7 +6,6 @@ import ing.beribtur.config.exception.exception.EntityAlreadyExistsException;
 import ing.beribtur.config.exception.exception.EntityNotFoundException;
 import ing.beribtur.config.exception.exception.RoleNotFoundException;
 import ing.beribtur.config.exception.exception.UserAlreadyExistsException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.AuthorizationDeniedException;

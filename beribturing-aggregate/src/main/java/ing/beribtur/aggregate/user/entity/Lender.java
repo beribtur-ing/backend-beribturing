@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lander extends DomainEntity {
+public class Lender extends DomainEntity {
     //
     private String name;
     private String phoneNumber;    //can be used as username

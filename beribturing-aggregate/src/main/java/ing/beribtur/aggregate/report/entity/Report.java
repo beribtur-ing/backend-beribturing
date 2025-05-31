@@ -2,7 +2,7 @@ package ing.beribtur.aggregate.report.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
-import ing.beribtur.aggregate.user.entity.Landee;
+import ing.beribtur.aggregate.user.entity.Lendee;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +23,6 @@ public class Report extends DomainEntity {
     private boolean resolved;
 
     // Domain relationships
-    private transient Landee reporter;
+    private transient Lendee reporter;
     private transient RentalRecord record;
 }

@@ -2,7 +2,7 @@ package ing.beribtur.aggregate.review.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
-import ing.beribtur.aggregate.user.entity.Landee;
+import ing.beribtur.aggregate.user.entity.Lendee;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +21,6 @@ public class Review extends DomainEntity {
     private String comment;
 
     // Domain relationships
-    private transient Landee reviewer;
+    private transient Lendee reviewer;
     private transient RentalRecord record;
 }

@@ -1,4 +1,4 @@
-package ing.beribtur.aggregate.shared.entity;
+package ing.beribtur.aggregate.rental.entity.vo;
 
 import ing.beribtur.accent.domain.ValueObject;
 import lombok.AllArgsConstructor;

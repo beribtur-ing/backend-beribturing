@@ -19,7 +19,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Landee extends DomainEntity implements Discountable {
+public class Lendee extends DomainEntity implements Discountable {
     //
     private String name;
     private String phoneNumber;
@@ -31,6 +31,6 @@ public class Landee extends DomainEntity implements Discountable {
     private transient List<Review> reviews;
     private transient List<Report> Reports;
     private transient List<RentalRecord> rentalRecords;
-    private transient List<Reservation> reservations; // Products listed by the Landee
+    private transient List<Reservation> reservations; // Products listed by the Lendee
     private transient List<RentalDeposit> deposits;
 }

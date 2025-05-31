@@ -19,7 +19,7 @@ public class ItemConditionCheck extends DomainEntity {
     //
     private UUID rentalRecordId; // The ID of the RentalRecord this check belongs to
     private UUID variantId; // The ID of the ItemVariant being checked
-    private UUID checkedBy; // The ID of the Landee or Lander who performed the check
+    private UUID checkedBy; // The ID of the Lendee or Lender who performed the check
     private ConditionCheckType checkType;
 
     // Domain relationships

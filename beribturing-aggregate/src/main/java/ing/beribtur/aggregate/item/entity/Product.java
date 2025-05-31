@@ -2,7 +2,7 @@ package ing.beribtur.aggregate.item.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.aggregate.payment.entity.vo.Discountable;
-import ing.beribtur.aggregate.user.entity.Landee;
+import ing.beribtur.aggregate.user.entity.Lendee;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +23,7 @@ public class Product extends DomainEntity implements Discountable {
     private UUID categoryId; // Reference to ProductCategory
 
     // Domain relationships
-    private transient Landee owner;
+    private transient Lendee owner;
     private transient ProductCategory category;
     private transient List<ProductVariant> variants;
 }
