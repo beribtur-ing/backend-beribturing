@@ -2,6 +2,7 @@ package ing.beribtur.aggregate.account.entity;
 
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.account.entity.sdo.AccountCdo;
 import ing.beribtur.aggregate.account.entity.vo.Role;
 import lombok.AllArgsConstructor;
@@ -28,5 +29,10 @@ public class Account extends DomainEntity {
     public Account(AccountCdo accountCdo) {
         super(accountCdo.genId());
         BeanUtils.copyProperties(accountCdo, this);
+    }
+
+    @Override
+    protected void modifyAttributes(NameValueList var1) {
+
     }
 }

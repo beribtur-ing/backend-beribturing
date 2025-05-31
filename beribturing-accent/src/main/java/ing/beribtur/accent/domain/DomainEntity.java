@@ -7,7 +7,6 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Getter

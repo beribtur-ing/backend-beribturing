@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.rental.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.rental.entity.vo.ConditionCheckType;
 import ing.beribtur.aggregate.user.entity.vo.ConditionCheckable;
 import lombok.AllArgsConstructor;
@@ -25,5 +26,10 @@ public class ItemConditionCheck extends DomainEntity {
     private transient RentalRecord rentalRecord;
     private transient ConditionCheckable checker;
     private transient List<ItemConditionPhoto> photos;
+
+    @Override
+    protected void modifyAttributes(NameValueList var1) {
+
+    }
 }
 

@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.user.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.payment.entity.RentalDeposit;
 import ing.beribtur.aggregate.payment.entity.vo.Discountable;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
@@ -36,5 +37,10 @@ public class Lendee extends DomainEntity implements Discountable {
 
     public static String genId(String accountId) {
         return accountId;
+    }
+
+    @Override
+    protected void modifyAttributes(NameValueList var1) {
+
     }
 }

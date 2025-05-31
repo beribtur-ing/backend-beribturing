@@ -2,6 +2,7 @@ package ing.beribtur.aggregate.item.entity;
 
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.payment.entity.vo.Discountable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,4 +23,9 @@ public class ProductCategory extends DomainEntity implements Discountable {
 
     // Domain relationships
     private transient List<ProductCategory> subCategories;
+
+    @Override
+    protected void modifyAttributes(NameValueList var1) {
+
+    }
 }
