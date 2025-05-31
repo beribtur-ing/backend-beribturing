@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ProductVariantStore {
     //
-    ProductVariant create(ProductVariant productVariant);
+    void create(ProductVariant productVariant);
     ProductVariant retrieve(String id);
     List<ProductVariant> retrieveAll(List<String> ids);
-    ProductVariant update(ProductVariant productVariant);
+    void update(ProductVariant productVariant);
     void delete(String id);
 }

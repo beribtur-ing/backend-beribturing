@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface DiscountStore {
     //
-    Discount create(Discount discount);
+    void create(Discount discount);
     Discount retrieve(String id);
     List<Discount> retrieveAll(List<String> ids);
-    Discount update(Discount discount);
+    void update(Discount discount);
     void delete(String id);
 }

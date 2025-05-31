@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ProductCategoryStore {
     //
-    ProductCategory create(ProductCategory productCategory);
+    void create(ProductCategory productCategory);
     ProductCategory retrieve(String id);
     List<ProductCategory> retrieveAll(List<String> ids);
-    ProductCategory update(ProductCategory productCategory);
+    void update(ProductCategory productCategory);
     void delete(String id);
 }

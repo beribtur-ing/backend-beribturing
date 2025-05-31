@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ItemConditionPhotoStore {
     //
-    ItemConditionPhoto create(ItemConditionPhoto itemConditionPhoto);
+    void create(ItemConditionPhoto itemConditionPhoto);
     ItemConditionPhoto retrieve(String id);
     List<ItemConditionPhoto> retrieveAll(List<String> ids);
-    ItemConditionPhoto update(ItemConditionPhoto itemConditionPhoto);
+    void update(ItemConditionPhoto itemConditionPhoto);
     void delete(String id);
 }

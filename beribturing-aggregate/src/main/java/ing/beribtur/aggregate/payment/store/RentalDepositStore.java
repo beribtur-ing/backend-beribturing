@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface RentalDepositStore {
     //
-    RentalDeposit create(RentalDeposit rentalDeposit);
+    void create(RentalDeposit rentalDeposit);
     RentalDeposit retrieve(String id);
     List<RentalDeposit> retrieveAll(List<String> ids);
-    RentalDeposit update(RentalDeposit rentalDeposit);
+    void update(RentalDeposit rentalDeposit);
     void delete(String id);
 }
