@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ReviewStore {
     //
-    Review create(Review review);
+    void create(Review review);
     Review retrieve(String id);
     List<Review> retrieveAll(List<String> ids);
-    Review update(Review review);
+    void update(Review review);
     void delete(String id);
 }

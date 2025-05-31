@@ -5,7 +5,6 @@ import ing.beribtur.aggregate.account.store.AccountStore;
 import ing.beribtur.storejpa.aggregate.beribturing.jpo.AccountJpo;
 import ing.beribtur.storejpa.aggregate.beribturing.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,12 +18,11 @@ public class AccountJpaStore implements AccountStore {
     private final AccountRepository accountRepository;
 
     @Override
-    public Account create(Account account) {
+    public void create(Account account) {
         AccountJpo accountJpo = new AccountJpo(account);
 
         accountRepository.save(accountJpo);
         account.setId(accountJpo.getId());
-        return account;
     }
 
     @Override
@@ -43,8 +41,8 @@ public class AccountJpaStore implements AccountStore {
     }
 
     @Override
-    public Account update(Account account) {
-        return null;
+    public void update(Account account) {
+
     }
 
     @Override

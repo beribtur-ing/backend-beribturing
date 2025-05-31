@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface LendeeStore {
     //
-    Lendee create(Lendee lendee);
+    void create(Lendee lendee);
     Lendee retrieve(String id);
     List<Lendee> retrieveAll(List<String> ids);
-    Lendee update(Lendee lendee);
+    void update(Lendee lendee);
     void delete(String id);
 }

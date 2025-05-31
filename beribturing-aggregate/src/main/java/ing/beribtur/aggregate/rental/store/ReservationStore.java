@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ReservationStore {
     //
-    Reservation create(Reservation reservation);
+    void create(Reservation reservation);
     Reservation retrieve(String id);
     List<Reservation> retrieveAll(List<String> ids);
-    Reservation update(Reservation reservation);
+    void update(Reservation reservation);
     void delete(String id);
 }
