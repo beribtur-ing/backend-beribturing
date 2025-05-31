@@ -23,9 +23,9 @@ public class JwtUtils {
 
     @Value("${beribturing.jwtSecret}")
     private String secret; // Use environment variable in production
-    @Value("${beribturing.expiration}")
+    @Value("${beribturing.jwtExpirationMs}")
     private int jwtExpiration; // 24 hours
-    @Value("${beribturing.refresh-expiration}")
+    @Value("${beribturing.refreshExpirationMs}")
     private int refreshExpiration; // week
 
     private SecretKey key;
