@@ -1,8 +1,15 @@
 package ing.beribtur.aggregate.item.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductImage extends DomainEntity {
     //
     private String variantId; // Reference to the product variant this image belongs to

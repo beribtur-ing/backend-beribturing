@@ -8,10 +8,18 @@ import ing.beribtur.aggregate.payment.entity.vo.Currency;
 import ing.beribtur.aggregate.rental.entity.vo.Period;
 import ing.beribtur.aggregate.rental.entity.vo.RentalStatus;
 import ing.beribtur.aggregate.user.entity.Lendee;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class RentalRecord extends DomainEntity {
     //
     private Period period;

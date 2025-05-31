@@ -6,10 +6,18 @@ import ing.beribtur.aggregate.payment.entity.vo.PaymentStatus;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
 import ing.beribtur.aggregate.user.entity.Lendee;
 import ing.beribtur.aggregate.user.entity.Lender;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Transaction extends DomainEntity {
     //
     private UUID rentalRecordId;              // The ID of the RentalRecord this transaction is associated with

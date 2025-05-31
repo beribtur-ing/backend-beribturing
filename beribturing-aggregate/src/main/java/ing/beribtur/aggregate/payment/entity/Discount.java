@@ -4,10 +4,18 @@ import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.aggregate.payment.entity.vo.DiscountScope;
 import ing.beribtur.aggregate.payment.entity.vo.DiscountType;
 import ing.beribtur.aggregate.payment.entity.vo.Discountable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Discount extends DomainEntity {
     //
     private String name;                      // e.g., "Summer Promo", "VIP Discount"

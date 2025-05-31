@@ -6,9 +6,17 @@ import ing.beribtur.aggregate.item.entity.vo.ProductAvailability;
 import ing.beribtur.aggregate.item.entity.vo.Size;
 import ing.beribtur.aggregate.payment.entity.vo.Discountable;
 import ing.beribtur.aggregate.rental.entity.Reservation;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductVariant extends DomainEntity implements Discountable {
     //
     private String productId;
