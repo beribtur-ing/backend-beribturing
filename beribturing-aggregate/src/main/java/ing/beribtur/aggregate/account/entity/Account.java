@@ -24,7 +24,7 @@ public class Account extends DomainEntity {
     private boolean credentialsNonExpired;
 
     public Account(AccountCdo accountCdo) {
-        super();
+        super(accountCdo.genId());
         BeanUtils.copyProperties(accountCdo, this);
     }
 }

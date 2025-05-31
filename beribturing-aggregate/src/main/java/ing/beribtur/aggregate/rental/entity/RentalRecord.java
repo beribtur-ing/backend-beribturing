@@ -4,6 +4,7 @@ import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.aggregate.item.entity.ProductVariant;
 import ing.beribtur.aggregate.payment.entity.Discount;
 import ing.beribtur.aggregate.payment.entity.RentalDeposit;
+import ing.beribtur.aggregate.payment.entity.vo.Currency;
 import ing.beribtur.aggregate.rental.entity.vo.Period;
 import ing.beribtur.aggregate.rental.entity.vo.RentalStatus;
 import ing.beribtur.aggregate.user.entity.Lendee;
@@ -19,15 +20,15 @@ public class RentalRecord extends DomainEntity {
     private LocalDateTime cancelledAt;    // The date when the rental was canceled
     private String productVariantId;              // Reference to Product Variant
     private RentalStatus status;
-    private String landeeId;                      // Reference to the Reservation that this rental is associated with
-    private Double fee;
+    private String lendeeId;                      // Reference to the Reservation that this rental is associated with
+    private Currency fee;
     private String discountId;                    // Reference to any discount applied to the rental
     private String depositId;                     // Rental Deposit id
 
     // Domain relationships
     private transient ProductVariant productVariant;    // The product variant being rented
     private transient Reservation reservation;          // The reservation that this rental is associated with
-    private transient Lendee landee;                    // The Lendee who made the rental
+    private transient Lendee lendee;                    // The Lendee who made the rental
     private transient Discount discount;
     private transient RentalDeposit deposit;            // The deposit associated with this rental
 
