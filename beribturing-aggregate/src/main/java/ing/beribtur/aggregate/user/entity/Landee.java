@@ -1,6 +1,12 @@
 package ing.beribtur.aggregate.user.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.aggregate.payment.entity.RentalDeposit;
+import ing.beribtur.aggregate.payment.entity.vo.Discountable;
+import ing.beribtur.aggregate.rental.entity.RentalRecord;
+import ing.beribtur.aggregate.rental.entity.Reservation;
+import ing.beribtur.aggregate.report.entity.Report;
+import ing.beribtur.aggregate.review.entity.Review;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -2,6 +2,7 @@ package ing.beribtur.aggregate.user.entity;
 
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.aggregate.item.entity.Product;
 import ing.beribtur.aggregate.user.entity.vo.LanderType;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import lombok.AllArgsConstructor;
