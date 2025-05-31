@@ -11,27 +11,26 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/beribturing
       - SPRING_DATASOURCE_USERNAME=beribturing
       - SPRING_DATASOURCE_PASSWORD=beribturing1234
-    depends_on:
-      - postgres
+      - MINIO_ENDPOINT=http://minio:9000
+      - MINIO_ACCESS_KEY=aimroot
+      - MINIO_SECRET_KEY=Alphraganus17
+      - MINIO_BUCKET_NAME=beribturing
     restart: unless-stopped
 
-  postgres:
-    image: postgres:14
-    container_name: beribturing-postgres
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_DB=beribturing
-      - POSTGRES_USER=beribturing
-      - POSTGRES_PASSWORD=beribturing1234
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U beribturing -d beribturing"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
-
-volumes:
-  postgres_data:
+#  postgres:
+#    image: postgres:14
+#    container_name: beribturing-postgres
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      - POSTGRES_DB=beribturing
+#      - POSTGRES_USER=beribturing
+#      - POSTGRES_PASSWORD=beribturing1234
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
+#    healthcheck:
+#      test: ["CMD-SHELL", "pg_isready -U beribturing -d beribturing"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#    restart: unless-stopped
