@@ -18,7 +18,7 @@ public class ItemConditionCheck extends DomainEntity {
     //
     private String rentalRecordId; // The ID of the RentalRecord this check belongs to
     private String variantId; // The ID of the ItemVariant being checked
-    private String checkedBy; // The ID of the Landee or Lander who performed the check
+    private String checkedBy; // The ID of the Lendee or Lender who performed the check
     private ConditionCheckType checkType;
 
     // Domain relationships

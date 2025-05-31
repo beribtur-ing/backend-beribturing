@@ -4,8 +4,8 @@ import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.aggregate.payment.entity.vo.Currency;
 import ing.beribtur.aggregate.payment.entity.vo.PaymentStatus;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
-import ing.beribtur.aggregate.user.entity.Landee;
-import ing.beribtur.aggregate.user.entity.Lander;
+import ing.beribtur.aggregate.user.entity.Lendee;
+import ing.beribtur.aggregate.user.entity.Lender;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -25,6 +25,6 @@ public class Transaction extends DomainEntity {
 
     // Domain relationships
     private transient RentalRecord rentalRecord;
-    private transient Landee payer;
-    private transient Lander payee;
+    private transient Lendee payer;
+    private transient Lender payee;
 }
