@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.item.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.payment.entity.vo.Discountable;
 import ing.beribtur.aggregate.user.entity.Lendee;
 import lombok.AllArgsConstructor;
@@ -25,5 +26,10 @@ public class Product extends DomainEntity implements Discountable {
     private transient Lendee owner;
     private transient ProductCategory category;
     private transient List<ProductVariant> variants;
+
+    @Override
+    protected void modifyAttributes(NameValueList var1) {
+
+    }
 }
 

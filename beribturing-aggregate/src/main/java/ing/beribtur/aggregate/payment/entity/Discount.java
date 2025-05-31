@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.payment.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.payment.entity.vo.DiscountScope;
 import ing.beribtur.aggregate.payment.entity.vo.DiscountType;
 import ing.beribtur.aggregate.payment.entity.vo.Discountable;
@@ -29,5 +30,10 @@ public class Discount extends DomainEntity {
 
     // Domain relationships
     private transient Discountable target;     // The entity this discount applies to, e.g., Product, Variant, User
+
+    @Override
+    protected void modifyAttributes(NameValueList var1) {
+
+    }
 }
 

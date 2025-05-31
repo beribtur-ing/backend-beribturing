@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.rental.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.item.entity.ProductVariant;
 import ing.beribtur.aggregate.rental.entity.vo.Period;
 import ing.beribtur.aggregate.rental.entity.vo.ReservationStatus;
@@ -26,4 +27,9 @@ public class Reservation extends DomainEntity {
     // Domain relationships
     private transient ProductVariant productVariant;    // The product variant being reserved
     private transient Lendee requester;                 // The Lendee who made the reservation
+
+    @Override
+    protected void modifyAttributes(NameValueList var1) {
+
+    }
 }

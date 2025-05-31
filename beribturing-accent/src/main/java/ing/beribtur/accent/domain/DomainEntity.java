@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Getter
 @Setter
@@ -33,6 +33,24 @@ public abstract class DomainEntity implements Serializable {
         //
         this();
         this.id = id;
+    }
+
+    protected abstract void modifyAttributes(NameValueList var1);
+
+    public void modify(NameValueList nameValues) {
+        NameValueList modificationNameValues = NameValueList.from(nameValues);
+        if (this.hasEntityVersion(modificationNameValues)) {
+            this.entityVersion = Long.parseLong(modificationNameValues.getValueOf("entityVersion"));
+            modificationNameValues.remove("entityVersion");
+        }
+
+        this.modifyAttributes(modificationNameValues);
+        this.modifiedBy = SpaceContext.get().getUsername();
+        this.modifiedOn = LocalDateTime.now();
+    }
+
+    private boolean hasEntityVersion(NameValueList nameValues) {
+        return nameValues.containsName("entityVersion") && Pattern.compile("[+-]?\\d+").matcher(nameValues.getValueOf("entityVersion")).matches();
     }
 
     @Override
