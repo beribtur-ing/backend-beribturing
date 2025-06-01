@@ -13,10 +13,11 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: 165.22.70.210
-          username: root
-          key: Theta17*
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            sudo /usr/bin/git --git-dir=/opt/projects/backend/dev/between-service/.git \
-            --work-tree=/opt/projects/backend/dev/between-service pull && \
-            sudo /usr/bin/docker compose -f /opt/projects/backend/dev/between-service/docker-compose.dev.yml up --build -d
+            sudo /usr/bin/git --git-dir=/opt/projects/backend/backend-beribturing/.git \
+            --work-tree=/opt/projects/backend/backend-beribturing pull && \
+            sudo /usr/bin/docker compose -f /opt/projects/backend/backend-beribturing/docker-compose.yml up --build -d

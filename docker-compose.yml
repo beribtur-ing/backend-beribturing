@@ -11,26 +11,60 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/beribturing
       - SPRING_DATASOURCE_USERNAME=beribturing
       - SPRING_DATASOURCE_PASSWORD=beribturing1234
-      - MINIO_ENDPOINT=http://minio:9000
-      - MINIO_ACCESS_KEY=aimroot
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+      - MINIO_ACCESS_KEY=iamroott
       - MINIO_SECRET_KEY=Alphraganus17
       - MINIO_BUCKET_NAME=beribturing
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - beribturing-network
     restart: unless-stopped
 
-#  postgres:
-#    image: postgres:14
-#    container_name: beribturing-postgres
-#    ports:
-#      - "5432:5432"
-#    environment:
-#      - POSTGRES_DB=beribturing
-#      - POSTGRES_USER=beribturing
-#      - POSTGRES_PASSWORD=beribturing1234
-#    volumes:
-#      - postgres_data:/var/lib/postgresql/data
-#    healthcheck:
-#      test: ["CMD-SHELL", "pg_isready -U beribturing -d beribturing"]
-#      interval: 10s
-#      timeout: 5s
-#      retries: 5
-#    restart: unless-stopped
+  postgres:
+    image: postgres:14
+    container_name: beribturing-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=beribturing
+      - POSTGRES_USER=beribturing
+      - POSTGRES_PASSWORD=beribturing1234
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U beribturing -d beribturing" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - beribturing-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:6.0
+    container_name: beribturing-redis
+    user: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - beribturing-network
+    restart: unless-stopped
+    command: redis-server --dir /data
+      --dbfilename dump.rdb
+      --appendonly yes
+      --appendfilename appendonly.aof
+      --slaveof no one
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  beribturing-network:
+    external: true
