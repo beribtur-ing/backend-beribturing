@@ -10,6 +10,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Debug SSH secrets (partial)
+        run: |
+          echo "HOST: ${{ secrets.SSH_HOST }}"
+          echo "USER: ${{ secrets.SSH_USERNAME }}"
+          echo "KEY Length: $(echo "${{ secrets.SSH_PRIVATE_KEY }}" | wc -l)"
+
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v0.1.10
         with:
