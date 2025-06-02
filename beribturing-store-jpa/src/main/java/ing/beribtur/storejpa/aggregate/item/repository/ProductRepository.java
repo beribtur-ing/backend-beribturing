@@ -1,0 +1,12 @@
+package ing.beribtur.storejpa.aggregate.item.repository;
+
+import ing.beribtur.storejpa.aggregate.item.jpo.ProductJpo;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface ProductRepository extends JpaRepository<ProductJpo, String> {
+    List<ProductJpo> findByOwnerId(String ownerId);
+    List<ProductJpo> findByCategoryId(String categoryId);
+    List<ProductJpo> findByTitleContaining(String title);
+}

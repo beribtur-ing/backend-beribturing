@@ -1,4 +1,4 @@
-package ing.beribtur.storejpa.aggregate.beribturing.jpo;
+package ing.beribtur.storejpa.aggregate.account.jpo;
 
 import ing.beribtur.accent.domain.DomainEntityJpo;
 import ing.beribtur.aggregate.account.entity.Account;

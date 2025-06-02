@@ -1,6 +1,6 @@
-package ing.beribtur.storejpa.aggregate.beribturing.repository;
+package ing.beribtur.storejpa.aggregate.account.repository;
 
-import ing.beribtur.storejpa.aggregate.beribturing.jpo.AccountJpo;
+import ing.beribtur.storejpa.aggregate.account.jpo.AccountJpo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,9 +1,9 @@
-package ing.beribtur.storejpa.aggregate.beribturing;
+package ing.beribtur.storejpa.aggregate.account;
 
 import ing.beribtur.aggregate.account.entity.Account;
 import ing.beribtur.aggregate.account.store.AccountStore;
-import ing.beribtur.storejpa.aggregate.beribturing.jpo.AccountJpo;
-import ing.beribtur.storejpa.aggregate.beribturing.repository.AccountRepository;
+import ing.beribtur.storejpa.aggregate.account.jpo.AccountJpo;
+import ing.beribtur.storejpa.aggregate.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
