@@ -24,6 +24,7 @@ dependencies {
     api project(":beribturing-store-jpa")
     api project(":beribturing-accent")
     api project(":beribturing-provision")
+    api project(":beribturing-proxy")
     implementation ('org.postgresql:postgresql')
     implementation ("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     implementation("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")

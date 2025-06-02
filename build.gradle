@@ -8,8 +8,9 @@ ext {
     serviceVersion = '1.0-SNAPSHOT'
     lombokVersion = '1.18.32'
     springVersion = '6.2.3'
-    springBootVersion = '3.4.3'
+    springBootVersion = '3.5.0'
     queryDslVersion = "5.0.0:jakarta"
+    minioVersion = '8.5.17'
 }
 
 allprojects {

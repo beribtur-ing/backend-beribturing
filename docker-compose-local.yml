@@ -11,17 +11,11 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/beribturing
       - SPRING_DATASOURCE_USERNAME=beribturing
       - SPRING_DATASOURCE_PASSWORD=beribturing1234
-      - SPRING_DATA_REDIS_HOST=redis
       - SPRING_REDIS_HOST=redis
       - SPRING_REDIS_PORT=6379
-      - MINIO_ACCESS_KEY=iamroott
-      - MINIO_SECRET_KEY=Alphraganus17
-      - MINIO_BUCKET_NAME=beribturing
     depends_on:
       - postgres
       - redis
-    networks:
-      - beribturing-network
     restart: unless-stopped
 
   postgres:
@@ -36,35 +30,26 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U beribturing -d beribturing" ]
+      test: ["CMD-SHELL", "pg_isready -U beribturing -d beribturing"]
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - beribturing-network
     restart: unless-stopped
 
   redis:
-    image: redis:6.0
+    image: redis:7-alpine
     container_name: beribturing-redis
-    user: redis
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
-    networks:
-      - beribturing-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
     restart: unless-stopped
-    command: redis-server --dir /data
-      --dbfilename dump.rdb
-      --appendonly yes
-      --appendfilename appendonly.aof
-      --slaveof no one
 
 volumes:
   postgres_data:
   redis_data:
-
-networks:
-  beribturing-network:
-    external: true
