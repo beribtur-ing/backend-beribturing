@@ -14,7 +14,7 @@ COPY beribturing-provision/ ./beribturing-provision/
 COPY beribturing-store-jpa/ ./beribturing-store-jpa/
 COPY gradle/wrapper/ ./gradle/wrapper/
 
-RUN gradlew build -x test
+RUN gradle build -x test
 
 FROM eclipse-temurin:21-jre-jammy
 
