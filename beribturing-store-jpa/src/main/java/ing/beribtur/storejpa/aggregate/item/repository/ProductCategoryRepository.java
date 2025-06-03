@@ -4,9 +4,10 @@ import ing.beribtur.storejpa.aggregate.item.jpo.ProductCategoryJpo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductCategoryRepository extends JpaRepository<ProductCategoryJpo, String> {
     List<ProductCategoryJpo> findByParentId(String parentId);
     List<ProductCategoryJpo> findByNameContaining(String name);
-    ProductCategoryJpo findByName(String name);
+    Optional<ProductCategoryJpo> findByName(String name);
 }

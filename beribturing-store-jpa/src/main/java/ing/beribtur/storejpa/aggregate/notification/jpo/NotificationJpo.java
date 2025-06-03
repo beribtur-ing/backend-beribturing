@@ -30,7 +30,7 @@ public class NotificationJpo extends DomainEntityJpo {
     @Column(nullable = false)
     private String type;
     
-    private boolean isRead;
+    private boolean read;
     
     @Column(nullable = false)
     private LocalDateTime timestamp;

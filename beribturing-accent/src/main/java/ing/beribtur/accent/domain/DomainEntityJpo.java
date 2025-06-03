@@ -1,5 +1,6 @@
 package ing.beribtur.accent.domain;
 
+import ing.beribtur.accent.util.JsonSerializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
@@ -8,7 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @MappedSuperclass
 @Getter
 @Setter
-public abstract class DomainEntityJpo implements Serializable {
+public abstract class DomainEntityJpo implements JsonSerializable {
     @Id
     protected String id;
     @Version
@@ -36,7 +36,7 @@ public abstract class DomainEntityJpo implements Serializable {
         //
         this.id = UUID.randomUUID().toString();
         this.entityVersion = 0L;
-        this.registeredOn  = LocalDateTime.now();
+        this.registeredOn = LocalDateTime.now();
     }
 
     protected DomainEntityJpo(DomainEntity domainEntity) {

@@ -1,7 +1,9 @@
 package ing.beribtur.aggregate.payment.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
+import ing.beribtur.accent.util.JsonUtil;
 import ing.beribtur.aggregate.payment.entity.vo.Currency;
 import ing.beribtur.aggregate.payment.entity.vo.DepositStatus;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
@@ -32,7 +34,19 @@ public class RentalDeposit extends DomainEntity {
     private transient Lendee payer;              // The Lendee who paid the deposit
 
     @Override
-    protected void modifyAttributes(NameValueList var1) {
-
+    protected void modifyAttributes(NameValueList nameValues) {
+        for (NameValue nameValue : nameValues.list()) {
+            String value = nameValue.getValue();
+            switch (nameValue.getName().trim()) {
+                case "rentalRecordId" -> this.rentalRecordId = value;
+                case "payerId" -> this.payerId = value;
+                case "amount" -> this.amount = JsonUtil.fromJson(value, Currency.class);
+                case "status" -> this.status = DepositStatus.valueOf(value);
+                case "paidAt" -> this.paidAt = LocalDateTime.parse(value);
+                case "resolvedAt" -> this.resolvedAt = LocalDateTime.parse(value);
+                case "notes" -> this.notes = value;
+                default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
+            }
+        }
     }
 }

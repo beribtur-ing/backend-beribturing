@@ -21,9 +21,11 @@ public class ProductCategoryJpo extends DomainEntityJpo {
 
     @Column(nullable = false)
     private String name;
-    
+
     private String description;
-    
+
+    private String iconUrl;
+
     private String parentId;
 
     public ProductCategoryJpo(ProductCategory productCategory) {

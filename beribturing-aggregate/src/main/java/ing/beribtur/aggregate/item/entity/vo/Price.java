@@ -8,12 +8,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Price implements ValueObject {
+public class Price implements ValueObject, Serializable {
     //
     private Currency currency;
     private PriceUnit unit; // HOURLY, DAILY, WEEKLY

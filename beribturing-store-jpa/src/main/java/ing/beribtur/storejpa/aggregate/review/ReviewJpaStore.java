@@ -1,68 +1,105 @@
 package ing.beribtur.storejpa.aggregate.review;
 
+import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.review.entity.Review;
 import ing.beribtur.aggregate.review.store.ReviewStore;
 import ing.beribtur.storejpa.aggregate.review.jpo.ReviewJpo;
 import ing.beribtur.storejpa.aggregate.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Repository
 @RequiredArgsConstructor
 public class ReviewJpaStore implements ReviewStore {
-
+    //
     private final ReviewRepository reviewRepository;
 
     @Override
     public void create(Review review) {
+        //
         ReviewJpo reviewJpo = new ReviewJpo(review);
         reviewRepository.save(reviewJpo);
-        review.setId(reviewJpo.getId());
+    }
+
+    @Override
+    public void createAll(List<Review> reviews) {
+        //
+        if (reviews == null) {
+            return;
+        }
+        reviews.forEach(this::create);
     }
 
     @Override
     public Review retrieve(String id) {
-        ReviewJpo reviewJpo = reviewRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Review not found: " + id));
-        return reviewJpo.toDomain();
+        //
+        return reviewRepository.findById(id)
+                .map(ReviewJpo::toDomain)
+                .orElse(null);
     }
 
     @Override
-    public List<Review> retrieveAll(List<String> ids) {
-        List<ReviewJpo> jpos = reviewRepository.findAllById(ids);
-        return ReviewJpo.toDomains(jpos);
+    public List<Review> retrieveAll(List<String> reviewIds) {
+        //
+        Iterable<ReviewJpo> allById = reviewRepository.findAllById(reviewIds);
+        return ReviewJpo.toDomains(StreamSupport.stream(allById.spliterator(), false).collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<Review> retrieveList(Offset offset) {
+        //
+        Pageable pageable = PageRequest.of(offset.page(), offset.limit());
+        return reviewRepository.findAll(pageable)
+                .map(ReviewJpo::toDomain)
+                .toList();
     }
 
     @Override
     public void update(Review review) {
-        ReviewJpo existingJpo = reviewRepository.findById(review.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Review not found: " + review.getId()));
+        //
+        ReviewJpo reviewJpo = new ReviewJpo(review);
+        reviewRepository.save(reviewJpo);
+    }
 
-        ReviewJpo updatedJpo = new ReviewJpo(review);
-        updatedJpo.setEntityVersion(existingJpo.getEntityVersion());
-        updatedJpo.setRegisteredBy(existingJpo.getRegisteredBy());
-        updatedJpo.setRegisteredOn(existingJpo.getRegisteredOn());
-
-        reviewRepository.save(updatedJpo);
+    @Override
+    public void delete(Review review) {
+        //
+        reviewRepository.deleteById(review.getId());
     }
 
     @Override
     public void delete(String id) {
+        //
         reviewRepository.deleteById(id);
     }
 
-    // Optional: Custom query methods
-    public List<Review> findByReviewerId(String reviewerId) {
+    @Override
+    public boolean exists(String id) {
+        //
+        return reviewRepository.existsById(id);
+    }
+
+    @Override
+    public List<Review> retrieveByReviewerId(String reviewerId) {
+        //
         return ReviewJpo.toDomains(reviewRepository.findByReviewerId(reviewerId));
     }
 
-    public List<Review> findByRecordId(String recordId) {
+    @Override
+    public List<Review> retrieveByRecordId(String recordId) {
+        //
         return ReviewJpo.toDomains(reviewRepository.findByRecordId(recordId));
     }
 
-    public List<Review> findByRating(int rating) {
+    @Override
+    public List<Review> retrieveByRating(int rating) {
+        //
         return ReviewJpo.toDomains(reviewRepository.findByRating(rating));
     }
 }

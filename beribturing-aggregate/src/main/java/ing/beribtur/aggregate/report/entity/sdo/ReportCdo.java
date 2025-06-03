@@ -17,4 +17,9 @@ public class ReportCdo extends CreationDataObject {
     private LocalDateTime reportDate;
     private boolean resolved;
     private String recordId;
+
+    public String genId() {
+        //
+        return super.genId();
+    }
 }

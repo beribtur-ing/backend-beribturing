@@ -14,4 +14,9 @@ public class ReviewCdo extends CreationDataObject {
     private int rating;
     private String comment;
     private String recordId;
+
+    public String genId() {
+        //
+        return super.genId();
+    }
 }

@@ -1,7 +1,7 @@
 package ing.beribtur.storejpa.aggregate.user;
 
 import ing.beribtur.aggregate.user.entity.Lender;
-import ing.beribtur.aggregate.user.entity.vo.LanderType;
+import ing.beribtur.aggregate.user.entity.vo.LenderType;
 import ing.beribtur.aggregate.user.store.LenderStore;
 import ing.beribtur.storejpa.aggregate.user.jpo.LenderJpo;
 import ing.beribtur.storejpa.aggregate.user.repository.LenderRepository;
@@ -70,7 +70,7 @@ public class LenderJpaStore implements LenderStore {
 //        return LenderJpo.toDomains(lenderRepository.findByIsActive(isActive));
 //    }
 
-    public List<Lender> findByLanderType(LanderType landerType) {
+    public List<Lender> findByLanderType(LenderType landerType) {
         return LenderJpo.toDomains(lenderRepository.findByLanderType(landerType.name()));
     }
 

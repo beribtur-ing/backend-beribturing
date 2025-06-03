@@ -32,7 +32,7 @@ public class ChatMessageJpo extends DomainEntityJpo {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    private boolean isRead;
+    private boolean read;
 
     public ChatMessageJpo(ChatMessage chatMessage) {
         //
