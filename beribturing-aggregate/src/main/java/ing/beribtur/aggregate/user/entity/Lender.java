@@ -1,10 +1,10 @@
 package ing.beribtur.aggregate.user.entity;
 
 
-import java.util.List;
-
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
+import ing.beribtur.accent.util.JsonUtil;
 import ing.beribtur.aggregate.item.entity.Product;
 import ing.beribtur.aggregate.user.entity.vo.LenderType;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -34,7 +36,18 @@ public class Lender extends DomainEntity {
     }
 
     @Override
-    protected void modifyAttributes(NameValueList var1) {
-
+    protected void modifyAttributes(NameValueList nameValues) {
+        for (NameValue nameValue : nameValues.list()) {
+            String value = nameValue.getValue();
+            switch (nameValue.getName().trim()) {
+                case "name" -> this.name = value;
+                case "phoneNumber" -> this.phoneNumber = value;
+                case "lenderType" -> this.lenderType = LenderType.valueOf(value);
+                case "active" -> this.active = Boolean.parseBoolean(value);
+                case "profile" -> this.profile = JsonUtil.fromJson(value, Profile.class);
+                case "productSequence" -> this.productSequence = Long.parseLong(value);
+                default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
+            }
+        }
     }
 }

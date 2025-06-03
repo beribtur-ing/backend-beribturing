@@ -1,7 +1,9 @@
 package ing.beribtur.aggregate.payment.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
+import ing.beribtur.accent.util.JsonUtil;
 import ing.beribtur.aggregate.payment.entity.vo.Currency;
 import ing.beribtur.aggregate.payment.entity.vo.PaymentStatus;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
@@ -38,7 +40,22 @@ public class Transaction extends DomainEntity {
     private transient Lender payee;
 
     @Override
-    protected void modifyAttributes(NameValueList var1) {
-
+    protected void modifyAttributes(NameValueList nameValues) {
+        for (NameValue nameValue : nameValues.list()) {
+            String value = nameValue.getValue();
+            switch (nameValue.getName().trim()) {
+                case "rentalRecordId" -> this.rentalRecordId = UUID.fromString(value);
+                case "payerId" -> this.payerId = UUID.fromString(value);
+                case "payeeId" -> this.payeeId = UUID.fromString(value);
+                case "totalAmount" -> this.totalAmount = JsonUtil.fromJson(value, Currency.class);
+                case "commissionAmount" -> this.commissionAmount = JsonUtil.fromJson(value, Currency.class);
+                case "payeeAmount" -> this.payeeAmount = JsonUtil.fromJson(value, Currency.class);
+                case "status" -> this.status = PaymentStatus.valueOf(value);
+                case "initiatedAt" -> this.initiatedAt = LocalDateTime.parse(value);
+                case "completedAt" -> this.completedAt = LocalDateTime.parse(value);
+                case "paymentProvider" -> this.paymentProvider = value;
+                default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
+            }
+        }
     }
 }

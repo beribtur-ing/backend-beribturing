@@ -1,7 +1,9 @@
 package ing.beribtur.aggregate.user.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
+import ing.beribtur.accent.util.JsonUtil;
 import ing.beribtur.aggregate.payment.entity.RentalDeposit;
 import ing.beribtur.aggregate.payment.entity.vo.Discountable;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
@@ -39,7 +41,16 @@ public class Lendee extends DomainEntity implements Discountable {
     }
 
     @Override
-    protected void modifyAttributes(NameValueList var1) {
-
+    protected void modifyAttributes(NameValueList nameValues) {
+        for (NameValue nameValue : nameValues.list()) {
+            String value = nameValue.getValue();
+            switch (nameValue.getName().trim()) {
+                case "name" -> this.name = value;
+                case "phoneNumber" -> this.phoneNumber = value;
+                case "active" -> this.active = Boolean.parseBoolean(value);
+                case "profile" -> this.profile = JsonUtil.fromJson(value, Profile.class);
+                default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
+            }
+        }
     }
 }

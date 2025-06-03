@@ -1,7 +1,9 @@
 package ing.beribtur.aggregate.rental.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
+import ing.beribtur.accent.util.JsonUtil;
 import ing.beribtur.aggregate.item.entity.ProductVariant;
 import ing.beribtur.aggregate.payment.entity.Discount;
 import ing.beribtur.aggregate.payment.entity.RentalDeposit;
@@ -51,7 +53,22 @@ public class RentalRecord extends DomainEntity {
     }
 
     @Override
-    protected void modifyAttributes(NameValueList var1) {
-
+    protected void modifyAttributes(NameValueList nameValues) {
+        for (NameValue nameValue : nameValues.list()) {
+            String value = nameValue.getValue();
+            switch (nameValue.getName().trim()) {
+                case "period" -> this.period = JsonUtil.fromJson(value, Period.class);
+                case "rentedAt" -> this.rentedAt = LocalDateTime.parse(value);
+                case "returnedAt" -> this.returnedAt = LocalDateTime.parse(value);
+                case "cancelledAt" -> this.cancelledAt = LocalDateTime.parse(value);
+                case "productVariantId" -> this.productVariantId = value;
+                case "status" -> this.status = RentalStatus.valueOf(value);
+                case "lendeeId" -> this.lendeeId = value;
+                case "fee" -> this.fee = JsonUtil.fromJson(value, Currency.class);
+                case "discountId" -> this.discountId = value;
+                case "depositId" -> this.depositId = value;
+                default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
+            }
+        }
     }
 }

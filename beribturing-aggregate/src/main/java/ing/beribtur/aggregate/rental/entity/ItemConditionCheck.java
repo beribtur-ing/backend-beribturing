@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.rental.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.rental.entity.vo.ConditionCheckType;
 import ing.beribtur.aggregate.user.entity.vo.ConditionCheckable;
@@ -28,8 +29,17 @@ public class ItemConditionCheck extends DomainEntity {
     private transient List<ItemConditionPhoto> photos;
 
     @Override
-    protected void modifyAttributes(NameValueList var1) {
-
+    protected void modifyAttributes(NameValueList nameValues) {
+        for (NameValue nameValue : nameValues.list()) {
+            String value = nameValue.getValue();
+            switch (nameValue.getName().trim()) {
+                case "rentalRecordId" -> this.rentalRecordId = value;
+                case "variantId" -> this.variantId = value;
+                case "checkedBy" -> this.checkedBy = value;
+                case "checkType" -> this.checkType = ConditionCheckType.valueOf(value);
+                default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
+            }
+        }
     }
 }
 

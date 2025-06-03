@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.maintenance;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.item.entity.ProductVariant;
 import ing.beribtur.aggregate.maintenance.vo.MaintenanceStatus;
@@ -44,7 +45,22 @@ public class MaintenanceRequest extends DomainEntity {
     private transient List<MaintenancePhoto> photos;    // Photos attached to this maintenance request
 
     @Override
-    protected void modifyAttributes(NameValueList var1) {
-
+    protected void modifyAttributes(NameValueList nameValues) {
+        //
+        for (NameValue nameValue : nameValues.list()) {
+            String value = nameValue.getValue();
+            switch (nameValue.getName().trim()) {
+                case "productVariantId" -> this.productVariantId = value;
+                case "requesterId" -> this.requesterId = value;
+                case "ownerId" -> this.ownerId = value;
+                case "rentalRecordId" -> this.rentalRecordId = value;
+                case "description" -> this.description = value;
+                case "status" -> this.status = MaintenanceStatus.valueOf(value);
+                case "requestedAt" -> this.requestedAt = LocalDateTime.parse(value);
+                case "resolvedAt" -> this.resolvedAt = LocalDateTime.parse(value);
+                case "resolution" -> this.resolution = value;
+                default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
+            }
+        }
     }
 }

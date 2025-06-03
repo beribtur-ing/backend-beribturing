@@ -2,6 +2,7 @@ package ing.beribtur.aggregate.rental.entity;
 
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +23,15 @@ public class ItemConditionPhoto extends DomainEntity {
     private transient ItemConditionCheck itemConditionCheck;
 
     @Override
-    protected void modifyAttributes(NameValueList var1) {
-
+    protected void modifyAttributes(NameValueList nameValues) {
+        for (NameValue nameValue : nameValues.list()) {
+            String value = nameValue.getValue();
+            switch (nameValue.getName().trim()) {
+                case "checkId" -> this.checkId = value;
+                case "url" -> this.url = value;
+                default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
+            }
+        }
     }
+
 }

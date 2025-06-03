@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.payment.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.payment.entity.vo.DiscountScope;
 import ing.beribtur.aggregate.payment.entity.vo.DiscountType;
@@ -32,8 +33,21 @@ public class Discount extends DomainEntity {
     private transient Discountable target;     // The entity this discount applies to, e.g., Product, Variant, User
 
     @Override
-    protected void modifyAttributes(NameValueList var1) {
-
+    protected void modifyAttributes(NameValueList nameValues) {
+        for (NameValue nameValue : nameValues.list()) {
+            String value = nameValue.getValue();
+            switch (nameValue.getName().trim()) {
+                case "name" -> this.name = value;
+                case "type" -> this.type = DiscountType.valueOf(value);
+                case "amount" -> this.amount = new BigDecimal(value);
+                case "scope" -> this.scope = DiscountScope.valueOf(value);
+                case "targetId" -> this.targetId = value;
+                case "startDate" -> this.startDate = LocalDateTime.parse(value);
+                case "endDate" -> this.endDate = LocalDateTime.parse(value);
+                case "active" -> this.active = Boolean.parseBoolean(value);
+                default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
+            }
+        }
     }
 }
 

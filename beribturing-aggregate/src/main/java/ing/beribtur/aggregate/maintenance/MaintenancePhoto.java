@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.maintenance;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +27,17 @@ public class MaintenancePhoto extends DomainEntity {
     private transient MaintenanceRequest maintenanceRequest;  // The maintenance request this photo is attached to
 
     @Override
-    protected void modifyAttributes(NameValueList var1) {
-
+    protected void modifyAttributes(NameValueList nameValues) {
+        //
+        for (NameValue nameValue : nameValues.list()) {
+            String value = nameValue.getValue();
+            switch (nameValue.getName().trim()) {
+                case "maintenanceRequestId" -> this.maintenanceRequestId = value;
+                case "url" -> this.url = value;
+                case "description" -> this.description = value;
+                case "order" -> this.order = Integer.parseInt(value);
+                default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
+            }
+        }
     }
 }
