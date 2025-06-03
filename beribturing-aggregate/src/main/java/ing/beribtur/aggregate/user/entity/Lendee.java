@@ -24,8 +24,7 @@ public class Lendee extends DomainEntity implements Discountable {
     //
     private String name;
     private String phoneNumber;
-    private String passwordHash;
-    private boolean isActive;
+    private boolean active;
     private Profile profile;
 
     // Domain relationships

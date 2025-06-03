@@ -15,6 +15,6 @@ public class NotificationCdo extends CreationDataObject {
     private String recipientId;
     private String message;
     private NotificationType type;
-    private boolean isRead;
+    private boolean read;
     private LocalDateTime timestamp;
 }

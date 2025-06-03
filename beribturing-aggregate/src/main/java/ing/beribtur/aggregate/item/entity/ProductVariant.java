@@ -32,7 +32,7 @@ public class ProductVariant extends DomainEntity implements Discountable {
     private String material;
     private String manual;
     private ProductAvailability availability;
-    private boolean isActive;
+    private boolean active;
 
     private String notes;                           // Optional extra info
 

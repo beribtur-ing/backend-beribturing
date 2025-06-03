@@ -14,8 +14,7 @@ public class LendeeCdo extends CreationDataObject {
     //
     private String name;
     private String phoneNumber;
-    private String passwordHash;
-    private boolean isActive;
+    private boolean active;
     private Profile profile;
     private String accountId; // Reference to the Account entity
 

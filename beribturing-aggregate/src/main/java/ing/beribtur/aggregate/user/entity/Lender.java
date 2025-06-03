@@ -4,7 +4,7 @@ package ing.beribtur.aggregate.user.entity;
 import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.item.entity.Product;
-import ing.beribtur.aggregate.user.entity.vo.LanderType;
+import ing.beribtur.aggregate.user.entity.vo.LenderType;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,9 +21,8 @@ public class Lender extends DomainEntity {
     //
     private String name;
     private String phoneNumber;    //can be used as username
-    private String passwordHash;
-    private LanderType landerType;
-    private boolean isActive;
+    private LenderType lenderType;
+    private boolean active;
     private Profile profile;
 
     // Domain relationships

@@ -20,7 +20,7 @@ public class ChatMessage extends DomainEntity {
     private String receiverId;
     private String content;
     private LocalDateTime timestamp;
-    private boolean isRead;
+    private boolean read;
 
     private transient Communicable sender;
     private transient Communicable receiver;

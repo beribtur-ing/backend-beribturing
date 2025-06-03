@@ -25,14 +25,11 @@ public class LendeeJpo extends DomainEntityJpo {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String phoneNumber;
 
     @Column(nullable = false)
-    private String passwordHash;
-
-    @Column(nullable = false)
-    private boolean isActive;
+    private boolean active;
 
     // Flattened Profile fields
     private String gender;      // Enum name (e.g., Male, Female)
