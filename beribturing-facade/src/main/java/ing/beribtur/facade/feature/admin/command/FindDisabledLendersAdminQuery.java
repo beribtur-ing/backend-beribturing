@@ -1,4 +1,4 @@
-package ing.beribtur.facade.feature.lender.command;
+package ing.beribtur.facade.feature.admin.command;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

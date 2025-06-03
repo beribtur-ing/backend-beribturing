@@ -1,9 +1,9 @@
-package ing.beribtur.facade.feature.lender.rest;
+package ing.beribtur.facade.feature.admin.rest;
 
 import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.accent.util.QueryResponseUtil;
 import ing.beribtur.aggregate.user.entity.Lender;
-import ing.beribtur.facade.feature.lender.command.FindDisabledLendersAdminQuery;
+import ing.beribtur.facade.feature.admin.command.FindDisabledLendersAdminQuery;
 import ing.beribtur.feature.lender.seek.LenderSeek;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

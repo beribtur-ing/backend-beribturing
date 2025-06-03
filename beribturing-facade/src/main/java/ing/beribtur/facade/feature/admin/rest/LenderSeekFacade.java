@@ -1,8 +1,8 @@
-package ing.beribtur.facade.feature.lender.rest;
+package ing.beribtur.facade.feature.admin.rest;
 
 import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.aggregate.user.entity.Lender;
-import ing.beribtur.facade.feature.lender.command.FindDisabledLendersAdminQuery;
+import ing.beribtur.facade.feature.admin.command.FindDisabledLendersAdminQuery;
 
 import java.util.List;
 
