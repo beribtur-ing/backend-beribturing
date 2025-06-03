@@ -89,7 +89,7 @@ public class ProductVariantJpaStore implements ProductVariantStore {
     @Override
     public List<ProductVariant> retrieveByIsActive(boolean isActive) {
         //
-        return productVariantRepository.findByIsActive(isActive).stream().map(ProductVariantJpo::toDomain).collect(Collectors.toList());
+        return productVariantRepository.findByActive(isActive).stream().map(ProductVariantJpo::toDomain).collect(Collectors.toList());
     }
 
     @Override

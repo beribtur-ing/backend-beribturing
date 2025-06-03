@@ -1,5 +1,6 @@
-package ing.beribtur.facade.auth.command;
+package ing.beribtur.facade.api.auth.command;
 
+import ing.beribtur.aggregate.user.entity.vo.LenderType;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,13 +10,14 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class VerifyOtpAndSignUpLendeeCommand {
+public class VerifyOtpAndSignUpLenderCommand {
     //
     private String phoneNumber;
     private String otp;
     private String password;
     private String name;
     private Profile profile;
+    private LenderType lenderType;
 
     public void validate() {
         //
@@ -31,5 +33,6 @@ public class VerifyOtpAndSignUpLendeeCommand {
         Assert.notNull(profile.getLocation(), "profile.location must not be null");
         Assert.notNull(profile.getLocation().getLatitude(), "profile.location.latitude must not be null");
         Assert.notNull(profile.getLocation().getLongitude(), "profile.location.longitude must not be null");
+        Assert.notNull(lenderType, "lenderType must not be null");
     }
 }

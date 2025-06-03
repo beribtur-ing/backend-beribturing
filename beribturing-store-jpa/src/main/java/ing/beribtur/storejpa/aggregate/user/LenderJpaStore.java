@@ -71,12 +71,12 @@ public class LenderJpaStore implements LenderStore {
 //    }
 
     public List<Lender> findByLanderType(LenderType landerType) {
-        return LenderJpo.toDomains(lenderRepository.findByLanderType(landerType.name()));
+        return LenderJpo.toDomains(lenderRepository.findByLenderType(landerType.name()));
     }
 
     @Override
     public Page<Lender> findDisabledLenders(Pageable pageable) {
-        Page<LenderJpo> lenderJpos = lenderRepository.findByIsActive(false, pageable);
+        Page<LenderJpo> lenderJpos = lenderRepository.findByActive(false, pageable);
         return new PageImpl<>(
                 LenderJpo.toDomains(lenderJpos.getContent()),
                 pageable,

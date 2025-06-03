@@ -8,6 +8,6 @@ import java.util.List;
 public interface LendeeRepository extends JpaRepository<LendeeJpo, String> {
     List<LendeeJpo> findByPhoneNumber(String phoneNumber);
     List<LendeeJpo> findByEmail(String email);
-    List<LendeeJpo> findByIsActive(boolean isActive);
+    List<LendeeJpo> findByActive(boolean isActive);
 }
 

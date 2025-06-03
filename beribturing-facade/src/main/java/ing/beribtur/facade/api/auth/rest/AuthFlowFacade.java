@@ -1,10 +1,10 @@
-package ing.beribtur.facade.auth.rest;
+package ing.beribtur.facade.api.auth.rest;
 
 import ing.beribtur.accent.message.CommandResponse;
-import ing.beribtur.facade.auth.command.ResetPasswordCommand;
-import ing.beribtur.facade.auth.command.SendOtpCommand;
-import ing.beribtur.facade.auth.command.VerifyOtpAndSignUpLendeeCommand;
-import ing.beribtur.facade.auth.command.VerifyOtpAndSignUpLenderCommand;
+import ing.beribtur.facade.api.auth.command.ResetPasswordCommand;
+import ing.beribtur.facade.api.auth.command.SendOtpCommand;
+import ing.beribtur.facade.api.auth.command.VerifyOtpAndSignUpLendeeCommand;
+import ing.beribtur.facade.api.auth.command.VerifyOtpAndSignUpLenderCommand;
 
 public interface AuthFlowFacade {
     //

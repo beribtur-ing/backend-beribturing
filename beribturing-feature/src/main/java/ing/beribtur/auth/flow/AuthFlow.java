@@ -8,7 +8,7 @@ import ing.beribtur.aggregate.user.entity.Lendee;
 import ing.beribtur.aggregate.user.entity.Lender;
 import ing.beribtur.aggregate.user.entity.sdo.LendeeCdo;
 import ing.beribtur.aggregate.user.entity.sdo.LenderCdo;
-import ing.beribtur.aggregate.user.entity.vo.LanderType;
+import ing.beribtur.aggregate.user.entity.vo.LenderType;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import ing.beribtur.aggregate.user.logic.LendeeLogic;
 import ing.beribtur.aggregate.user.logic.LenderLogic;
@@ -126,8 +126,7 @@ public class AuthFlow {
                 LendeeCdo.builder()
                         .name(name)
                         .phoneNumber(phoneNumber)
-                        .passwordHash(encoded)
-                        .isActive(true)
+                        .active(true)
                         .profile(profile)
                         .accountId(accountLogic.findByPhoneNumber(phoneNumber).getId())
                         .build()
@@ -142,7 +141,7 @@ public class AuthFlow {
             String password,
             String name,
             Profile profile,
-            LanderType lenderType
+            LenderType lenderType
     ) {
         //
         String savedOtp = redisService.get(phoneNumber);
@@ -170,9 +169,8 @@ public class AuthFlow {
                 LenderCdo.builder()
                         .name(name)
                         .phoneNumber(phoneNumber)
-                        .passwordHash(encoded)
-                        .landerType(lenderType)
-                        .isActive(false)
+                        .lenderType(lenderType)
+                        .active(false)
                         .profile(profile)
                         .accountId(accountLogic.findByPhoneNumber(phoneNumber).getId())
                         .build()

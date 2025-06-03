@@ -72,6 +72,6 @@ public class ChatMessageJpaStore implements ChatMessageStore {
     }
     
     public List<ChatMessage> findByIsRead(boolean isRead) {
-        return ChatMessageJpo.toDomains(chatMessageRepository.findByIsRead(isRead));
+        return ChatMessageJpo.toDomains(chatMessageRepository.findByRead(isRead));
     }
 }

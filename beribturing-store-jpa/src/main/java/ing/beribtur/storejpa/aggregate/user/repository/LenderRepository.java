@@ -10,7 +10,7 @@ import java.util.List;
 public interface LenderRepository extends JpaRepository<LenderJpo, String> {
     List<LenderJpo> findByPhoneNumber(String phoneNumber);
     List<LenderJpo> findByEmail(String email);
-    Page<LenderJpo> findByIsActive(boolean isActive, Pageable pageable);
-    List<LenderJpo> findByLanderType(String landerType);
+    Page<LenderJpo> findByActive(boolean isActive, Pageable pageable);
+    List<LenderJpo> findByLenderType(String landerType);
 }
 

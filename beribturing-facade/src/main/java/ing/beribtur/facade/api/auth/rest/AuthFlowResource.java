@@ -1,13 +1,13 @@
-package ing.beribtur.facade.auth.rest;
+package ing.beribtur.facade.api.auth.rest;
 
 import ing.beribtur.accent.message.CommandResponse;
-import ing.beribtur.aggregate.user.entity.vo.LanderType;
+import ing.beribtur.aggregate.user.entity.vo.LenderType;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import ing.beribtur.auth.flow.AuthFlow;
-import ing.beribtur.facade.auth.command.ResetPasswordCommand;
-import ing.beribtur.facade.auth.command.SendOtpCommand;
-import ing.beribtur.facade.auth.command.VerifyOtpAndSignUpLendeeCommand;
-import ing.beribtur.facade.auth.command.VerifyOtpAndSignUpLenderCommand;
+import ing.beribtur.facade.api.auth.command.ResetPasswordCommand;
+import ing.beribtur.facade.api.auth.command.SendOtpCommand;
+import ing.beribtur.facade.api.auth.command.VerifyOtpAndSignUpLendeeCommand;
+import ing.beribtur.facade.api.auth.command.VerifyOtpAndSignUpLenderCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,7 +63,7 @@ public class AuthFlowResource implements AuthFlowFacade {
         String password = command.getPassword();
         String name = command.getName();
         Profile profile = command.getProfile();
-        LanderType lenderType = command.getLenderType();
+        LenderType lenderType = command.getLenderType();
         Boolean verifyAndSignUpRdo = this.authFlow.verifyOTPAndSignUpLender(phoneNumber, otp, password, name, profile, lenderType);
 
         return new CommandResponse<>(verifyAndSignUpRdo);
