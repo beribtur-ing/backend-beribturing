@@ -46,11 +46,6 @@ public class ProductLogic {
         return product;
     }
 
-    public Product findProduct() {
-        //
-        return productStore.retrieve();
-    }
-
     public List<Product> findProducts(Offset offset) {
         //
         return productStore.retrieveList(offset);
@@ -81,5 +76,15 @@ public class ProductLogic {
     public boolean existsProduct(String productId) {
         //
         return productStore.exists(productId);
+    }
+
+    public List<Product> findByOwnerId(String ownerId) {
+        //
+        return productStore.retrieveByOwnerId(ownerId);
+    }
+
+    public List<Product> findByCategoryId(String categoryId) {
+        //
+        return productStore.retrieveByCategoryId(categoryId);
     }
 }

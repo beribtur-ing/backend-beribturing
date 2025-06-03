@@ -1,4 +1,4 @@
-package ing.beribtur.facade.auth.query;
+package ing.beribtur.facade.api.auth.query;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

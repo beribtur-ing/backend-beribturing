@@ -1,4 +1,4 @@
-package ing.beribtur.feature.sdo;
+package ing.beribtur.feature.rental.sdo;
 
 //import ing.beribtur.aggregate.rentalprovider.entity.DeliveryInfo;
 //import ing.beribtur.aggregate.rentalprovider.entity.RentalItem;

@@ -78,4 +78,9 @@ public class ProductImageLogic {
         //
         return productImageStore.exists(productImageId);
     }
+
+    public List<ProductImage> findProductImagesByVariantId(String variantId) {
+        //
+        return productImageStore.retrieveByVariantIdOrderByOrderAsc(variantId);
+    }
 }

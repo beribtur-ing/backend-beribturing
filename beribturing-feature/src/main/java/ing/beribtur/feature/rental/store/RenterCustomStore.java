@@ -1,4 +1,4 @@
-package ing.beribtur.feature.store;
+package ing.beribtur.feature.rental.store;
 
 public interface RenterCustomStore {
     //

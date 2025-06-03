@@ -78,4 +78,9 @@ public class ProductVariantLogic {
         //
         return productVariantStore.exists(productVariantId);
     }
+
+    public List<ProductVariant> findProductVariantsByProductId(String productId) {
+        //
+        return productVariantStore.retrieveByProductId(productId);
+    }
 }

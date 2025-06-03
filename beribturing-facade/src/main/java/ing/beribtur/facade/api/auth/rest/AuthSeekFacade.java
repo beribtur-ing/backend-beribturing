@@ -1,8 +1,8 @@
-package ing.beribtur.facade.auth.rest;
+package ing.beribtur.facade.api.auth.rest;
 
 import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.auth.rdo.AccountSignInTokenRdo;
-import ing.beribtur.facade.auth.query.AccountSignInQuery;
+import ing.beribtur.facade.api.auth.query.AccountSignInQuery;
 
 public interface AuthSeekFacade {
     //

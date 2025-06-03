@@ -74,4 +74,9 @@ public class ProductCategoryLogic {
         //
         return productCategoryStore.exists(productCategoryId);
     }
+
+    public List<ProductCategory> findProductCategoriesByParentId(String parentId) {
+        //
+        return productCategoryStore.retrieveByParentId(parentId);
+    }
 }
