@@ -32,6 +32,9 @@ public class ItemConditionCheckJpo extends DomainEntityJpo {
     @Column(nullable = false)
     private String checkType;
 
+    @Column(nullable = false)
+    private long photoSequence;
+
     public ItemConditionCheckJpo(ItemConditionCheck itemConditionCheck) {
         //
         super(itemConditionCheck);

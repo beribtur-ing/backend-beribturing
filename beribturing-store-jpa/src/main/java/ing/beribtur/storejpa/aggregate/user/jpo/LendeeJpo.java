@@ -31,6 +31,9 @@ public class LendeeJpo extends DomainEntityJpo {
     @Column(nullable = false)
     private boolean active;
 
+    @Column(nullable = false)
+    private long reservationSequence;
+
     // Flattened Profile fields
     private String gender;      // Enum name (e.g., Male, Female)
     private String email;
