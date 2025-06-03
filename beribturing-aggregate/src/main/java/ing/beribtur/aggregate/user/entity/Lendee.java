@@ -10,11 +10,13 @@ import ing.beribtur.aggregate.rental.entity.RentalRecord;
 import ing.beribtur.aggregate.rental.entity.Reservation;
 import ing.beribtur.aggregate.report.entity.Report;
 import ing.beribtur.aggregate.review.entity.Review;
+import ing.beribtur.aggregate.user.entity.sdo.LendeeCdo;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class Lendee extends DomainEntity implements Discountable {
     private String phoneNumber;
     private boolean active;
     private Profile profile;
+    private long reservationSequence;
 
     // Domain relationships
     private transient List<Review> reviews;
@@ -35,6 +38,14 @@ public class Lendee extends DomainEntity implements Discountable {
     private transient List<RentalRecord> rentalRecords;
     private transient List<Reservation> reservations; // Products listed by the Lendee
     private transient List<RentalDeposit> deposits;
+
+    public Lendee(LendeeCdo lendeeCdo) {
+        //
+        super(lendeeCdo.genId());
+        BeanUtils.copyProperties(lendeeCdo, this);
+        this.reservationSequence = 1L;
+    }
+
 
     public static String genId(String accountId) {
         return accountId;
