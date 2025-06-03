@@ -8,6 +8,7 @@ import ing.beribtur.aggregate.item.entity.ProductVariant;
 import ing.beribtur.aggregate.payment.entity.Discount;
 import ing.beribtur.aggregate.payment.entity.RentalDeposit;
 import ing.beribtur.aggregate.payment.entity.vo.Currency;
+import ing.beribtur.aggregate.rental.entity.sdo.RentalRecordCdo;
 import ing.beribtur.aggregate.rental.entity.vo.Period;
 import ing.beribtur.aggregate.rental.entity.vo.RentalStatus;
 import ing.beribtur.aggregate.user.entity.Lendee;
@@ -15,9 +16,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Setter
 @Getter
@@ -46,10 +47,15 @@ public class RentalRecord extends DomainEntity {
     private transient ItemConditionCheck beforeRented;
     private transient ItemConditionCheck afterReturned;
 
+    public RentalRecord(RentalRecordCdo rentalRecordCdo) {
+        //
+        super(rentalRecordCdo.genId());
+        BeanUtils.copyProperties(rentalRecordCdo, this);
+    }
 
     public static String genId(String reservationId) {
         //
-        return reservationId == null ? UUID.randomUUID().toString() : UUID.nameUUIDFromBytes(reservationId.getBytes()).toString();
+        return reservationId;
     }
 
     @Override
@@ -61,12 +67,8 @@ public class RentalRecord extends DomainEntity {
                 case "rentedAt" -> this.rentedAt = LocalDateTime.parse(value);
                 case "returnedAt" -> this.returnedAt = LocalDateTime.parse(value);
                 case "cancelledAt" -> this.cancelledAt = LocalDateTime.parse(value);
-                case "productVariantId" -> this.productVariantId = value;
                 case "status" -> this.status = RentalStatus.valueOf(value);
-                case "lendeeId" -> this.lendeeId = value;
                 case "fee" -> this.fee = JsonUtil.fromJson(value, Currency.class);
-                case "discountId" -> this.discountId = value;
-                case "depositId" -> this.depositId = value;
                 default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
             }
         }
