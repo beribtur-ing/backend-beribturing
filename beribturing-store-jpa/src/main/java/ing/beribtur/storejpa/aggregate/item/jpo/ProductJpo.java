@@ -28,6 +28,8 @@ public class ProductJpo extends DomainEntityJpo {
     private String description;
     
     private String categoryId;
+    
+    private String variantSequence;
 
     public ProductJpo(Product product) {
         //

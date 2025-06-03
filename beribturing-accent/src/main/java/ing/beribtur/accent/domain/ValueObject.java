@@ -1,4 +1,6 @@
 package ing.beribtur.accent.domain;
 
-public interface ValueObject {
+import ing.beribtur.accent.util.JsonSerializable;
+
+public interface ValueObject extends JsonSerializable {
 }
