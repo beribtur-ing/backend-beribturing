@@ -59,7 +59,7 @@ public class ProductVariantJpo extends DomainEntityJpo {
     private LocalDateTime availableUntil;
     private String availableDays; // Comma-separated list of DayOfWeek values
 
-    private boolean isActive;
+    private boolean active;
     private String notes;
     private String imageSequence;
 

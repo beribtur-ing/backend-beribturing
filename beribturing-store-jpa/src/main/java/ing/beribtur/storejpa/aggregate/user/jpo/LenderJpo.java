@@ -4,7 +4,7 @@ import ing.beribtur.accent.domain.DomainEntityJpo;
 import ing.beribtur.aggregate.user.entity.Lender;
 import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
-import ing.beribtur.aggregate.user.entity.vo.LanderType;
+import ing.beribtur.aggregate.user.entity.vo.LenderType;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,13 +30,10 @@ public class LenderJpo extends DomainEntityJpo {
     private String phoneNumber;
 
     @Column(nullable = false)
-    private String passwordHash;
+    private String lenderType; // store enum name as String
 
     @Column(nullable = false)
-    private String landerType; // store enum name as String
-
-    @Column(nullable = false)
-    private boolean isActive;
+    private boolean active;
 
     // Flattened Profile fields
     private String gender;    // Gender enum name
@@ -52,8 +49,8 @@ public class LenderJpo extends DomainEntityJpo {
         super(lender);
         BeanUtils.copyProperties(lender, this);
 
-        if (lender.getLanderType() != null) {
-            this.landerType = lender.getLanderType().name();
+        if (lender.getLenderType() != null) {
+            this.lenderType = lender.getLenderType().name();
         }
 
         if (lender.getProfile() != null) {
@@ -77,8 +74,8 @@ public class LenderJpo extends DomainEntityJpo {
         Lender lender = new Lender();
         BeanUtils.copyProperties(this, lender);
 
-        if (this.landerType != null) {
-            lender.setLanderType(LanderType.valueOf(this.landerType));
+        if (this.lenderType != null) {
+            lender.setLenderType(LenderType.valueOf(this.lenderType));
         }
 
         Profile profile = new Profile();

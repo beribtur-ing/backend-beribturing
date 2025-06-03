@@ -15,5 +15,5 @@ public class ChatMessageCdo extends CreationDataObject {
     private String receiverId;
     private String content;
     private LocalDateTime timestamp;
-    private boolean isRead;
+    private boolean read;
 }

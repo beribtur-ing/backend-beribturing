@@ -36,7 +36,7 @@ public class ProductVariant extends DomainEntity implements Discountable {
     private String material;
     private String manual;
     private ProductAvailability availability;
-    private boolean isActive;
+    private boolean active;
     private long imageSequence;
 
     private String notes;                           // Optional extra info
@@ -97,8 +97,8 @@ public class ProductVariant extends DomainEntity implements Discountable {
                 case "availability":
                     this.availability = JsonUtil.fromJson(value, ProductAvailability.class);
                     break;
-                case "isActive":
-                    this.isActive = Boolean.parseBoolean(value);
+                case "active":
+                    this.active = Boolean.parseBoolean(value);
                     break;
                 case "imageSequence":
                     this.imageSequence = Long.parseLong(value);

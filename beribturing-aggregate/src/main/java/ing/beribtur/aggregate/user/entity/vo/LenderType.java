@@ -1,6 +1,6 @@
 package ing.beribtur.aggregate.user.entity.vo;
 
-public enum LanderType {
+public enum LenderType {
     //
     Individual, // Individual user
     Business,   // Business user
