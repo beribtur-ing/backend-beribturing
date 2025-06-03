@@ -3,6 +3,10 @@ package ing.beribtur.aggregate.user.logic;
 import ing.beribtur.aggregate.user.entity.Lender;
 import ing.beribtur.aggregate.user.store.LenderStore;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,4 +39,8 @@ public class LenderLogic {
         return lenderStore.retrieveAll(ids);
     }
 
+    public Page<Lender> findDisabledLendersAdmin(int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, sort != null ? Sort.by(sort) : Sort.unsorted());
+        return lenderStore.findDisabledLenders(pageable);
+    }
 }

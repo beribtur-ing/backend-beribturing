@@ -28,4 +28,8 @@ public class AccountLogic {
     public void update(Account account) {
         accountStore.update(account);
     }
+
+    public Account findByPhoneNumberAndRole(String phoneNumber, String role) {
+        return accountStore.findByPhoneNumberAndRole(phoneNumber, role);
+    }
 }

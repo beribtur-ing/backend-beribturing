@@ -18,11 +18,11 @@ public class AuthSeekResource implements AuthSeekFacade{
     private final AuthFlow authFlow;
 
     @Override
-    @PostMapping("/sign-in/query")
+    @PostMapping("/lender/sign-in/query")
     public QueryResponse<AccountSignInTokenRdo> accountSignIn(@RequestBody AccountSignInQuery query) {
         //
         query.validate();
-        AccountSignInTokenRdo rdo = this.authFlow.accountSignIn(query.getPhoneNumber(), query.getPassword());
+        AccountSignInTokenRdo rdo = this.authFlow.lenderSignIn(query.getPhoneNumber(), query.getPassword());
         return new QueryResponse<>(rdo);
     }
 }

@@ -6,6 +6,9 @@ import ing.beribtur.aggregate.user.store.LenderStore;
 import ing.beribtur.storejpa.aggregate.user.jpo.LenderJpo;
 import ing.beribtur.storejpa.aggregate.user.repository.LenderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -63,12 +66,22 @@ public class LenderJpaStore implements LenderStore {
         return LenderJpo.toDomains(lenderRepository.findByEmail(email));
     }
 
-    public List<Lender> findByIsActive(boolean isActive) {
-        return LenderJpo.toDomains(lenderRepository.findByIsActive(isActive));
-    }
+//    public List<Lender> findByIsActive(boolean isActive) {
+//        return LenderJpo.toDomains(lenderRepository.findByIsActive(isActive));
+//    }
 
     public List<Lender> findByLanderType(LanderType landerType) {
         return LenderJpo.toDomains(lenderRepository.findByLanderType(landerType.name()));
+    }
+
+    @Override
+    public Page<Lender> findDisabledLenders(Pageable pageable) {
+        Page<LenderJpo> lenderJpos = lenderRepository.findByIsActive(false, pageable);
+        return new PageImpl<>(
+                LenderJpo.toDomains(lenderJpos.getContent()),
+                pageable,
+                lenderJpos.getTotalElements()
+        );
     }
 }
 

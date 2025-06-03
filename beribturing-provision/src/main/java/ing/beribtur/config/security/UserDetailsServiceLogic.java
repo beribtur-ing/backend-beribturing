@@ -21,7 +21,7 @@ public class UserDetailsServiceLogic implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account user = userAccountStore.findByPhoneNumber(username);
-        if (user == null) {
+        if (user == null || !user.isEnabled()) {
             throw new UsernameNotFoundException(username);
         }
         SpaceContext.get().setUsername(username);

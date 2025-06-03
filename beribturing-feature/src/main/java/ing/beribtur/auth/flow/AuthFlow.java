@@ -43,17 +43,18 @@ public class AuthFlow {
     private final PasswordEncoder passwordEncoder;
     private final LenderLogic lenderLogic;
 
-    public AccountSignInTokenRdo accountSignIn(String phoneNumber, String password) {
+    public AccountSignInTokenRdo lenderSignIn(String phoneNumber, String password) {
         //
-        Account account = accountLogic.findByPhoneNumber(phoneNumber);
+        String roleName = Role.ROLE_OWNER.name();
+        accountLogic.findByPhoneNumberAndRole(phoneNumber, roleName);
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(phoneNumber, password)
         );
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String accessToken = jwtUtil.generateAccessToken(userDetails);
-        String refreshToken = jwtUtil.generateRefreshToken(userDetails);
+        String accessToken = jwtUtil.generateAccessToken(userDetails, roleName);
+        String refreshToken = jwtUtil.generateRefreshToken(userDetails, roleName);
         return AccountSignInTokenRdo.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
@@ -62,6 +63,7 @@ public class AuthFlow {
 
     public Boolean sendSignUpOTP(String phoneNumber) {
         //
+         //FIXME check by role
         if (accountLogic.existsPhone(phoneNumber)) {
             throw new IllegalArgumentException("This number is already verified.");
         }
@@ -159,7 +161,7 @@ public class AuthFlow {
                         .password(encoded)
                         .email(profile.getEmail())
                         .enabled(false)
-                        .role(Role.ROLE_RENTER)
+                        .role(Role.ROLE_OWNER)
                         .build()
         ));
 
