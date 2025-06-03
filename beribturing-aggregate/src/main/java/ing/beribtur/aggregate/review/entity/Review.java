@@ -4,11 +4,13 @@ import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
+import ing.beribtur.aggregate.review.entity.sdo.ReviewCdo;
 import ing.beribtur.aggregate.user.entity.Lendee;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 
 @Setter
@@ -25,6 +27,12 @@ public class Review extends DomainEntity {
     // Domain relationships
     private transient Lendee reviewer;
     private transient RentalRecord record;
+
+    public Review(ReviewCdo reviewCdo) {
+        //
+        super(reviewCdo.genId());
+        BeanUtils.copyProperties(reviewCdo, this);
+    }
 
     @Override
     protected void modifyAttributes(NameValueList nameValues) {
