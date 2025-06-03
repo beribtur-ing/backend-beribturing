@@ -1,4 +1,4 @@
-package ing.beribtur.facade.feature.admin.command;
+package ing.beribtur.facade.api.feature.adm.lender.query;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.util.Assert;
 @Getter
 @Setter
 @NoArgsConstructor
-public class FindDisabledLendersAdminQuery {
+public class FindDisabledLendersAdmQuery {
     private int page = 0;
     private int size = 10;
     private String sort = "registeredOn,desc";
