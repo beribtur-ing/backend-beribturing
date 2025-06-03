@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<NotificationJpo, String> {
     List<NotificationJpo> findByRecipientId(String recipientId);
-    List<NotificationJpo> findByIsRead(boolean isRead);
+    List<NotificationJpo> findByRead(boolean isRead);
     List<NotificationJpo> findByType(String type);
-    List<NotificationJpo> findByRecipientIdAndIsRead(String recipientId, boolean isRead);
+    List<NotificationJpo> findByRecipientIdAndRead(String recipientId, boolean isRead);
 }

@@ -6,6 +6,7 @@ import ing.beribtur.aggregate.account.entity.vo.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,10 +22,15 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "ACCOUNT")
+@Table(
+        name = "ACCOUNT",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"phoneNumber", "role"})
+        }
+)
 public class AccountJpo extends DomainEntityJpo implements UserDetails {
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String phoneNumber;
 
     @Column(nullable = false)

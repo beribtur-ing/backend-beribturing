@@ -14,4 +14,6 @@ public interface AccountStore {
     void update(Account account);
     void delete(String id);
     Account findByPhoneNumber(String phoneNumber);
+    boolean existsByPhoneNumber(String phoneNumber);
+    Account findByPhoneNumberAndRole(String phoneNumber, String role);
 }
