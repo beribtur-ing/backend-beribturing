@@ -28,7 +28,7 @@ public class SmsService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public void sendSms(String phoneNumber, String smsContent) {
+    private void sendSms(String phoneNumber, String smsContent) {
         //
         HttpHeaders headers = new HttpHeaders();
 
@@ -53,12 +53,12 @@ public class SmsService {
     public void sendSignUpOTP(String phoneNumber, Number otp) {
         //
         String smsContent = String.format("%s %s", signUpTemplate, otp);
-        this.sendSms(phoneNumber, smsContent);
+//        this.sendSms(phoneNumber, smsContent);
     }
 
     public void sendChangePasswordOTP(String phoneNumber, Number otp) {
         //
         String smsContent = String.format("%s %s", changePasswordTemplate, otp);
-        this.sendSms(phoneNumber, smsContent);
+//        this.sendSms(phoneNumber, smsContent);
     }
 }

@@ -42,12 +42,23 @@ public class AccountJpaStore implements AccountStore {
 
     @Override
     public void update(Account account) {
+        AccountJpo existingJpo = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Account not found: " + account.getId()));
 
+        AccountJpo updatedJpo = new AccountJpo(account);
+        updatedJpo.setEntityVersion(existingJpo.getEntityVersion());
+        updatedJpo.setRegisteredBy(existingJpo.getRegisteredBy());
+        updatedJpo.setRegisteredOn(existingJpo.getRegisteredOn());
+
+        accountRepository.save(updatedJpo);
     }
 
     @Override
     public void delete(String id) {
-
+        if (!accountRepository.existsById(id)) {
+            throw new IllegalArgumentException("Account not found: " + id);
+        }
+        accountRepository.deleteById(id);
     }
 
     @Override
@@ -55,5 +66,10 @@ public class AccountJpaStore implements AccountStore {
         AccountJpo accountJpo = accountRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found with phone number: " + phoneNumber));
         return accountJpo.toDomain();
+    }
+
+    @Override
+    public boolean existsByPhoneNumber(String phoneNumber) {
+        return accountRepository.existsByPhoneNumber(phoneNumber);
     }
 }
