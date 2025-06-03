@@ -11,6 +11,7 @@ COPY beribturing-boot/ ./beribturing-boot/
 COPY beribturing-facade/ ./beribturing-facade/
 COPY beribturing-feature/ ./beribturing-feature/
 COPY beribturing-provision/ ./beribturing-provision/
+COPY beribturing-proxy/ ./beribturing-proxy/
 COPY beribturing-store-jpa/ ./beribturing-store-jpa/
 COPY gradle/wrapper/ ./gradle/wrapper/
 
