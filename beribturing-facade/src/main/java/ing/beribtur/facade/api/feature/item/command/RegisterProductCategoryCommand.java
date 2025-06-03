@@ -19,10 +19,6 @@ public class RegisterProductCategoryCommand extends CommandRequest<String> {
     public void validate() {
         //
         Assert.notNull(productCategoryCdo, "'categoryCdo' is required.");
-        Assert.notNull(productCategoryCdo.getParentId(), "'parentId' is required.");
-        Assert.notNull(productCategoryCdo.getName(), "'name' is required.");
-        Assert.notNull(productCategoryCdo.getDescription(), "'description' is required.");
-        Assert.notNull(productCategoryCdo.getIconUrl(), "'iconUrl' is required.");
     }
 
 }
