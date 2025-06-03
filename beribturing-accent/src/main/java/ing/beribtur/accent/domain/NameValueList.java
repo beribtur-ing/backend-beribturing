@@ -1,17 +1,17 @@
 package ing.beribtur.accent.domain;
 
+import ing.beribtur.accent.util.JsonSerializable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
 @NoArgsConstructor
 @Getter
 @Setter
-public class NameValueList implements Serializable {
+public class NameValueList implements JsonSerializable {
     //
     private List<NameValue> nameValues;
 
@@ -50,7 +50,7 @@ public class NameValueList implements Serializable {
     public void remove(String name) {
         NameValue targetNameValue = null;
 
-        for(NameValue nameValue : this.nameValues) {
+        for (NameValue nameValue : this.nameValues) {
             if (nameValue.getName().equals(name)) {
                 targetNameValue = nameValue;
                 break;

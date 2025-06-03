@@ -45,7 +45,7 @@ public class ProductVariant extends DomainEntity implements Discountable {
     private transient Product product;
     private transient List<Reservation> reservations;
     private transient List<ProductImage> images;
-    
+
     public ProductVariant(ProductVariantCdo productVariantCdo) {
         //
         super(productVariantCdo.genId());
@@ -57,34 +57,13 @@ public class ProductVariant extends DomainEntity implements Discountable {
         //
         return String.format("%s-%d", productId, sequence);
     }
-    
-    public static ProductVariant fromJson(String json) {
-        //
-        return JsonUtil.fromJson(json, ProductVariant.class);
-    }
-
-    public static ProductVariant sample() {
-        //
-        return new ProductVariant(ProductVariantCdo.sample());
-    }
-
-    public static void main(String[] args) {
-        //
-        System.out.println(sample().toPrettyJson());
-    }
 
     @Override
-    public String toString() {
+    protected void modifyAttributes(NameValueList vanameValueList) {
         //
-        return toJson();
-    }
-
-    @Override
-    protected void modifyAttributes(NameValueList var1) {
-        //
-        for (NameValue nameValue : var1.list()) {
+        for (NameValue nameValue : vanameValueList.list()) {
             String value = nameValue.getValue();
-            switch(nameValue.getName()) {
+            switch (nameValue.getName()) {
                 case "price":
                     this.price = JsonUtil.fromJson(value, Price.class);
                     break;
@@ -113,7 +92,7 @@ public class ProductVariant extends DomainEntity implements Discountable {
                     this.material = value;
                     break;
                 case "manual":
-                    this.manual = value;    
+                    this.manual = value;
                     break;
                 case "availability":
                     this.availability = JsonUtil.fromJson(value, ProductAvailability.class);
@@ -132,4 +111,4 @@ public class ProductVariant extends DomainEntity implements Discountable {
             }
         }
     }
-}   
+}

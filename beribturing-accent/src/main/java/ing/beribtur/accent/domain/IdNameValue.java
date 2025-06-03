@@ -1,17 +1,16 @@
 package ing.beribtur.accent.domain;
 
+import ing.beribtur.accent.util.JsonSerializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class IdNameValue implements Serializable {
+public class IdNameValue implements JsonSerializable {
     //
     private String id;
     private String name;

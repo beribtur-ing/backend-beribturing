@@ -30,43 +30,8 @@ public class ProductVariantCdo extends CreationDataObject {
     private boolean isActive;
     private long sequence;
 
-    public static ProductVariantCdo fromJson(String json) {
-        //
-        return JsonUtil.fromJson(json, ProductVariantCdo.class);
-    }
-
-    public static ProductVariantCdo sample() {
-        //
-        return ProductVariantCdo.builder()
-        .productId("UUID")
-        .price(Price.sample())
-        .size(Size.sample())
-        .color("My Sample Color")
-        .brand("My Sample Brand")
-        .model("My Sample Model")
-        .manufacturer("My Sample Manufacturer")
-        .madeIn("My Sample MadeIn")
-        .producedYear("My Sample ProducedYear")
-        .material("My Sample Material")
-        .manual("My Sample Manual")
-        .availability(ProductAvailability.sample())
-        .isActive(true)
-        .sequence(1L)
-        .build();
-    }
-
-    public static void main(String[] args) {
-        //
-        System.out.println(sample().toPrettyJson());
-    }
-
     public String genId() {
         //
         return ProductVariant.genId(productId, sequence);
-    }
-
-    public String toString() {
-        //
-        return toJson();
     }
 }

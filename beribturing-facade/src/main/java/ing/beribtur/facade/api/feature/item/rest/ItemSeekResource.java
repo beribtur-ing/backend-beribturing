@@ -5,7 +5,10 @@ import ing.beribtur.aggregate.item.entity.Product;
 import ing.beribtur.aggregate.item.entity.ProductCategory;
 import ing.beribtur.aggregate.item.entity.ProductImage;
 import ing.beribtur.aggregate.item.entity.ProductVariant;
-import ing.beribtur.facade.api.feature.item.query.*;
+import ing.beribtur.facade.api.feature.item.query.FindProductCategoryQuery;
+import ing.beribtur.facade.api.feature.item.query.FindProductImageQuery;
+import ing.beribtur.facade.api.feature.item.query.FindProductQuery;
+import ing.beribtur.facade.api.feature.item.query.FindProductVariantQuery;
 import ing.beribtur.feature.item.seek.ItemSeek;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,25 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/feature/item")
 public class ItemSeekResource implements ItemSeekFacade {
     //
     private final ItemSeek itemSeek;
-
-    @Override
-    @PostMapping("/find-bulletin-board/query")
-    public QueryResponse<Board> findBulletinBoard(@RequestBody FindBulletinBoardQuery query) {
-        //
-        query.validate();
-        String boardId = query.getBoardId();
-        Board response = bulletinBoardSeek.findBulletinBoard(boardId);
-        query.setResponse(response);
-        return query.getResponse();
-    }
 
     @Override
     @PostMapping("/find-product-category/query")

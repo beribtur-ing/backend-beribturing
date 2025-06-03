@@ -1,9 +1,9 @@
 package ing.beribtur.aggregate.item.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
+import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.item.entity.sdo.ProductImageCdo;
-import ing.beribtur.accent.util.JsonUtil;
 import org.springframework.beans.BeanUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,33 +34,12 @@ public class ProductImage extends DomainEntity {
         return String.format("%s-%d", variantId, sequence);
     }
 
-    public static ProductImage fromJson(String json) {
-        //
-        return JsonUtil.fromJson(json, ProductImage.class);
-    }
-
-    public static ProductImage sample() {
-        //
-        return new ProductImage(ProductImageCdo.sample());
-    }
-
-    public static void main(String[] args) {
-        //
-        System.out.println(sample().toPrettyJson());
-    }
-
     @Override
-    public String toString() {
+    protected void modifyAttributes(NameValueList nameValueList) {
         //
-        return toJson();
-    }
-
-    @Override
-    protected void modifyAttributes(NameValueList var1) {
-        //
-        for (NameValue nameValue : var1.list()) {
+        for (NameValue nameValue : nameValueList.list()) {
             String value = nameValue.getValue();
-            switch(nameValue.getName()) {
+            switch (nameValue.getName()) {
                 case "url":
                     this.url = value;
                     break;

@@ -1,6 +1,7 @@
 package ing.beribtur.aggregate.item.entity.sdo;
 
 import ing.beribtur.accent.domain.CreationDataObject;
+import ing.beribtur.aggregate.item.entity.ProductImage;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,26 +16,8 @@ public class ProductImageCdo extends CreationDataObject {
     private int order;
     private long sequence;
 
-    public static ProductImageCdo fromJson(String json) {
+    public String genId() {
         //
-        return JsonUtil.fromJson(json, ProductImageCdo.class);
+        return ProductImage.genId(variantId, sequence);
     }
-
-    public static ProductImageCdo sample() {
-        //
-        return ProductImageCdo.builder()
-                .variantId("UUID")
-                .url("https://example.com/image.jpg")
-                .order(1)
-                .sequence(1L)
-                .build();
-    }
-
-    public static void main(String[] args) {
-        //
-        System.out.println(sample().toPrettyJson());
-    }
-    
-    
-
 }

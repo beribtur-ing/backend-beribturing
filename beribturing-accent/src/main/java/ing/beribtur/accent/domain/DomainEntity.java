@@ -1,6 +1,7 @@
 package ing.beribtur.accent.domain;
 
 import ing.beribtur.accent.context.SpaceContext;
+import ing.beribtur.accent.util.JsonSerializable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ import java.util.regex.Pattern;
 
 @Getter
 @Setter
-public abstract class DomainEntity implements Serializable {
+public abstract class DomainEntity implements JsonSerializable {
     //
     protected String id;
     protected long entityVersion;
