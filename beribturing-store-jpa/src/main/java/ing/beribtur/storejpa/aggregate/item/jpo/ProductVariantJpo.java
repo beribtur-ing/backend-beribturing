@@ -61,6 +61,7 @@ public class ProductVariantJpo extends DomainEntityJpo {
 
     private boolean isActive;
     private String notes;
+    private String imageSequence;
 
     public ProductVariantJpo(ProductVariant productVariant) {
         //

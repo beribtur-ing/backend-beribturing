@@ -1,6 +1,8 @@
 package ing.beribtur.aggregate.user.entity;
 
 
+import java.util.List;
+
 import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.item.entity.Product;
@@ -10,8 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Setter
 @Getter
@@ -25,6 +25,7 @@ public class Lender extends DomainEntity {
     private LanderType landerType;
     private boolean isActive;
     private Profile profile;
+    private long productSequence;
 
     // Domain relationships
     private transient List<Product> listedItems;

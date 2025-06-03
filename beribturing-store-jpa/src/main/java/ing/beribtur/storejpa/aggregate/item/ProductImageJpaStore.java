@@ -1,14 +1,18 @@
 package ing.beribtur.storejpa.aggregate.item;
 
+import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.item.entity.ProductImage;
 import ing.beribtur.aggregate.item.store.ProductImageStore;
 import ing.beribtur.storejpa.aggregate.item.jpo.ProductImageJpo;
 import ing.beribtur.storejpa.aggregate.item.repository.ProductImageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Repository
 @RequiredArgsConstructor
@@ -18,52 +22,73 @@ public class ProductImageJpaStore implements ProductImageStore {
 
     @Override
     public void create(ProductImage productImage) {
+        //
         ProductImageJpo productImageJpo = new ProductImageJpo(productImage);
-
         productImageRepository.save(productImageJpo);
-        productImage.setId(productImageJpo.getId());
+    }
+
+    @Override
+    public void createAll(List<ProductImage> productImages) {
+        //
+        productImageRepository.saveAll(productImages.stream().map(ProductImageJpo::new).collect(Collectors.toList()));
     }
 
     @Override
     public ProductImage retrieve(String id) {
-        ProductImageJpo productImageJpo = productImageRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ProductImage not found: " + id));
-        return productImageJpo.toDomain();
+        //
+        return productImageRepository.findById(id)
+                .map(ProductImageJpo::toDomain)
+                .orElse(null);
     }
 
     @Override
-    public List<ProductImage> retrieveAll(List<String> ids) {
-        List<ProductImageJpo> productImageJpos = productImageRepository.findAllById(ids);
-        return productImageJpos.stream()
-                .map(ProductImageJpo::toDomain)
-                .collect(Collectors.toList());
+    public List<ProductImage> retrieveAll(List<String> productImageIds) {
+        //
+        Iterable<ProductImageJpo> allById = productImageRepository.findAllById(productImageIds);
+        return ProductImageJpo.toDomains(StreamSupport.stream(allById.spliterator(), false).collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<ProductImage> retrieveList(Offset offset) {
+        //
+        Pageable pageable = PageRequest.of(offset.page(), offset.limit());
+
+        return productImageRepository.findAll(pageable).map(ProductImageJpo::toDomain).toList();
     }
 
     @Override
     public void update(ProductImage productImage) {
-        ProductImageJpo productImageJpo = productImageRepository.findById(productImage.getId())
-                .orElseThrow(() -> new IllegalArgumentException("ProductImage not found: " + productImage.getId()));
-        
-        // Update the JPO with the domain entity's values
-        ProductImageJpo updatedJpo = new ProductImageJpo(productImage);
-        updatedJpo.setEntityVersion(productImageJpo.getEntityVersion());
-        updatedJpo.setRegisteredBy(productImageJpo.getRegisteredBy());
-        updatedJpo.setRegisteredOn(productImageJpo.getRegisteredOn());
-        
-        productImageRepository.save(updatedJpo);
+        //
+        productImageRepository.save(new ProductImageJpo(productImage));
+    }
+
+    @Override
+    public void delete(ProductImage productImage) {
+        //
+        productImageRepository.delete(new ProductImageJpo(productImage));
     }
 
     @Override
     public void delete(String id) {
+        //
         productImageRepository.deleteById(id);
     }
-    
-    // Additional methods for specific queries
-    public List<ProductImage> findByVariantId(String variantId) {
-        return ProductImageJpo.toDomains(productImageRepository.findByVariantId(variantId));
+
+    @Override
+    public boolean exists(String id) {
+        //
+        return productImageRepository.existsById(id);
     }
-    
-    public List<ProductImage> findByVariantIdOrderByOrderAsc(String variantId) {
-        return ProductImageJpo.toDomains(productImageRepository.findByVariantIdOrderByOrderAsc(variantId));
+
+    @Override
+    public List<ProductImage> retrieveByVariantId(String variantId) {
+        //
+        return productImageRepository.findByVariantId(variantId).stream().map(ProductImageJpo::toDomain).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductImage> retrieveByVariantIdOrderByOrderAsc(String variantId) {
+        //
+        return productImageRepository.findByVariantIdOrderByOrderAsc(variantId).stream().map(ProductImageJpo::toDomain).collect(Collectors.toList());
     }
 }

@@ -24,6 +24,13 @@ public class NameValueList implements Serializable {
         return new NameValueList(nameValues);
     }
 
+    public static NameValueList newInstance() {
+        //
+        NameValueList nameValueList = new NameValueList();
+        nameValueList.nameValues = new java.util.ArrayList<>();
+        return nameValueList;
+    }
+
     public boolean containsName(String name) {
         return this.nameValues.stream().anyMatch((nv) -> nv.getName().equals(name));
     }
@@ -53,5 +60,16 @@ public class NameValueList implements Serializable {
         if (targetNameValue != null) {
             this.nameValues.remove(targetNameValue);
         }
+    }
+
+    public void add(NameValue nameValue) {
+        //
+        if (nameValue == null || nameValue.getName() == null) {
+            throw new IllegalArgumentException("NameValue or its name cannot be null.");
+        }
+        if (this.containsName(nameValue.getName())) {
+            this.remove(nameValue.getName());
+        }
+        this.nameValues.add(nameValue);
     }
 }
