@@ -63,7 +63,7 @@ public class LendeeJpaStore implements LendeeStore {
     }
 
     public List<Lendee> findByIsActive(boolean isActive) {
-        return LendeeJpo.toDomains(lendeeRepository.findByIsActive(isActive));
+        return LendeeJpo.toDomains(lendeeRepository.findByActive(isActive));
     }
 }
 

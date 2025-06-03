@@ -6,12 +6,14 @@ import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.accent.util.JsonUtil;
 import ing.beribtur.aggregate.item.entity.Product;
+import ing.beribtur.aggregate.user.entity.sdo.LenderCdo;
 import ing.beribtur.aggregate.user.entity.vo.LenderType;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
@@ -30,6 +32,13 @@ public class Lender extends DomainEntity {
 
     // Domain relationships
     private transient List<Product> listedItems;
+
+    public Lender(LenderCdo lenderCdo) {
+        //
+        super(lenderCdo.genId());
+        BeanUtils.copyProperties(lenderCdo, this);
+        this.productSequence = 1L;
+    }
 
     public static String genId(String accountId) {
         return accountId;

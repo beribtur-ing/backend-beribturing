@@ -15,8 +15,12 @@ public class AccountCdo extends CreationDataObject {
     private String password;
     private String email;
     private Role role;
-    private boolean enabled;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
+    @Builder.Default
+    private boolean enabled=true;
+    @Builder.Default
+    private boolean accountNonExpired=true;
+    @Builder.Default
+    private boolean accountNonLocked=true;
+    @Builder.Default
+    private boolean credentialsNonExpired=true;
 }

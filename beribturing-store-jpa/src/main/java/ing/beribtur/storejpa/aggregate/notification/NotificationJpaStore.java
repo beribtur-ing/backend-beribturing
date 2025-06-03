@@ -65,7 +65,7 @@ public class NotificationJpaStore implements NotificationStore {
     }
     
     public List<Notification> findByIsRead(boolean isRead) {
-        return NotificationJpo.toDomains(notificationRepository.findByIsRead(isRead));
+        return NotificationJpo.toDomains(notificationRepository.findByRead(isRead));
     }
     
     public List<Notification> findByType(NotificationType type) {
@@ -73,6 +73,6 @@ public class NotificationJpaStore implements NotificationStore {
     }
     
     public List<Notification> findByRecipientIdAndIsRead(String recipientId, boolean isRead) {
-        return NotificationJpo.toDomains(notificationRepository.findByRecipientIdAndIsRead(recipientId, isRead));
+        return NotificationJpo.toDomains(notificationRepository.findByRecipientIdAndRead(recipientId, isRead));
     }
 }

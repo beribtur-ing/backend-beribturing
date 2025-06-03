@@ -16,4 +16,20 @@ public class AccountLogic {
     public Account findByPhoneNumber(String phoneNumber) {
         return accountStore.findByPhoneNumber(phoneNumber);
     }
+
+    public boolean existsPhone(String phoneNumber) {
+        return accountStore.existsByPhoneNumber(phoneNumber);
+    }
+
+    public void create(Account account) {
+        accountStore.create(account);
+    }
+
+    public void update(Account account) {
+        accountStore.update(account);
+    }
+
+    public Account findByPhoneNumberAndRole(String phoneNumber, String role) {
+        return accountStore.findByPhoneNumberAndRole(phoneNumber, role);
+    }
 }
