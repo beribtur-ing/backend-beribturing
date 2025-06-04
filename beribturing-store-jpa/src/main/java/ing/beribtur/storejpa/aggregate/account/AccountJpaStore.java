@@ -77,6 +77,6 @@ public class AccountJpaStore implements AccountStore {
     public Account findByPhoneNumberAndRole(String phoneNumber, String role) {
         return accountRepository.findByPhoneNumberAndRole(phoneNumber, role)
                 .map(AccountJpo::toDomain)
-                .orElseThrow(() -> new IllegalArgumentException("Account not found with phone number: " + phoneNumber + " and role: " + role));
+                .orElseThrow(() -> new IllegalArgumentException("Account not found with phone number: " + phoneNumber));
     }
 }
