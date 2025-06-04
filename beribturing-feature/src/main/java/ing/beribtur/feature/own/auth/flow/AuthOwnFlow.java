@@ -1,70 +1,40 @@
-package ing.beribtur.auth.flow;
+package ing.beribtur.feature.own.auth.flow;
 
 import ing.beribtur.aggregate.account.entity.Account;
 import ing.beribtur.aggregate.account.entity.sdo.AccountCdo;
 import ing.beribtur.aggregate.account.entity.vo.Role;
 import ing.beribtur.aggregate.account.logic.AccountLogic;
-import ing.beribtur.aggregate.user.entity.Lendee;
 import ing.beribtur.aggregate.user.entity.Lender;
-import ing.beribtur.aggregate.user.entity.sdo.LendeeCdo;
 import ing.beribtur.aggregate.user.entity.sdo.LenderCdo;
 import ing.beribtur.aggregate.user.entity.vo.LenderType;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
-import ing.beribtur.aggregate.user.logic.LendeeLogic;
 import ing.beribtur.aggregate.user.logic.LenderLogic;
-import ing.beribtur.auth.rdo.AccountSignInTokenRdo;
-import ing.beribtur.config.security.jwt.JwtUtils;
 import ing.beribtur.feature.shared.util.OTPUtil;
 import ing.beribtur.proxy.redis.RedisService;
 import ing.beribtur.proxy.sms.SmsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthFlow {
+public class AuthOwnFlow {
     @Value("${otp.duration.reset-password}")
     private String resetPasswordDuration;
     @Value("${otp.duration.sign-up}")
     private String signUpDuration;
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtils jwtUtil;
     private final AccountLogic accountLogic;
     private final RedisService redisService;
     private final SmsService smsService;
-    private final LendeeLogic lendeeLogic;
     private final PasswordEncoder passwordEncoder;
     private final LenderLogic lenderLogic;
 
-    public AccountSignInTokenRdo lenderSignIn(String phoneNumber, String password) {
-        //
-        String roleName = Role.ROLE_OWNER.name();
-        accountLogic.findByPhoneNumberAndRole(phoneNumber, roleName);
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(phoneNumber, password)
-        );
-
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String accessToken = jwtUtil.generateAccessToken(userDetails, roleName);
-        String refreshToken = jwtUtil.generateRefreshToken(userDetails, roleName);
-        return AccountSignInTokenRdo.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-    }
-
     public Boolean sendSignUpOTP(String phoneNumber) {
         //
-         //FIXME check by role
-        if (accountLogic.existsPhone(phoneNumber)) {
+        String roleName = Role.ROLE_OWNER.name();
+        if (accountLogic.existsPhoneAndRole(phoneNumber, roleName)) {
             throw new IllegalArgumentException("This number is already verified.");
         }
 
@@ -80,7 +50,8 @@ public class AuthFlow {
 
     public Boolean sendResetPasswordOTP(String phoneNumber) {
         //
-        if (!accountLogic.existsPhone(phoneNumber)) {
+        String roleName = Role.ROLE_OWNER.name();
+        if (!accountLogic.existsPhoneAndRole(phoneNumber, roleName)) {
             throw new IllegalArgumentException("This number is not verified.");
         }
 
@@ -94,47 +65,6 @@ public class AuthFlow {
         return true;
     }
 
-    public Boolean verifyOTPAndSignUpLendee(
-            String phoneNumber,
-            String otp,
-            String password,
-            String name,
-            Profile profile
-    ) {
-        //
-        String savedOtp = redisService.get(phoneNumber);
-        if (savedOtp == null) {
-            throw new IllegalArgumentException("OTP has not been sent or has expired.");
-        }
-        if (!"123456".equals(otp) || !savedOtp.equals(otp)) {
-            throw new IllegalArgumentException("Invalid OTP.");
-        }
-
-        //create account
-        String encoded = passwordEncoder.encode(password);
-        accountLogic.create(new Account(
-                AccountCdo.builder()
-                        .phoneNumber(phoneNumber)
-                        .password(encoded)
-                        .email(profile.getEmail())
-                        .role(Role.ROLE_RENTER)
-                        .build()
-        ));
-
-        //create lendee
-        lendeeLogic.create(new Lendee(
-                LendeeCdo.builder()
-                        .name(name)
-                        .phoneNumber(phoneNumber)
-                        .active(true)
-                        .profile(profile)
-                        .accountId(accountLogic.findByPhoneNumber(phoneNumber).getId())
-                        .build()
-        ));
-        redisService.delete(phoneNumber);
-        return true;
-    }
-
     public Boolean verifyOTPAndSignUpLender(
             String phoneNumber,
             String otp,
@@ -144,6 +74,7 @@ public class AuthFlow {
             LenderType lenderType
     ) {
         //
+        Role roleName = Role.ROLE_OWNER;
         String savedOtp = redisService.get(phoneNumber);
         if (savedOtp == null) {
             throw new IllegalArgumentException("OTP has not been sent or has expired.");
@@ -160,7 +91,7 @@ public class AuthFlow {
                         .password(encoded)
                         .email(profile.getEmail())
                         .enabled(false)
-                        .role(Role.ROLE_OWNER)
+                        .role(roleName)
                         .build()
         ));
 
@@ -172,7 +103,7 @@ public class AuthFlow {
                         .lenderType(lenderType)
                         .active(false)
                         .profile(profile)
-                        .accountId(accountLogic.findByPhoneNumber(phoneNumber).getId())
+                        .accountId(accountLogic.findByPhoneNumberAndRole(phoneNumber, roleName.name()).getId())
                         .build()
         ));
         redisService.delete(phoneNumber);
@@ -181,14 +112,14 @@ public class AuthFlow {
 
     public Boolean resetPassword(String phoneNumber, String newPassword, String otp) {
         //
+        String roleName = Role.ROLE_OWNER.name();
         if (redisService.get(phoneNumber) == null) {
             throw new IllegalArgumentException("OTP Session cannot be found.");
         }
         String otpInRedis = redisService.get(phoneNumber);
 
-        //FIXME
         if ("123456".equals(otp) || otp.equals(otpInRedis)) {
-            Account account = accountLogic.findByPhoneNumber(phoneNumber);
+            Account account = accountLogic.findByPhoneNumberAndRole(phoneNumber, roleName);
             account.setPassword(passwordEncoder.encode(newPassword));
             accountLogic.update(account);
             return true;

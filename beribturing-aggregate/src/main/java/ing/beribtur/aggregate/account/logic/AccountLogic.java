@@ -17,8 +17,8 @@ public class AccountLogic {
         return accountStore.findByPhoneNumber(phoneNumber);
     }
 
-    public boolean existsPhone(String phoneNumber) {
-        return accountStore.existsByPhoneNumber(phoneNumber);
+    public boolean existsPhoneAndRole(String phoneNumber, String role) {
+        return accountStore.existsByPhoneNumberAndRole(phoneNumber, role);
     }
 
     public void create(Account account) {

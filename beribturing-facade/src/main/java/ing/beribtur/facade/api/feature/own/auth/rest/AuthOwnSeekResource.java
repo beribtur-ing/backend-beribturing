@@ -1,9 +1,9 @@
 package ing.beribtur.facade.api.feature.own.auth.rest;
 
 import ing.beribtur.accent.message.QueryResponse;
-import ing.beribtur.auth.rdo.AccountSignInTokenRdo;
 import ing.beribtur.facade.api.feature.own.auth.query.AccountSignInOwnQuery;
 import ing.beribtur.feature.own.auth.seek.AuthOwnSeek;
+import ing.beribtur.feature.shared.rdo.AccountSignInTokenRdo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +17,7 @@ public class AuthOwnSeekResource implements AuthOwnSeekFacade {
     private final AuthOwnSeek authOwnSeek;
 
     @Override
+    @RequestMapping("/sign-in/query")
     public QueryResponse<AccountSignInTokenRdo> accountSignIn(@RequestBody AccountSignInOwnQuery query) {
         //
         query.validate();

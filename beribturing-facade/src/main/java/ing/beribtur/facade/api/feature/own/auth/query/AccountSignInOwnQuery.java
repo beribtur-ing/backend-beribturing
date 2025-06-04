@@ -15,7 +15,7 @@ public class AccountSignInOwnQuery {
 
     public void validate() {
         //
-        Assert.hasText(phoneNumber, "phoneNumber must not be null");
-        Assert.hasText(password, "password must not be null");
+        Assert.hasText(phoneNumber, "phoneNumber must not be empty");
+        Assert.hasText(password, "password must not be empty");
     }
 }
