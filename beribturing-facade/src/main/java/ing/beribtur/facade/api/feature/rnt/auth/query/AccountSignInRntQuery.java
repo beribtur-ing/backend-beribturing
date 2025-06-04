@@ -1,4 +1,4 @@
-package ing.beribtur.facade.api.feature.own.auth.query;
+package ing.beribtur.facade.api.feature.rnt.auth.query;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class AccountSignInOwnQuery {
+public class AccountSignInRntQuery {
     //
     private String phoneNumber;
     private String password;

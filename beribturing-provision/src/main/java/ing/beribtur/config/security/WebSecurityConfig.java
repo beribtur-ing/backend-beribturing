@@ -49,7 +49,10 @@ public class WebSecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/**").permitAll()
+                        auth
+                                .requestMatchers("/feature/admin/auth/**").permitAll()
+                                .requestMatchers("/feature/owner/auth/**").permitAll()
+                                .requestMatchers("/feature/renter/auth/**").permitAll()
                                 .requestMatchers(
                                         "/v3/api-docs/**",
                                         "/v3/api-docs",
