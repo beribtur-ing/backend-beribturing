@@ -1,4 +1,4 @@
-package ing.beribtur.auth.rdo;
+package ing.beribtur.feature.shared.rdo;
 
 import lombok.Builder;
 import lombok.Getter;

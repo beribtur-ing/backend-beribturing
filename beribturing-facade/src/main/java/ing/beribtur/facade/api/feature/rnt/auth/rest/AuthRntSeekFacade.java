@@ -1,8 +1,8 @@
 package ing.beribtur.facade.api.feature.rnt.auth.rest;
 
 import ing.beribtur.accent.message.QueryResponse;
-import ing.beribtur.auth.rdo.AccountSignInTokenRdo;
 import ing.beribtur.facade.api.feature.rnt.auth.query.AccountSignInRntQuery;
+import ing.beribtur.feature.shared.rdo.AccountSignInTokenRdo;
 
 public interface AuthRntSeekFacade {
     //

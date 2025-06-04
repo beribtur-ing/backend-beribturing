@@ -69,8 +69,8 @@ public class AccountJpaStore implements AccountStore {
     }
 
     @Override
-    public boolean existsByPhoneNumber(String phoneNumber) {
-        return accountRepository.existsByPhoneNumber(phoneNumber);
+    public boolean existsByPhoneNumberAndRole(String phoneNumber, String role) {
+        return accountRepository.existsByPhoneNumberAndRole(phoneNumber, role);
     }
 
     @Override

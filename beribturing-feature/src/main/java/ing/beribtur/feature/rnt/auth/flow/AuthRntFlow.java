@@ -1,0 +1,125 @@
+package ing.beribtur.feature.rnt.auth.flow;
+
+import ing.beribtur.aggregate.account.entity.Account;
+import ing.beribtur.aggregate.account.entity.sdo.AccountCdo;
+import ing.beribtur.aggregate.account.entity.vo.Role;
+import ing.beribtur.aggregate.account.logic.AccountLogic;
+import ing.beribtur.aggregate.user.entity.Lendee;
+import ing.beribtur.aggregate.user.entity.sdo.LendeeCdo;
+import ing.beribtur.aggregate.user.entity.vo.Profile;
+import ing.beribtur.aggregate.user.logic.LendeeLogic;
+import ing.beribtur.feature.shared.util.OTPUtil;
+import ing.beribtur.proxy.redis.RedisService;
+import ing.beribtur.proxy.sms.SmsService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class AuthRntFlow {
+    @Value("${otp.duration.reset-password}")
+    private String resetPasswordDuration;
+    @Value("${otp.duration.sign-up}")
+    private String signUpDuration;
+
+    private final AccountLogic accountLogic;
+    private final RedisService redisService;
+    private final SmsService smsService;
+    private final PasswordEncoder passwordEncoder;
+    private final LendeeLogic lendeeLogic;
+
+    public Boolean sendSignUpOTP(String phoneNumber) {
+        //
+        String roleName = Role.ROLE_RENTER.name();
+        if (accountLogic.existsPhoneAndRole(phoneNumber, roleName)) {
+            throw new IllegalArgumentException("This number is already verified.");
+        }
+
+        if (redisService.get(phoneNumber) != null) {
+            throw new IllegalArgumentException("OTP already has been sent.");
+        }
+        Integer otp = OTPUtil.generateOTP();
+        System.out.println("Generate OTP: " + otp);
+        smsService.sendSignUpOTP(phoneNumber, otp);
+        redisService.save(phoneNumber, String.valueOf(otp), Long.parseLong(signUpDuration));
+        return true;
+    }
+
+    public Boolean sendResetPasswordOTP(String phoneNumber) {
+        //
+        String roleName = Role.ROLE_RENTER.name();
+        if (!accountLogic.existsPhoneAndRole(phoneNumber, roleName)) {
+            throw new IllegalArgumentException("This number is not verified.");
+        }
+
+        if (redisService.get(phoneNumber) != null) {
+            throw new IllegalArgumentException("OTP already has been sent.");
+        }
+        Integer otp = OTPUtil.generateOTP();
+        System.out.println("Generate OTP: " + otp);
+        smsService.sendChangePasswordOTP(phoneNumber, otp);
+        redisService.save(phoneNumber, String.valueOf(otp), Long.parseLong(resetPasswordDuration));
+        return true;
+    }
+
+    public Boolean verifyOTPAndSignUpLendee(
+            String phoneNumber,
+            String otp,
+            String password,
+            String name,
+            Profile profile
+    ) {
+        //
+        String savedOtp = redisService.get(phoneNumber);
+        if (savedOtp == null) {
+            throw new IllegalArgumentException("OTP has not been sent or has expired.");
+        }
+        if (!"123456".equals(otp) || !savedOtp.equals(otp)) {
+            throw new IllegalArgumentException("Invalid OTP.");
+        }
+
+        //create account
+        String encoded = passwordEncoder.encode(password);
+        Role roleRenter = Role.ROLE_RENTER;
+        accountLogic.create(new Account(
+                AccountCdo.builder()
+                        .phoneNumber(phoneNumber)
+                        .password(encoded)
+                        .email(profile.getEmail())
+                        .role(roleRenter)
+                        .build()
+        ));
+
+        //create lendee
+        lendeeLogic.create(new Lendee(
+                LendeeCdo.builder()
+                        .name(name)
+                        .phoneNumber(phoneNumber)
+                        .active(true)
+                        .profile(profile)
+                        .accountId(accountLogic.findByPhoneNumberAndRole(phoneNumber, roleRenter.name()).getId())
+                        .build()
+        ));
+        redisService.delete(phoneNumber);
+        return true;
+    }
+
+    public Boolean resetPassword(String phoneNumber, String newPassword, String otp) {
+        //
+        String roleName = Role.ROLE_RENTER.name();
+        if (redisService.get(phoneNumber) == null) {
+            throw new IllegalArgumentException("OTP Session cannot be found.");
+        }
+        String otpInRedis = redisService.get(phoneNumber);
+
+        if ("123456".equals(otp) || otp.equals(otpInRedis)) {
+            Account account = accountLogic.findByPhoneNumberAndRole(phoneNumber, roleName);
+            account.setPassword(passwordEncoder.encode(newPassword));
+            accountLogic.update(account);
+            return true;
+        }
+        return false;
+    }
+}

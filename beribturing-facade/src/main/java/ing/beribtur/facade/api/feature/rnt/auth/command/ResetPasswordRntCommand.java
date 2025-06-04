@@ -1,5 +1,6 @@
-package ing.beribtur.facade.api.auth.command;
+package ing.beribtur.facade.api.feature.rnt.auth.command;
 
+import ing.beribtur.feature.shared.util.AuthUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import org.springframework.util.Assert;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ResetPasswordCommand {
+public class ResetPasswordRntCommand {
     //
     private String phoneNumber;
     private String newPassword;
@@ -16,9 +17,8 @@ public class ResetPasswordCommand {
 
     public void validate() {
         //
-        Assert.notNull(phoneNumber, "phoneNumber must not be null");
-        Assert.isTrue(phoneNumber.matches("^998\\d{9}$"), "phoneNumber must be a valid number");
-        Assert.notNull(newPassword, "newPassword must not be null");
+        AuthUtil.phoneNumberValidation(phoneNumber);
+        AuthUtil.passwordValidation(newPassword);
         Assert.notNull(otp, "otp must not be null");
     }
 }

@@ -2,8 +2,8 @@ package ing.beribtur.feature.adm.auth.seek;
 
 import ing.beribtur.aggregate.account.entity.vo.Role;
 import ing.beribtur.aggregate.account.logic.AccountLogic;
-import ing.beribtur.auth.rdo.AccountSignInTokenRdo;
 import ing.beribtur.config.security.jwt.JwtUtils;
+import ing.beribtur.feature.shared.rdo.AccountSignInTokenRdo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

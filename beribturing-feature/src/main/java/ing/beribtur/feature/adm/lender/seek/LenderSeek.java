@@ -1,4 +1,4 @@
-package ing.beribtur.feature.lender.seek;
+package ing.beribtur.feature.adm.lender.seek;
 
 import ing.beribtur.aggregate.user.entity.Lender;
 import ing.beribtur.aggregate.user.logic.LenderLogic;

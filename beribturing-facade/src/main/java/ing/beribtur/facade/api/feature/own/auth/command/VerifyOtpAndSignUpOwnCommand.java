@@ -1,7 +1,8 @@
-package ing.beribtur.facade.api.auth.command;
+package ing.beribtur.facade.api.feature.own.auth.command;
 
 import ing.beribtur.aggregate.user.entity.vo.LenderType;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
+import ing.beribtur.feature.shared.util.AuthUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class VerifyOtpAndSignUpLenderCommand {
+public class VerifyOtpAndSignUpOwnCommand {
     //
     private String phoneNumber;
     private String otp;
@@ -21,18 +22,12 @@ public class VerifyOtpAndSignUpLenderCommand {
 
     public void validate() {
         //
-        Assert.hasText(phoneNumber, "phoneNumber must not be empty");
-        Assert.isTrue(phoneNumber.matches("^998\\d{9}$"), "phoneNumber must be a valid number");
+        AuthUtil.phoneNumberValidation(phoneNumber);
         Assert.hasText(otp, "otp must not be empty");
-        Assert.hasText(password, "password must not be empty");
-        Assert.isTrue(password.length() >= 6, "password must be at least 6 characters long");
-        //contains at least one digit, one lowercase letter, one uppercase letter, and one special character
-        Assert.isTrue(password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{6,}$"),
-                "password must contain at least one digit, one lowercase letter, one uppercase letter, and one special character");
+        AuthUtil.passwordValidation(password);
         Assert.hasText(name, "name must not be empty");
         Assert.notNull(profile, "profile must not be null");
-        Assert.hasText(profile.getEmail(), "email must not be empty");
-        Assert.isTrue(profile.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"), "email must be a valid email address");
+        AuthUtil.emailValidation(getProfile().getEmail());
         Assert.hasText(profile.getAddress(), "profile.address must not be empty");
         Assert.notNull(profile.getLocation(), "profile.location must not be null");
         Assert.notNull(profile.getLocation().getLatitude(), "profile.location.latitude must not be null");
