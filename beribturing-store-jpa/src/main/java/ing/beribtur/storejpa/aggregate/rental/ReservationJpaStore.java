@@ -1,13 +1,16 @@
 package ing.beribtur.storejpa.aggregate.rental;
 
+import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.rental.entity.Reservation;
 import ing.beribtur.aggregate.rental.store.ReservationStore;
 import ing.beribtur.storejpa.aggregate.rental.jpo.ReservationJpo;
 import ing.beribtur.storejpa.aggregate.rental.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,6 +23,20 @@ public class ReservationJpaStore implements ReservationStore {
         ReservationJpo reservationJpo = new ReservationJpo(reservation);
         reservationRepository.save(reservationJpo);
         reservation.setId(reservationJpo.getId());
+    }
+
+    @Override
+    public void createAll(List<Reservation> reservations) {
+        List<ReservationJpo> jpos = reservations.stream()
+                .map(ReservationJpo::new)
+                .collect(Collectors.toList());
+
+        List<ReservationJpo> savedJpos = reservationRepository.saveAll(jpos);
+
+        // Update the IDs in the domain entities
+        for (int i = 0; i < reservations.size(); i++) {
+            reservations.get(i).setId(savedJpos.get(i).getId());
+        }
     }
 
     @Override
@@ -36,6 +53,14 @@ public class ReservationJpaStore implements ReservationStore {
     }
 
     @Override
+    public List<Reservation> retrieveList(Offset offset) {
+        PageRequest pageRequest = PageRequest.of(offset.page(), offset.limit());
+        return reservationRepository.findAll(pageRequest).stream()
+                .map(ReservationJpo::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void update(Reservation reservation) {
         ReservationJpo existingJpo = reservationRepository.findById(reservation.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found: " + reservation.getId()));
@@ -49,20 +74,37 @@ public class ReservationJpaStore implements ReservationStore {
     }
 
     @Override
+    public void delete(Reservation reservation) {
+        delete(reservation.getId());
+    }
+
+    @Override
     public void delete(String id) {
         reservationRepository.deleteById(id);
     }
 
-    List<Reservation> findByProductVariantId(String productVariantId) {
-        return ReservationJpo.toDomains(reservationRepository.findByProductVariantId(productVariantId));
+    @Override
+    public boolean exists(String id) {
+        return reservationRepository.existsById(id);
     }
-    List<Reservation> findByRequesterId(String requesterId) {
+
+    @Override
+    public List<Reservation> retrieveByRequesterId(String requesterId) {
         return ReservationJpo.toDomains(reservationRepository.findByRequesterId(requesterId));
     }
-    List<Reservation> findByStatus(String status) {
+
+    @Override
+    public List<Reservation> retrieveByProductVariantId(String productVariantId) {
+        return ReservationJpo.toDomains(reservationRepository.findByProductVariantId(productVariantId));
+    }
+
+    @Override
+    public List<Reservation> retrieveByStatus(String status) {
         return ReservationJpo.toDomains(reservationRepository.findByStatus(status));
     }
-    List<Reservation> findByProductVariantIdAndStatus(String productVariantId, String status) {
+
+    // Additional methods for specific queries
+    public List<Reservation> findByProductVariantIdAndStatus(String productVariantId, String status) {
         return ReservationJpo.toDomains(reservationRepository.findByProductVariantIdAndStatus(productVariantId, status));
     }
 }
