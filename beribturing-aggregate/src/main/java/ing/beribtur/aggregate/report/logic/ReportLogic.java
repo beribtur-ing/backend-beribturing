@@ -89,5 +89,16 @@ public class ReportLogic {
         //
         return reportStore.retrieveByResolved(resolved);
     }
+
+    public String resolve(String reportId) {
+        //
+        Report report = findReport(reportId);
+        if(report.isResolved()) {
+            throw new IllegalArgumentException("Report is already resolved");
+        }
+        report.setResolved(true);
+        reportStore.update(report);
+        return report.getId();
+    }
 }
 
