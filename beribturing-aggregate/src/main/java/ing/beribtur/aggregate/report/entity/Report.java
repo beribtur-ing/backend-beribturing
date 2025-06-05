@@ -34,6 +34,8 @@ public class Report extends DomainEntity {
         //
         super(reportCdo.genId());
         BeanUtils.copyProperties(reportCdo, this);
+        reportDate = LocalDateTime.now();
+        resolved = false;
     }
 
     @Override
