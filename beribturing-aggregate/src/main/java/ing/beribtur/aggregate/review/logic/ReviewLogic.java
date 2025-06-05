@@ -89,5 +89,15 @@ public class ReviewLogic {
         //
         return reviewStore.retrieveByRating(rating);
     }
+
+    public void hideReview(String reviewId) {
+        //
+        Review review = findReview(reviewId);
+        if (!review.isVisible()) {
+            throw new IllegalStateException("Review is already hidden.");
+        }
+        review.setVisible(false);
+        reviewStore.update(review);
+    }
 }
 

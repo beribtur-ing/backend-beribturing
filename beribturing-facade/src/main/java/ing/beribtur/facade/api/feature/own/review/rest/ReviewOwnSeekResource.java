@@ -4,7 +4,7 @@ import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.aggregate.review.entity.Review;
 import ing.beribtur.facade.api.feature.own.review.query.FindReviewOwnQuery;
 import ing.beribtur.facade.api.feature.own.review.query.FindReviewsByRecordOwnQuery;
-import ing.beribtur.feature.rnt.review.seek.ReviewRntSeek;
+import ing.beribtur.feature.own.review.seek.ReviewOwnSeek;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/feature/owner/review")
 public class ReviewOwnSeekResource implements ReviewOwnSeekFacade {
     //
-    private final ReviewRntSeek reviewOwnSeek;
+    private final ReviewOwnSeek reviewOwnSeek;
 
     @Override
     @PostMapping("/find-review/query")
