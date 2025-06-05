@@ -3,7 +3,8 @@ package ing.beribtur.facade.api.feature.rnt.report.rest;
 import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.aggregate.report.entity.Report;
 import ing.beribtur.facade.api.feature.rnt.report.query.FindReportRntQuery;
-import ing.beribtur.facade.api.feature.rnt.report.query.FindReportsByRecordRntQuery;
+import ing.beribtur.facade.api.feature.rnt.report.query.FindReportsByReporterAndResolvedStateRntQuery;
+import ing.beribtur.facade.api.feature.rnt.report.query.FindReportsByReporterRntQuery;
 import ing.beribtur.feature.rnt.report.seek.ReportRntSeek;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,12 +32,21 @@ public class ReportRntSeekResource implements ReportRntSeekFacade {
     }
 
     @Override
-    @PostMapping("/find-reports-by-record/query")
-    public QueryResponse<List<Report>> findReportsByRecord(@RequestBody FindReportsByRecordRntQuery query) {
-        //
+    @PostMapping("/find-reports-by-reporter/query")
+    public QueryResponse<List<Report>> findReportsByReporter(FindReportsByReporterRntQuery query) {
         query.validate();
-        String recordId = query.getRecordId();
-        List<Report> response = reportRntSeek.findReportsByRecordId(recordId);
+        String reporterId = query.getReporterId();
+        List<Report> response = reportRntSeek.findReportsByReporterId(reporterId);
+        return new QueryResponse<>(response);
+    }
+
+    @Override
+    @PostMapping("/find-reports-by-reporter-and-resolved-state/query")
+    public QueryResponse<List<Report>> findReportsByResolvedState(FindReportsByReporterAndResolvedStateRntQuery query) {
+        query.validate();
+        String reporterId = query.getReporterId();
+        Boolean resolved = query.getResolved();
+        List<Report> response = reportRntSeek.findReportsByReporterIdAndResolvedState(reporterId, resolved);
         return new QueryResponse<>(response);
     }
 }

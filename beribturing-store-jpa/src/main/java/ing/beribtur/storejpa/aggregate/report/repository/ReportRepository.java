@@ -8,5 +8,7 @@ import java.util.List;
 public interface ReportRepository extends JpaRepository<ReportJpo, String> {
     List<ReportJpo> findByReporterId(String reporterId);
     List<ReportJpo> findByRecordId(String recordId);
-    List<ReportJpo> findByResolved(boolean resolved);
+    List<ReportJpo> findByResolved(Boolean resolved);
+
+    List<ReportJpo> findByReporterIdAndResolved(String reporterId, Boolean resolved);
 }

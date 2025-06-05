@@ -20,5 +20,7 @@ public interface ReportStore {
 
     List<Report> retrieveByReporterId(String reporterId);
     List<Report> retrieveByRecordId(String recordId);
-    List<Report> retrieveByResolved(boolean resolved);
+    List<Report> retrieveByResolved(Boolean resolved);
+
+    List<Report> retrieveByReporterIdAndResolved(String reporterId, Boolean resolved);
 }

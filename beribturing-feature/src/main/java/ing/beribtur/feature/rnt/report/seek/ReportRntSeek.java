@@ -25,14 +25,9 @@ public class ReportRntSeek {
         return reportLogic.findReportsByReporterId(reporterId);
     }
 
-    public List<Report> findReportsByRecordId(String recordId) {
+    public List<Report> findReportsByReporterIdAndResolvedState(String reporterId, Boolean resolved) {
         //
-        return reportLogic.findReportsByRecordId(recordId);
-    }
-
-    public List<Report> findReportsByResolved(boolean resolved) {
-        //
-        return reportLogic.findReportsByResolved(resolved);
+        return reportLogic.findReportsByReporterIdAndResolvedState(reporterId, resolved);
     }
 }
 

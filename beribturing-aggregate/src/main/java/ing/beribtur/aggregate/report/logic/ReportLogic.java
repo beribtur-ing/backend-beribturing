@@ -85,7 +85,7 @@ public class ReportLogic {
         return reportStore.retrieveByRecordId(recordId);
     }
 
-    public List<Report> findReportsByResolved(boolean resolved) {
+    public List<Report> findReportsByResolved(Boolean resolved) {
         //
         return reportStore.retrieveByResolved(resolved);
     }
@@ -99,6 +99,11 @@ public class ReportLogic {
         report.setResolved(true);
         reportStore.update(report);
         return report.getId();
+    }
+
+    public List<Report> findReportsByReporterIdAndResolvedState(String reporterId, Boolean resolved) {
+        //
+        return reportStore.retrieveByReporterIdAndResolved(reporterId, resolved);
     }
 }
 

@@ -10,12 +10,14 @@ import java.util.List;
 
 @Getter
 @Setter
-public class FindReportsByRecordRntQuery extends QueryRequest<List<Report>> {
+public class FindReportsByReporterAndResolvedStateRntQuery extends QueryRequest<List<Report>> {
     //
-    private String recordId;
+    private String reporterId;
+    private Boolean resolved;
 
     public void validate() {
         //
-        Assert.hasText(recordId, "'recordId' is required.");
+        Assert.notNull(reporterId, "'reporterId'  is required.");
+        Assert.notNull(resolved, "'resolved' boolean state is required.");
     }
 }

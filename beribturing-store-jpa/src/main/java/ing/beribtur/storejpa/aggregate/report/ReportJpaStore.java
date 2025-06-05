@@ -91,7 +91,13 @@ public class ReportJpaStore implements ReportStore {
         return ReportJpo.toDomains(reportRepository.findByRecordId(recordId));
     }
 
-    public List<Report> retrieveByResolved(boolean resolved) {
+    @Override
+    public List<Report> retrieveByReporterIdAndResolved(String reporterId, Boolean resolved) {
+        //
+        return ReportJpo.toDomains(reportRepository.findByReporterIdAndResolved(reporterId, resolved));
+    }
+
+    public List<Report> retrieveByResolved(Boolean resolved) {
         //
         return ReportJpo.toDomains(reportRepository.findByResolved(resolved));
     }
