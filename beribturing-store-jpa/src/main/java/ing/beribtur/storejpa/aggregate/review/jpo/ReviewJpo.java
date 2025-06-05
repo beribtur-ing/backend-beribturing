@@ -31,6 +31,9 @@ public class ReviewJpo extends DomainEntityJpo {
     @Column(nullable = false)
     private String recordId;
 
+    @Column(nullable = false)
+    private boolean visible;
+
     public ReviewJpo(Review review) {
         //
         super(review);

@@ -23,6 +23,7 @@ public class Review extends DomainEntity {
     private int rating;
     private String comment;
     private String recordId;
+    private boolean visible;
 
     // Domain relationships
     private transient Lendee reviewer;
@@ -32,6 +33,7 @@ public class Review extends DomainEntity {
         //
         super(reviewCdo.genId());
         BeanUtils.copyProperties(reviewCdo, this);
+        this.visible = true;
     }
 
     @Override
@@ -43,6 +45,7 @@ public class Review extends DomainEntity {
                 case "rating" -> this.rating = Integer.parseInt(value);
                 case "comment" -> this.comment = value;
                 case "recordId" -> this.recordId = value;
+                case "visible" -> this.visible = Boolean.parseBoolean(value);
                 default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
             }
         }

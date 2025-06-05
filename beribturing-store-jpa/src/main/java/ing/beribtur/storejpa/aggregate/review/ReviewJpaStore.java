@@ -88,19 +88,19 @@ public class ReviewJpaStore implements ReviewStore {
     @Override
     public List<Review> retrieveByReviewerId(String reviewerId) {
         //
-        return ReviewJpo.toDomains(reviewRepository.findByReviewerId(reviewerId));
+        return ReviewJpo.toDomains(reviewRepository.findByReviewerIdAndVisibleTrue(reviewerId));
     }
 
     @Override
     public List<Review> retrieveByRecordId(String recordId) {
         //
-        return ReviewJpo.toDomains(reviewRepository.findByRecordId(recordId));
+        return ReviewJpo.toDomains(reviewRepository.findByRecordIdAndVisibleTrue(recordId));
     }
 
     @Override
     public List<Review> retrieveByRating(int rating) {
         //
-        return ReviewJpo.toDomains(reviewRepository.findByRating(rating));
+        return ReviewJpo.toDomains(reviewRepository.findByRatingAndVisibleTrue(rating));
     }
 }
 
