@@ -15,6 +15,7 @@ public class ReservationCdo extends CreationDataObject {
     //
     private String productVariantId;      // Reference to Product Variant
     private String requesterId;           // Reference to the Lendee who made the reservation
+    private String ownerId;          // Reference to the Lender who owns the product
     private Period period;              // The period for which the product is reserved
     private ReservationStatus status;
     private String note;
