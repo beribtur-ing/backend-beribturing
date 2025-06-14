@@ -22,7 +22,8 @@ public class RentalRecordCdo extends CreationDataObject {
     private LocalDateTime cancelledAt;    // The date when the rental was canceled
     private String productVariantId;              // Reference to Product Variant
     private RentalStatus status;
-    private String landeeId;                      // Reference to the Reservation that this rental is associated with
+    private String lendeeId;                      // Reference to the Lendee who rented the product
+    private String ownerId;                       // Reference to the Lender who owns the product
     private Currency fee;
     private String discountId;                    // Reference to any discount applied to the rental
     private String depositId;                     // Rental Deposit id

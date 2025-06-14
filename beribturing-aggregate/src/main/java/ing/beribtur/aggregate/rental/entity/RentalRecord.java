@@ -12,6 +12,7 @@ import ing.beribtur.aggregate.rental.entity.sdo.RentalRecordCdo;
 import ing.beribtur.aggregate.rental.entity.vo.Period;
 import ing.beribtur.aggregate.rental.entity.vo.RentalStatus;
 import ing.beribtur.aggregate.user.entity.Lendee;
+import ing.beribtur.aggregate.user.entity.Lender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +33,8 @@ public class RentalRecord extends DomainEntity {
     private LocalDateTime cancelledAt;    // The date when the rental was canceled
     private String productVariantId;              // Reference to Product Variant
     private RentalStatus status;
-    private String lendeeId;                      // Reference to the Reservation that this rental is associated with
+    private String lendeeId;                      // Reference to the Lendee who rented the product
+    private String ownerId;
     private Currency fee;
     private String discountId;                    // Reference to any discount applied to the rental
     private String depositId;                     // Rental Deposit id
@@ -40,8 +42,9 @@ public class RentalRecord extends DomainEntity {
     // Domain relationships
     private transient ProductVariant productVariant;    // The product variant being rented
     private transient Reservation reservation;          // The reservation that this rental is associated with
-    private transient Lendee lendee;                    // The Lendee who made the rental
-    private transient Discount discount;
+    private transient Lendee lendee;                    // The Lendee who rented the product
+    private transient Lender owner;                     // The Lender who owns the product
+    private transient Discount discount;                   // The discount applied to the rental, if any
     private transient RentalDeposit deposit;            // The deposit associated with this rental
 
     private transient ItemConditionCheck beforeRented;
