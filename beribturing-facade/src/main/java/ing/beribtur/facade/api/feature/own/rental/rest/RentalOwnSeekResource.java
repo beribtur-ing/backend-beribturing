@@ -4,15 +4,20 @@ import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.aggregate.rental.entity.ItemConditionCheck;
 import ing.beribtur.aggregate.rental.entity.ItemConditionPhoto;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
+import ing.beribtur.aggregate.rental.entity.Reservation;
+import ing.beribtur.aggregate.rental.entity.vo.ReservationStatus;
 import ing.beribtur.facade.api.feature.own.rental.query.FindItemConditionCheckOwnQuery;
 import ing.beribtur.facade.api.feature.own.rental.query.FindItemConditionPhotoOwnQuery;
 import ing.beribtur.facade.api.feature.own.rental.query.FindRentalRecordOwnQuery;
+import ing.beribtur.facade.api.feature.own.rental.query.FindReservationsOwnQuery;
 import ing.beribtur.feature.own.rental.seek.RentalOwnSeek;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +33,16 @@ public class RentalOwnSeekResource implements RentalOwnSeekFacade {
         query.validate();
         String rentalRecordId = query.getRentalRecordId();
         RentalRecord response = rentalOwnSeek.findRentalRecordById(rentalRecordId);
+        return new QueryResponse<>(response);
+    }
+
+    @Override
+    public QueryResponse<List<Reservation>> findReservations(FindReservationsOwnQuery query) {
+        //
+        query.validate();
+        String ownerId = query.getOwnerId();
+        ReservationStatus status = query.getStatus();
+        List<Reservation> response = rentalOwnSeek.findReservations(ownerId, status);
         return new QueryResponse<>(response);
     }
 

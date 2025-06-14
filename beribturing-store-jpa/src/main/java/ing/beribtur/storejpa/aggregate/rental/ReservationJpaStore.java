@@ -103,6 +103,11 @@ public class ReservationJpaStore implements ReservationStore {
         return ReservationJpo.toDomains(reservationRepository.findByStatus(status));
     }
 
+    @Override
+    public List<Reservation> retrieveAllByOwnerId(String ownerId, String status) {
+        return ReservationJpo.toDomains(reservationRepository.findAllByOwnerIdAndStatusIsOrStatusIsNull(ownerId, status));
+    }
+
     // Additional methods for specific queries
     public List<Reservation> findByProductVariantIdAndStatus(String productVariantId, String status) {
         return ReservationJpo.toDomains(reservationRepository.findByProductVariantIdAndStatus(productVariantId, status));
