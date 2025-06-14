@@ -149,6 +149,4 @@ public class QuerydslUtil {
 
         return new PageImpl<>(results, PageRequest.of(offset.page(), offset.limit()), totalCount);
     }
-
-
 }
