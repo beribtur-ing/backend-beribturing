@@ -4,6 +4,7 @@ import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.accent.util.JsonUtil;
+import ing.beribtur.aggregate.payment.entity.sdo.TransactionCdo;
 import ing.beribtur.aggregate.payment.entity.vo.Currency;
 import ing.beribtur.aggregate.payment.entity.vo.PaymentStatus;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
@@ -13,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -38,6 +40,12 @@ public class Transaction extends DomainEntity {
     private transient RentalRecord rentalRecord;
     private transient Lendee payer;
     private transient Lender payee;
+
+    public Transaction(TransactionCdo transactionCdo) {
+        //
+        super(transactionCdo.genId());
+        BeanUtils.copyProperties(transactionCdo, this);
+    }
 
     @Override
     protected void modifyAttributes(NameValueList nameValues) {

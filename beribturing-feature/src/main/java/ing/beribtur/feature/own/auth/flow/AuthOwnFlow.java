@@ -90,7 +90,7 @@ public class AuthOwnFlow {
                         .phoneNumber(phoneNumber)
                         .password(encoded)
                         .email(profile.getEmail())
-                        .enabled(false)
+                        .enabled(true)
                         .role(roleName)
                         .build()
         ));
@@ -101,7 +101,7 @@ public class AuthOwnFlow {
                         .name(name)
                         .phoneNumber(phoneNumber)
                         .lenderType(lenderType)
-                        .active(false)
+                        .active(true)
                         .profile(profile)
                         .accountId(accountLogic.findByPhoneNumberAndRole(phoneNumber, roleName.name()).getId())
                         .build()

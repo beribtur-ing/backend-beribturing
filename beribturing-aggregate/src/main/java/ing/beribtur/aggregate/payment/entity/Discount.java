@@ -3,6 +3,7 @@ package ing.beribtur.aggregate.payment.entity;
 import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
+import ing.beribtur.aggregate.payment.entity.sdo.DiscountCdo;
 import ing.beribtur.aggregate.payment.entity.vo.DiscountScope;
 import ing.beribtur.aggregate.payment.entity.vo.DiscountType;
 import ing.beribtur.aggregate.payment.entity.vo.Discountable;
@@ -10,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -31,6 +33,12 @@ public class Discount extends DomainEntity {
 
     // Domain relationships
     private transient Discountable target;     // The entity this discount applies to, e.g., Product, Variant, User
+
+    public Discount(DiscountCdo discountCdo) {
+        //
+        super(discountCdo.genId());
+        BeanUtils.copyProperties(discountCdo,this);
+    }
 
     @Override
     protected void modifyAttributes(NameValueList nameValues) {

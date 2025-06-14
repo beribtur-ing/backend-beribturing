@@ -4,6 +4,7 @@ import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.accent.util.JsonUtil;
+import ing.beribtur.aggregate.payment.entity.sdo.RentalDepositCdo;
 import ing.beribtur.aggregate.payment.entity.vo.Currency;
 import ing.beribtur.aggregate.payment.entity.vo.DepositStatus;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
@@ -12,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +34,12 @@ public class RentalDeposit extends DomainEntity {
     // Domain relationships
     private transient RentalRecord rentalRecord; // The rental record this deposit is associated with
     private transient Lendee payer;              // The Lendee who paid the deposit
+
+    public RentalDeposit(RentalDepositCdo rentalDepositCdo) {
+        //
+        super(rentalDepositCdo.genId());
+        BeanUtils.copyProperties(rentalDepositCdo, this);
+    }
 
     @Override
     protected void modifyAttributes(NameValueList nameValues) {
