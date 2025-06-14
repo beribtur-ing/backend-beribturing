@@ -11,6 +11,7 @@ public interface RentalRecordRepository extends JpaRepository<RentalRecordJpo, S
     List<RentalRecordJpo> findByProductVariantId(String productVariantId);
     List<RentalRecordJpo> findByLendeeId(String lendeeId);
     List<RentalRecordJpo> findByStatus(String status);
+    List<RentalRecordJpo> findAllByOwnerIdAndStatusIsOrStatusIsNull(String ownerId, String status);
     List<RentalRecordJpo> findByStatusAndLendeeId(String status, String lendeeId);
 }
 

@@ -5,17 +5,15 @@ import ing.beribtur.aggregate.rental.entity.ItemConditionCheck;
 import ing.beribtur.aggregate.rental.entity.ItemConditionPhoto;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
 import ing.beribtur.aggregate.rental.entity.Reservation;
-import ing.beribtur.facade.api.feature.own.rental.query.FindItemConditionCheckOwnQuery;
-import ing.beribtur.facade.api.feature.own.rental.query.FindItemConditionPhotoOwnQuery;
-import ing.beribtur.facade.api.feature.own.rental.query.FindRentalRecordOwnQuery;
-import ing.beribtur.facade.api.feature.own.rental.query.FindReservationsOwnQuery;
+import ing.beribtur.facade.api.feature.own.rental.query.*;
 
 import java.util.List;
 
 public interface RentalOwnSeekFacade {
     //
-    QueryResponse<RentalRecord> findRentalRecord(FindRentalRecordOwnQuery query);
     QueryResponse<List<Reservation>> findReservations(FindReservationsOwnQuery query);
+    QueryResponse<RentalRecord> findRentalRecord(FindRentalRecordOwnQuery query);
+    QueryResponse<List<RentalRecord>> findRentalRecords(FindRentalRecordsOwnQuery query);
     QueryResponse<ItemConditionCheck> findItemConditionCheck(FindItemConditionCheckOwnQuery query);
     QueryResponse<ItemConditionPhoto> findItemConditionPhoto(FindItemConditionPhotoOwnQuery query);
 }

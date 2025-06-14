@@ -4,6 +4,7 @@ import ing.beribtur.aggregate.rental.entity.ItemConditionCheck;
 import ing.beribtur.aggregate.rental.entity.ItemConditionPhoto;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
 import ing.beribtur.aggregate.rental.entity.Reservation;
+import ing.beribtur.aggregate.rental.entity.vo.RentalStatus;
 import ing.beribtur.aggregate.rental.entity.vo.ReservationStatus;
 import ing.beribtur.aggregate.rental.logic.ItemConditionCheckLogic;
 import ing.beribtur.aggregate.rental.logic.ItemConditionPhotoLogic;
@@ -43,5 +44,10 @@ public class RentalOwnSeek {
     public List<Reservation> findReservations(String ownerId, ReservationStatus status) {
         //
         return reservationLogic.findAllByOwnerId(ownerId, status);
+    }
+
+    public List<RentalRecord> findRentalRecords(String ownerId, RentalStatus status) {
+        //
+        return rentalRecordLogic.findAllByOwnerId(ownerId, status);
     }
 }

@@ -22,4 +22,5 @@ public interface RentalRecordStore {
     List<RentalRecord> retrieveByLendeeId(String lendeeId);
     List<RentalRecord> retrieveByProductVariantId(String productVariantId);
     List<RentalRecord> retrieveByStatus(RentalStatus status);
+    List<RentalRecord> retrieveAllByOwnerId(String ownerId,String status);
 }

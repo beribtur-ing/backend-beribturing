@@ -104,6 +104,12 @@ public class RentalRecordJpaStore implements RentalRecordStore {
         return RentalRecordJpo.toDomains(rentalRecordRepository.findByStatus(status.name()));
     }
 
+    @Override
+    public List<RentalRecord> retrieveAllByOwnerId(String ownerId, String status) {
+        //
+        return RentalRecordJpo.toDomains(rentalRecordRepository.findAllByOwnerIdAndStatusIsOrStatusIsNull(ownerId,status));
+    }
+
     // Additional methods for specific queries
     public List<RentalRecord> findByStatusAndLendeeId(String status, String lendeeId) {
         return RentalRecordJpo.toDomains(rentalRecordRepository.findByStatusAndLendeeId(status, lendeeId));
