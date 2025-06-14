@@ -5,10 +5,12 @@ import ing.beribtur.accent.message.CommandResponse;
 import ing.beribtur.aggregate.rental.entity.sdo.ItemConditionCheckCdo;
 import ing.beribtur.aggregate.rental.entity.sdo.ItemConditionPhotoCdo;
 import ing.beribtur.aggregate.rental.entity.sdo.RentalRecordCdo;
+import ing.beribtur.facade.api.feature.own.rental.command.ApproveReservationOwnCommand;
 import ing.beribtur.facade.api.feature.own.rental.command.ModifyRentalRecordOwnCommand;
 import ing.beribtur.facade.api.feature.own.rental.command.RegisterItemConditionCheckOwnCommand;
 import ing.beribtur.facade.api.feature.own.rental.command.RegisterItemConditionPhotoOwnCommand;
 import ing.beribtur.facade.api.feature.own.rental.command.RegisterRentalRecordOwnCommand;
+import ing.beribtur.facade.api.feature.own.rental.command.RejectReservationOwnCommand;
 import ing.beribtur.feature.own.rental.flow.RentalOwnFlow;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,5 +65,25 @@ public class RentalOwnFlowResource implements RentalOwnFlowFacade {
         ItemConditionPhotoCdo itemConditionPhotoCdo = command.getItemConditionPhotoCdo();
         String entityId = rentalOwnFlow.registerItemConditionPhoto(itemConditionPhotoCdo);
         return new CommandResponse<>(entityId);
+    }
+
+    @Override
+    @PostMapping("/approve-reservation/command")
+    public CommandResponse<String> approveReservation(@RequestBody ApproveReservationOwnCommand command) {
+        //
+        command.validate();
+        String reservationId = command.getReservationId();
+        rentalOwnFlow.approveReservation(reservationId);
+        return new CommandResponse<>(reservationId);
+    }
+
+    @Override
+    @PostMapping("/reject-reservation/command")
+    public CommandResponse<String> rejectReservation(@RequestBody RejectReservationOwnCommand command) {
+        //
+        command.validate();
+        String reservationId = command.getReservationId();
+        rentalOwnFlow.rejectReservation(reservationId);
+        return new CommandResponse<>(reservationId);
     }
 }
