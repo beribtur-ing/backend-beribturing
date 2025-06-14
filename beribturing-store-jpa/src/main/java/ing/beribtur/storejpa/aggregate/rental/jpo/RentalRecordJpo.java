@@ -41,6 +41,9 @@ public class RentalRecordJpo extends DomainEntityJpo {
     @Column(nullable = false)
     private String lendeeId;
 
+    @Column(nullable = false)
+    private String ownerId;
+
     // Fee
     private BigDecimal feeAmount;
     private String feeCurrency;

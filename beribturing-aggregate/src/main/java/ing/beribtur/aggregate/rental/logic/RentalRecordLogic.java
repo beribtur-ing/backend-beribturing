@@ -92,4 +92,13 @@ public class RentalRecordLogic {
         //
         return rentalRecordStore.retrieveByStatus(status);
     }
+
+    public List<RentalRecord> findAllByOwnerId(String ownerId, RentalStatus status) {
+        //
+        if (status == null) {
+            return rentalRecordStore.retrieveAllByOwnerId(ownerId, null);
+        } else {
+            return rentalRecordStore.retrieveAllByOwnerId(ownerId, status.name());
+        }
+    }
 }

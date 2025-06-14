@@ -28,6 +28,9 @@ public class ReservationJpo extends DomainEntityJpo {
     @Column(nullable = false)
     private String requesterId;
 
+    @Column(nullable = false)
+    private String ownerId;
+
     // Period fields
     @Column(nullable = false)
     private LocalDateTime startDateTime;

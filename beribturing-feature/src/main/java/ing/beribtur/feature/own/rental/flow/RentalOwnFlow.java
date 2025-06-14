@@ -1,9 +1,12 @@
 package ing.beribtur.feature.own.rental.flow;
 
+import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
+import ing.beribtur.aggregate.rental.entity.Reservation;
 import ing.beribtur.aggregate.rental.entity.sdo.ItemConditionCheckCdo;
 import ing.beribtur.aggregate.rental.entity.sdo.ItemConditionPhotoCdo;
 import ing.beribtur.aggregate.rental.entity.sdo.RentalRecordCdo;
+import ing.beribtur.aggregate.rental.entity.vo.ReservationStatus;
 import ing.beribtur.aggregate.rental.logic.ItemConditionCheckLogic;
 import ing.beribtur.aggregate.rental.logic.ItemConditionPhotoLogic;
 import ing.beribtur.aggregate.rental.logic.RentalRecordLogic;
@@ -41,5 +44,21 @@ public class RentalOwnFlow {
     public String registerItemConditionPhoto(ItemConditionPhotoCdo itemConditionPhotoCdo) {
         //
         return itemConditionPhotoLogic.registerItemConditionPhoto(itemConditionPhotoCdo);
+    }
+
+    public void approveReservation(String reservationId) {
+        //
+        Reservation reservation = reservationLogic.findReservation(reservationId);
+        NameValueList nameValueList = new NameValueList();
+        nameValueList.add(new NameValue("status", ReservationStatus.Approved.name()));
+        reservationLogic.modifyReservation(reservationId, nameValueList);
+    }
+
+    public void rejectReservation(String reservationId) {
+        //
+        Reservation reservation = reservationLogic.findReservation(reservationId);
+        NameValueList nameValueList = new NameValueList();
+        nameValueList.add(new NameValue("status", ReservationStatus.Rejected.name()));
+        reservationLogic.modifyReservation(reservationId, nameValueList);
     }
 }

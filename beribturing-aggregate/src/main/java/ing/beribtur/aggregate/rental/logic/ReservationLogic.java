@@ -1,5 +1,6 @@
 package ing.beribtur.aggregate.rental.logic;
 
+import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.accent.message.Offset;
 import ing.beribtur.accent.util.Entities;
@@ -91,5 +92,13 @@ public class ReservationLogic {
     public List<Reservation> findByStatus(ReservationStatus status) {
         //
         return reservationStore.retrieveByStatus(status.name());
+    }
+
+    public List<Reservation> findAllByOwnerId(String ownerId, ReservationStatus status) {
+        //
+        if (status == null) {
+            return reservationStore.retrieveAllByOwnerId(ownerId, null);
+        }
+        return reservationStore.retrieveAllByOwnerId(ownerId, status.name());
     }
 }

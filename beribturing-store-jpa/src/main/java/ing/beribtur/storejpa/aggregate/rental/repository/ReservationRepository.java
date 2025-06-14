@@ -10,5 +10,6 @@ public interface ReservationRepository extends JpaRepository<ReservationJpo, Str
     List<ReservationJpo> findByProductVariantId(String productVariantId);
     List<ReservationJpo> findByRequesterId(String requesterId);
     List<ReservationJpo> findByStatus(String status);
+    List<ReservationJpo> findAllByOwnerIdAndStatusIsOrStatusIsNull(String ownerId, String status);
     List<ReservationJpo> findByProductVariantIdAndStatus(String productVariantId, String status);
 }
