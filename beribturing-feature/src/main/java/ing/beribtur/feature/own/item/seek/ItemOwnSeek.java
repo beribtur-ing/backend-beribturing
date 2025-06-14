@@ -1,14 +1,15 @@
 package ing.beribtur.feature.own.item.seek;
 
-import ing.beribtur.aggregate.item.entity.Product;
-import ing.beribtur.aggregate.item.entity.ProductCategory;
-import ing.beribtur.aggregate.item.entity.ProductImage;
-import ing.beribtur.aggregate.item.entity.ProductVariant;
-import ing.beribtur.aggregate.item.logic.ProductCategoryLogic;
-import ing.beribtur.aggregate.item.logic.ProductImageLogic;
-import ing.beribtur.aggregate.item.logic.ProductLogic;
-import ing.beribtur.aggregate.item.logic.ProductVariantLogic;
+import ing.beribtur.accent.message.Offset;
+import ing.beribtur.feature.shared.action.AuthHelper;
+import ing.beribtur.feature.shared.customstore.ProductCategoryCustomStore;
+import ing.beribtur.feature.shared.customstore.ProductCustomStore;
+import ing.beribtur.feature.shared.sdo.ProductCategoryRdo;
+import ing.beribtur.feature.shared.sdo.ProductRdo;
+import ing.beribtur.feature.shared.sdo.ProductSearchQdo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,53 +20,40 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemOwnSeek {
     //
-    private final ProductCategoryLogic productCategoryLogic;
-    private final ProductLogic productLogic;
-    private final ProductVariantLogic productVariantLogic;
-    private final ProductImageLogic productImageLogic;
+    private final AuthHelper authHelper;
+    private final ProductCategoryCustomStore productCategoryCustomStore;
+    private final ProductCustomStore productCustomStore;
 
-    public List<ProductCategory> findProductCategoriesByParentId(String parentId) {
+    // RDO methods for owner-specific queries
+    public Page<ProductCategoryRdo> findProductCategoryRdos(String searchKeyword, Offset offset) {
         //
-        return productCategoryLogic.findProductCategoriesByParentId(parentId);
+        return productCategoryCustomStore.findProductCategoryRdos(searchKeyword, offset, true); // Owners see only active categories
     }
 
-    public ProductCategory findProductCategoryById(String id) {
+    public ProductCategoryRdo findProductCategoryRdo(String categoryId) {
         //
-        return productCategoryLogic.findProductCategory(id);
+        return productCategoryCustomStore.findProductCategoryRdo(categoryId, true); // Owners see only active categories
     }
 
-    public List<Product> findProductsByOwnerId(String ownerId) {
+    public Page<ProductRdo> findProductRdos(ProductSearchQdo qdo, Offset offset) {
         //
-        return productLogic.findByOwnerId(ownerId);
+        String ownerId = authHelper.currentUserId();
+        qdo.setOwnerIds(List.of(ownerId));
+        qdo.setActive(true); // Owners can only see active products
+        return productCustomStore.findProductRdos(qdo, offset);
     }
 
-    public List<Product> findProductsByCategoryId(String categoryId) {
+    public ProductRdo findProductRdo(String productId) {
         //
-        return productLogic.findByCategoryId(categoryId);
-    }
+        String ownerId = authHelper.currentUserId();
 
-    public Product findProductById(String id) {
-        //
-        return productLogic.findProduct(id);
-    }
+        ProductRdo productRdo = productCustomStore.findProductRdo(productId);
 
-    public List<ProductVariant> findProductVariantsByProductId(String productId) {
-        //
-        return productVariantLogic.findProductVariantsByProductId(productId);
-    }
+        // Security check: ensure the product belongs to the owner
+        if (productRdo != null && !ownerId.equals(productRdo.getProduct().getOwnerId())) {
+            throw new AccessDeniedException("Forbidden: Access denied to product owned by another user");
+        }
 
-    public ProductVariant findProductVariantById(String id) {
-        //
-        return productVariantLogic.findProductVariant(id);
-    }
-
-    public List<ProductImage> findProductImagesByVariantId(String productId) {
-        //
-        return productImageLogic.findProductImagesByVariantId(productId);
-    }
-
-    public ProductImage findProductImageById(String id) {
-        //
-        return productImageLogic.findProductImage(id);
+        return productRdo;
     }
 }

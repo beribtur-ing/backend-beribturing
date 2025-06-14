@@ -2,17 +2,14 @@ package ing.beribtur.facade.api.feature.adm.item.rest;
 
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.accent.message.CommandResponse;
-import ing.beribtur.aggregate.item.entity.sdo.ProductCategoryCdo;
-import ing.beribtur.aggregate.item.entity.sdo.ProductCdo;
-import ing.beribtur.aggregate.item.entity.sdo.ProductImageCdo;
-import ing.beribtur.aggregate.item.entity.sdo.ProductVariantCdo;
 import ing.beribtur.facade.api.feature.adm.item.command.*;
 import ing.beribtur.feature.adm.item.flow.ItemAdmFlow;
+import ing.beribtur.feature.shared.sdo.ProductVariantRegCdo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,8 +23,7 @@ public class ItemAdmFlowResource implements ItemAdmFlowFacade {
     public CommandResponse<String> registerProductCategory(@RequestBody RegisterProductCategoryAdmCommand command) {
         //
         command.validate();
-        ProductCategoryCdo productCategoryCdo = command.getProductCategoryCdo();
-        String entityId = itemAdmFlow.registerProductCategory(productCategoryCdo);
+        String entityId = itemAdmFlow.registerProductCategory(command.getProductCategoryRegCdo());
         return new CommandResponse<>(entityId);
     }
 
@@ -57,8 +53,7 @@ public class ItemAdmFlowResource implements ItemAdmFlowFacade {
     public CommandResponse<String> registerProduct(@RequestBody RegisterProductAdmCommand command) {
         //
         command.validate();
-        ProductCdo productCdo = command.getProductCdo();
-        String entityId = itemAdmFlow.registerProduct(productCdo);
+        String entityId = itemAdmFlow.registerProduct(command.getProductAdmRegCdo());
         return new CommandResponse<>(entityId);
     }
 
@@ -80,16 +75,6 @@ public class ItemAdmFlowResource implements ItemAdmFlowFacade {
         command.validate();
         String productId = command.getProductId();
         String entityId = itemAdmFlow.removeProduct(productId);
-        return new CommandResponse<>(entityId);
-    }
-
-    @Override
-    @PostMapping("/register-product-image/command")
-    public CommandResponse<String> registerProductImage(@RequestBody RegisterProductImageAdmCommand command) {
-        //
-        command.validate();
-        ProductImageCdo productImageCdo = command.getProductImageCdo();
-        String entityId = itemAdmFlow.registerProductImage(productImageCdo);
         return new CommandResponse<>(entityId);
     }
 
@@ -116,11 +101,11 @@ public class ItemAdmFlowResource implements ItemAdmFlowFacade {
 
     @Override
     @PostMapping("/register-product-variant/command")
-    public CommandResponse<String> registerProductVariant(@RequestBody RegisterProductVariantAdmCommand command) {
+    public CommandResponse<String> registerProductVariant(@RequestPart("command") RegisterProductVariantAdmCommand command, @RequestPart(value = "images", required = false) List<MultipartFile> images) throws Exception {
         //
         command.validate();
-        ProductVariantCdo productVariantCdo = command.getProductVariantCdo();
-        String entityId = itemAdmFlow.registerProductVariant(productVariantCdo);
+        ProductVariantRegCdo productVariantRegCdo = command.getProductVariantRegCdo();
+        String entityId = itemAdmFlow.registerProductVariant(productVariantRegCdo, images);
         return new CommandResponse<>(entityId);
     }
 

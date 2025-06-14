@@ -30,6 +30,9 @@ public class ProductJpo extends DomainEntityJpo {
     private String categoryId;
     
     private String variantSequence;
+    
+    @Column(nullable = false)
+    private boolean active = true;
 
     public ProductJpo(Product product) {
         //

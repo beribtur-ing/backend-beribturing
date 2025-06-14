@@ -26,6 +26,9 @@ public class ProductImageJpo extends DomainEntityJpo {
     private String url;
     
     private int order;
+    
+    @Column(nullable = false)
+    private boolean active = true;
 
     public ProductImageJpo(ProductImage productImage) {
         //

@@ -23,6 +23,7 @@ public class ProductCategory extends DomainEntity implements Discountable {
     private String description;
     private String iconUrl;
     private String parentId; // Reference to parent category, if any
+    private boolean active;
 
     // Domain relationships
     private transient List<ProductCategory> subCategories;
@@ -31,6 +32,7 @@ public class ProductCategory extends DomainEntity implements Discountable {
         //
         super(productCategoryCdo.genId());
         BeanUtils.copyProperties(productCategoryCdo, this);
+        this.active = true;
     }
 
     @Override
@@ -47,6 +49,9 @@ public class ProductCategory extends DomainEntity implements Discountable {
                     break;
                 case "iconUrl":
                     this.iconUrl = value;
+                    break;
+                case "active":
+                    this.active = Boolean.parseBoolean(value);
                     break;
                 default:
                     throw new IllegalArgumentException("Update not allowed: " + nameValue);

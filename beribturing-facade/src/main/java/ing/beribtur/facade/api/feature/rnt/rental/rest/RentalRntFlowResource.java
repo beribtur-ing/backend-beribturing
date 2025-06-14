@@ -5,14 +5,13 @@ import ing.beribtur.accent.message.CommandResponse;
 import ing.beribtur.aggregate.rental.entity.sdo.ItemConditionCheckCdo;
 import ing.beribtur.aggregate.rental.entity.sdo.ItemConditionPhotoCdo;
 import ing.beribtur.aggregate.rental.entity.sdo.ReservationCdo;
-import ing.beribtur.facade.api.feature.rnt.rental.command.ModifyRentalRecordRntCommand;
-import ing.beribtur.facade.api.feature.rnt.rental.command.ModifyReservationRntCommand;
-import ing.beribtur.facade.api.feature.rnt.rental.command.RegisterItemConditionCheckRntCommand;
-import ing.beribtur.facade.api.feature.rnt.rental.command.RegisterItemConditionPhotoRntCommand;
-import ing.beribtur.facade.api.feature.rnt.rental.command.RegisterReservationRntCommand;
+import ing.beribtur.facade.api.feature.rnt.rental.command.*;
 import ing.beribtur.feature.rnt.rental.flow.RentalRntFlow;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor

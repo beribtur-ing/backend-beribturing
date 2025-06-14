@@ -1,22 +1,22 @@
 package ing.beribtur.aggregate.item.entity;
 
-import java.util.List;
-
 import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
+import ing.beribtur.accent.util.JsonUtil;
+import ing.beribtur.aggregate.item.entity.sdo.ProductVariantCdo;
 import ing.beribtur.aggregate.item.entity.vo.Price;
 import ing.beribtur.aggregate.item.entity.vo.ProductAvailability;
 import ing.beribtur.aggregate.item.entity.vo.Size;
 import ing.beribtur.aggregate.payment.entity.vo.Discountable;
 import ing.beribtur.aggregate.rental.entity.Reservation;
-import ing.beribtur.aggregate.item.entity.sdo.ProductVariantCdo;
-import ing.beribtur.accent.util.JsonUtil;
-import org.springframework.beans.BeanUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
+
+import java.util.List;
 
 @Setter
 @Getter

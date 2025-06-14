@@ -1,10 +1,10 @@
 package ing.beribtur.aggregate.item.store;
 
 
-import java.util.List;
-
 import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.item.entity.ProductVariant;
+
+import java.util.List;
 
 public interface ProductVariantStore {
     //
@@ -19,7 +19,4 @@ public interface ProductVariantStore {
     boolean exists(String id);
 
     List<ProductVariant> retrieveByProductId(String productId);
-    List<ProductVariant> retrieveByIsActive(boolean isActive);
-    List<ProductVariant> retrieveByBrand(String brand);
-    List<ProductVariant> retrieveByColor(String color);
 }

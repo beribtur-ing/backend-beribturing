@@ -4,11 +4,11 @@ import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.item.entity.sdo.ProductImageCdo;
-import org.springframework.beans.BeanUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 @Setter
 @Getter
@@ -19,6 +19,7 @@ public class ProductImage extends DomainEntity {
     private String variantId; // Reference to the product variant this image belongs to
     private String url;
     private int order;
+    private boolean active;
 
     // Domain relationships
     private transient ProductVariant variant;
@@ -27,6 +28,7 @@ public class ProductImage extends DomainEntity {
         //
         super(productImageCdo.genId());
         BeanUtils.copyProperties(productImageCdo, this);
+        this.active = true;
     }
 
     public static String genId(String variantId, long sequence) {
@@ -45,6 +47,9 @@ public class ProductImage extends DomainEntity {
                     break;
                 case "order":
                     this.order = Integer.parseInt(value);
+                    break;
+                case "active":
+                    this.active = Boolean.parseBoolean(value);
                     break;
                 default:
                     throw new IllegalArgumentException("Update not allowed: " + nameValue);

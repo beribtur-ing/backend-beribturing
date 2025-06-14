@@ -1,11 +1,7 @@
 package ing.beribtur.facade.api.feature.rnt.rental.rest;
 
 import ing.beribtur.accent.message.CommandResponse;
-import ing.beribtur.facade.api.feature.rnt.rental.command.ModifyRentalRecordRntCommand;
-import ing.beribtur.facade.api.feature.rnt.rental.command.ModifyReservationRntCommand;
-import ing.beribtur.facade.api.feature.rnt.rental.command.RegisterItemConditionCheckRntCommand;
-import ing.beribtur.facade.api.feature.rnt.rental.command.RegisterItemConditionPhotoRntCommand;
-import ing.beribtur.facade.api.feature.rnt.rental.command.RegisterReservationRntCommand;
+import ing.beribtur.facade.api.feature.rnt.rental.command.*;
 
 public interface RentalRntFlowFacade {
     //

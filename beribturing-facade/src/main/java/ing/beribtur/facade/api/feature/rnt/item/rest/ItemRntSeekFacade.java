@@ -2,19 +2,19 @@ package ing.beribtur.facade.api.feature.rnt.item.rest;
 
 
 import ing.beribtur.accent.message.QueryResponse;
-import ing.beribtur.aggregate.item.entity.Product;
-import ing.beribtur.aggregate.item.entity.ProductCategory;
-import ing.beribtur.aggregate.item.entity.ProductImage;
-import ing.beribtur.aggregate.item.entity.ProductVariant;
-import ing.beribtur.facade.api.feature.rnt.item.query.FindProductCategoryRntQuery;
-import ing.beribtur.facade.api.feature.rnt.item.query.FindProductImageRntQuery;
-import ing.beribtur.facade.api.feature.rnt.item.query.FindProductRntQuery;
-import ing.beribtur.facade.api.feature.rnt.item.query.FindProductVariantRntQuery;
+import ing.beribtur.facade.api.feature.rnt.item.query.FindProductCategoryRdoRntQuery;
+import ing.beribtur.facade.api.feature.rnt.item.query.FindProductCategoryRdosRntQuery;
+import ing.beribtur.facade.api.feature.rnt.item.query.FindProductRdoRntQuery;
+import ing.beribtur.facade.api.feature.rnt.item.query.FindProductRdosRntQuery;
+import ing.beribtur.feature.shared.sdo.ProductCategoryRdo;
+import ing.beribtur.feature.shared.sdo.ProductRdo;
+
+import java.util.List;
 
 public interface ItemRntSeekFacade {
     //
-    QueryResponse<ProductCategory> findProductCategory(FindProductCategoryRntQuery query);
-    QueryResponse<Product> findProduct(FindProductRntQuery query);
-    QueryResponse<ProductImage> findProductImage(FindProductImageRntQuery query);
-    QueryResponse<ProductVariant> findProductVariant(FindProductVariantRntQuery query);
+    QueryResponse<List<ProductCategoryRdo>> findProductCategoryRdos(FindProductCategoryRdosRntQuery query);
+    QueryResponse<ProductCategoryRdo> findProductCategoryRdo(FindProductCategoryRdoRntQuery query);
+    QueryResponse<List<ProductRdo>> findProductRdos(FindProductRdosRntQuery query);
+    QueryResponse<ProductRdo> findProductRdo(FindProductRdoRntQuery query);
 }

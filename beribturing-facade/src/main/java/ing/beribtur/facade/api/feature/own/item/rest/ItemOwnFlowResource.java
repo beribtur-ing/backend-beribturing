@@ -2,16 +2,14 @@ package ing.beribtur.facade.api.feature.own.item.rest;
 
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.accent.message.CommandResponse;
-import ing.beribtur.aggregate.item.entity.sdo.ProductCdo;
-import ing.beribtur.aggregate.item.entity.sdo.ProductImageCdo;
-import ing.beribtur.aggregate.item.entity.sdo.ProductVariantCdo;
 import ing.beribtur.facade.api.feature.own.item.command.*;
 import ing.beribtur.feature.own.item.flow.ItemOwnFlow;
+import ing.beribtur.feature.shared.sdo.ProductVariantRegCdo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,8 +23,7 @@ public class ItemOwnFlowResource implements ItemOwnFlowFacade {
     public CommandResponse<String> registerProduct(@RequestBody RegisterProductOwnCommand command) {
         //
         command.validate();
-        ProductCdo productCdo = command.getProductCdo();
-        String entityId = itemOwnFlow.registerProduct(productCdo);
+        String entityId = itemOwnFlow.registerProduct(command.getProductOwnRegCdo());
         return new CommandResponse<>(entityId);
     }
 
@@ -52,16 +49,6 @@ public class ItemOwnFlowResource implements ItemOwnFlowFacade {
     }
 
     @Override
-    @PostMapping("/register-product-image/command")
-    public CommandResponse<String> registerProductImage(@RequestBody RegisterProductImageOwnCommand command) {
-        //
-        command.validate();
-        ProductImageCdo productImageCdo = command.getProductImageCdo();
-        String entityId = itemOwnFlow.registerProductImage(productImageCdo);
-        return new CommandResponse<>(entityId);
-    }
-
-    @Override
     @PostMapping("/modify-product-image/command")
     public CommandResponse<String> modifyProductImage(@RequestBody ModifyProductImageOwnCommand command) {
         //
@@ -83,12 +70,12 @@ public class ItemOwnFlowResource implements ItemOwnFlowFacade {
     }
 
     @Override
-    @PostMapping("/register-product-variant/command")
-    public CommandResponse<String> registerProductVariant(@RequestBody RegisterProductVariantOwnCommand command) {
+    @PostMapping(value = "/register-product-variant/command", consumes = "multipart/form-data")
+    public CommandResponse<String> registerProductVariant(@RequestPart("command") RegisterProductVariantOwnCommand command, @RequestPart(value = "images", required = false) List<MultipartFile> images) throws Exception {
         //
         command.validate();
-        ProductVariantCdo productVariantCdo = command.getProductVariantCdo();
-        String entityId = itemOwnFlow.registerProductVariant(productVariantCdo);
+        ProductVariantRegCdo productVariantRegCdo = command.getProductVariantRegCdo();
+        String entityId = itemOwnFlow.registerProductVariant(productVariantRegCdo, images);
         return new CommandResponse<>(entityId);
     }
 

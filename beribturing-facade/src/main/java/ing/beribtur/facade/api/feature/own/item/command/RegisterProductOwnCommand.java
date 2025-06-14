@@ -1,7 +1,7 @@
 package ing.beribtur.facade.api.feature.own.item.command;
 
 import ing.beribtur.accent.message.CommandRequest;
-import ing.beribtur.aggregate.item.entity.sdo.ProductCdo;
+import ing.beribtur.feature.own.item.sdo.ProductOwnRegCdo;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.Assert;
@@ -10,10 +10,10 @@ import org.springframework.util.Assert;
 @Setter
 public class RegisterProductOwnCommand extends CommandRequest<String> {
     //
-    private ProductCdo productCdo;
+    private ProductOwnRegCdo productOwnRegCdo;
 
     public void validate() {
         //
-        Assert.notNull(productCdo, "'productCdo' is required.");
+        Assert.notNull(productOwnRegCdo, "'productOwnRegCdo' is required.");
     }
 }

@@ -1,7 +1,7 @@
 package ing.beribtur.facade.api.feature.adm.item.command;
 
 import ing.beribtur.accent.message.CommandRequest;
-import ing.beribtur.aggregate.item.entity.sdo.ProductCategoryCdo;
+import ing.beribtur.feature.adm.item.sdo.ProductCategoryRegCdo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,11 +14,11 @@ import org.springframework.util.Assert;
 @NoArgsConstructor
 public class RegisterProductCategoryAdmCommand extends CommandRequest<String> {
     //
-    private ProductCategoryCdo productCategoryCdo;
+    private ProductCategoryRegCdo productCategoryRegCdo;
 
     public void validate() {
         //
-        Assert.notNull(productCategoryCdo, "'categoryCdo' is required.");
+        Assert.notNull(productCategoryRegCdo, "'productCategoryRegCdo' is required.");
     }
 
 }

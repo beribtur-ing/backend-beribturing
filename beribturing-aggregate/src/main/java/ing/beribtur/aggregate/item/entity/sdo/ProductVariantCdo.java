@@ -1,10 +1,9 @@
 package ing.beribtur.aggregate.item.entity.sdo;
 
 import ing.beribtur.accent.domain.CreationDataObject;
+import ing.beribtur.aggregate.item.entity.ProductVariant;
 import ing.beribtur.aggregate.item.entity.vo.Price;
 import ing.beribtur.aggregate.item.entity.vo.ProductAvailability;
-import ing.beribtur.accent.util.JsonUtil;
-import ing.beribtur.aggregate.item.entity.ProductVariant;
 import ing.beribtur.aggregate.item.entity.vo.Size;
 import lombok.Builder;
 import lombok.Getter;

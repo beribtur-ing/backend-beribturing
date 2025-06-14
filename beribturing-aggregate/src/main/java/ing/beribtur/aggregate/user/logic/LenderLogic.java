@@ -43,4 +43,13 @@ public class LenderLogic {
         Pageable pageable = PageRequest.of(page, size, sort != null ? Sort.by(sort) : Sort.unsorted());
         return lenderStore.findDisabledLenders(pageable);
     }
+
+    public long nextProductSequence(String lenderId) {
+        //
+        Lender lender = retrieve(lenderId);
+        long sequence = lender.getProductSequence();
+        lender.setProductSequence(sequence + 1);
+        update(lender);
+        return sequence;
+    }
 }

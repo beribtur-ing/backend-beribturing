@@ -81,12 +81,6 @@ public class ProductImageJpaStore implements ProductImageStore {
     }
 
     @Override
-    public List<ProductImage> retrieveByVariantId(String variantId) {
-        //
-        return productImageRepository.findByVariantId(variantId).stream().map(ProductImageJpo::toDomain).collect(Collectors.toList());
-    }
-
-    @Override
     public List<ProductImage> retrieveByVariantIdOrderByOrderAsc(String variantId) {
         //
         return productImageRepository.findByVariantIdOrderByOrderAsc(variantId).stream().map(ProductImageJpo::toDomain).collect(Collectors.toList());

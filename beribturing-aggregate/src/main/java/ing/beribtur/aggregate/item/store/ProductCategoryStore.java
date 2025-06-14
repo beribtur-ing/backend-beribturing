@@ -1,10 +1,10 @@
 package ing.beribtur.aggregate.item.store;
 
 
-import java.util.List;
-
 import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.item.entity.ProductCategory;
+
+import java.util.List;
 
 public interface ProductCategoryStore {
     //
@@ -17,8 +17,4 @@ public interface ProductCategoryStore {
     void delete(ProductCategory productCategory);
     void delete(String id);
     boolean exists(String id);
-
-    List<ProductCategory> retrieveByParentId(String parentId);
-    List<ProductCategory> retrieveByNameContaining(String name);
-    ProductCategory retrieveByName(String name);
 }

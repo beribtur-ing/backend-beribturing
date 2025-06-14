@@ -83,22 +83,4 @@ public class ProductCategoryJpaStore implements ProductCategoryStore {
         Optional<ProductCategoryJpo> productCategoryJpo = productCategoryJpaRepository.findById(id);
         return productCategoryJpo.isPresent();
     }
-
-    @Override
-    public List<ProductCategory> retrieveByParentId(String parentId) {
-        //
-        return productCategoryJpaRepository.findByParentId(parentId).stream().map(ProductCategoryJpo::toDomain).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProductCategory> retrieveByNameContaining(String name) {
-        //
-        return productCategoryJpaRepository.findByNameContaining(name).stream().map(ProductCategoryJpo::toDomain).collect(Collectors.toList());
-    }
-
-    @Override
-    public ProductCategory retrieveByName(String name) {
-        //
-        return productCategoryJpaRepository.findByName(name).map(ProductCategoryJpo::toDomain).orElse(null);
-    }
 }

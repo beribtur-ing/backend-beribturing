@@ -1,7 +1,6 @@
 package ing.beribtur.aggregate.item.entity.vo;
 
 import ing.beribtur.accent.domain.ValueObject;
-import ing.beribtur.accent.util.JsonUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,6 @@
 package ing.beribtur.aggregate.item.entity.sdo;
 
 import ing.beribtur.accent.domain.CreationDataObject;
-import ing.beribtur.accent.util.JsonUtil;
 import ing.beribtur.aggregate.item.entity.Product;
 import lombok.Builder;
 import lombok.Getter;

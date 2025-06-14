@@ -1,71 +1,58 @@
 package ing.beribtur.feature.rnt.item.seek;
 
-import ing.beribtur.aggregate.item.entity.Product;
-import ing.beribtur.aggregate.item.entity.ProductCategory;
-import ing.beribtur.aggregate.item.entity.ProductImage;
-import ing.beribtur.aggregate.item.entity.ProductVariant;
-import ing.beribtur.aggregate.item.logic.ProductCategoryLogic;
-import ing.beribtur.aggregate.item.logic.ProductImageLogic;
-import ing.beribtur.aggregate.item.logic.ProductLogic;
-import ing.beribtur.aggregate.item.logic.ProductVariantLogic;
+import ing.beribtur.accent.message.Offset;
+import ing.beribtur.feature.shared.customstore.ProductCategoryCustomStore;
+import ing.beribtur.feature.shared.customstore.ProductCustomStore;
+import ing.beribtur.feature.shared.sdo.ProductCategoryRdo;
+import ing.beribtur.feature.shared.sdo.ProductRdo;
+import ing.beribtur.feature.shared.sdo.ProductSearchQdo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class ItemRntSeek {
     //
-    private final ProductCategoryLogic productCategoryLogic;
-    private final ProductLogic productLogic;
-    private final ProductVariantLogic productVariantLogic;
-    private final ProductImageLogic productImageLogic;
+    private final ProductCategoryCustomStore productCategoryCustomStore;
+    private final ProductCustomStore productCustomStore;
 
-    public List<ProductCategory> findProductCategoriesByParentId(String parentId) {
+    // RDO methods for renter queries (can see all available products)
+    public Page<ProductCategoryRdo> findProductCategoryRdos(String searchKeyword, Offset offset) {
         //
-        return productCategoryLogic.findProductCategoriesByParentId(parentId);
+        return productCategoryCustomStore.findProductCategoryRdos(searchKeyword, offset, true); // Renters see only active categories
     }
 
-    public ProductCategory findProductCategoryById(String id) {
+    public ProductCategoryRdo findProductCategoryRdo(String categoryId) {
         //
-        return productCategoryLogic.findProductCategory(id);
+        return productCategoryCustomStore.findProductCategoryRdo(categoryId, true); // Renters see only active categories
     }
 
-    public List<Product> findProductsByOwnerId(String ownerId) {
+    public Page<ProductRdo> findProductRdos(ProductSearchQdo qdo, Offset offset) {
         //
-        return productLogic.findByOwnerId(ownerId);
+        qdo.setActive(true); // Renters can only see active products
+        return productCustomStore.findProductRdos(qdo, offset);
     }
 
-    public List<Product> findProductsByCategoryId(String categoryId) {
+    public ProductRdo findProductRdo(String productId) {
         //
-        return productLogic.findByCategoryId(categoryId);
-    }
+        ProductRdo productRdo = productCustomStore.findProductRdo(productId);
 
-    public Product findProductById(String id) {
-        //
-        return productLogic.findProduct(id);
-    }
+        // Renters can see any product (no ownership restrictions)
+        // But we might want to filter for active/available products only
+        if (productRdo != null && productRdo.getProduct() != null) {
+            // Optional: Check if product has active variants
+            boolean hasActiveVariants = productRdo.getVariantRdos() != null &&
+                productRdo.getVariantRdos().stream()
+                    .anyMatch(variantRdo -> variantRdo.getVariant() != null && variantRdo.getVariant().isActive());
 
-    public List<ProductVariant> findProductVariantsByProductId(String productId) {
-        //
-        return productVariantLogic.findProductVariantsByProductId(productId);
-    }
+            if (!hasActiveVariants) {
+                return null; // Don't show products without active variants to renters
+            }
+        }
 
-    public ProductVariant findProductVariantById(String id) {
-        //
-        return productVariantLogic.findProductVariant(id);
-    }
-
-    public List<ProductImage> findProductImagesByVariantId(String productId) {
-        //
-        return productImageLogic.findProductImagesByVariantId(productId);
-    }
-
-    public ProductImage findProductImageById(String id) {
-        //
-        return productImageLogic.findProductImage(id);
+        return productRdo;
     }
 }

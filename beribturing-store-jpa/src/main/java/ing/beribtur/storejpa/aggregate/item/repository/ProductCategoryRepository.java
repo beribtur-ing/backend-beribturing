@@ -7,7 +7,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductCategoryRepository extends JpaRepository<ProductCategoryJpo, String> {
-    List<ProductCategoryJpo> findByParentId(String parentId);
-    List<ProductCategoryJpo> findByNameContaining(String name);
-    Optional<ProductCategoryJpo> findByName(String name);
+    List<ProductCategoryJpo> findByActive(boolean active);
 }

@@ -85,22 +85,4 @@ public class ProductVariantJpaStore implements ProductVariantStore {
         //
         return productVariantRepository.findByProductId(productId).stream().map(ProductVariantJpo::toDomain).collect(Collectors.toList());
     }
-
-    @Override
-    public List<ProductVariant> retrieveByIsActive(boolean isActive) {
-        //
-        return productVariantRepository.findByActive(isActive).stream().map(ProductVariantJpo::toDomain).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProductVariant> retrieveByBrand(String brand) {
-        //
-        return productVariantRepository.findByBrand(brand).stream().map(ProductVariantJpo::toDomain).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProductVariant> retrieveByColor(String color) {
-        //
-        return productVariantRepository.findByColor(color).stream().map(ProductVariantJpo::toDomain).collect(Collectors.toList());
-    }
 }

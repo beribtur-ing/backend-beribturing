@@ -1,8 +1,8 @@
 package ing.beribtur.aggregate.item.store;
 
 
-import ing.beribtur.aggregate.item.entity.ProductImage;
 import ing.beribtur.accent.message.Offset;
+import ing.beribtur.aggregate.item.entity.ProductImage;
 
 import java.util.List;
 
@@ -18,6 +18,5 @@ public interface ProductImageStore {
     void delete(String id);
     boolean exists(String id);
 
-    List<ProductImage> retrieveByVariantId(String variantId);
     List<ProductImage> retrieveByVariantIdOrderByOrderAsc(String variantId);
 }

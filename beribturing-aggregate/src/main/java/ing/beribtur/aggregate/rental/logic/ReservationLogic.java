@@ -1,6 +1,5 @@
 package ing.beribtur.aggregate.rental.logic;
 
-import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.accent.message.Offset;
 import ing.beribtur.accent.util.Entities;

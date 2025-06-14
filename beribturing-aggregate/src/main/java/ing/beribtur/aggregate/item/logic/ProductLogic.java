@@ -1,18 +1,18 @@
 package ing.beribtur.aggregate.item.logic;
 
+import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.accent.message.Offset;
 import ing.beribtur.accent.util.Entities;
 import ing.beribtur.aggregate.item.entity.Product;
 import ing.beribtur.aggregate.item.entity.sdo.ProductCdo;
-import ing.beribtur.accent.domain.NameValueList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
-
 import ing.beribtur.aggregate.item.store.ProductStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +51,11 @@ public class ProductLogic {
         return productStore.retrieveList(offset);
     }
 
+    public List<Product> findActiveProducts(Offset offset) {
+        //
+        return productStore.retrieveByActive(true);
+    }
+
     public void modifyProduct(String productId, NameValueList nameValues) {
         //
         Product product = findProduct(productId);
@@ -78,13 +83,17 @@ public class ProductLogic {
         return productStore.exists(productId);
     }
 
-    public List<Product> findByOwnerId(String ownerId) {
-        //
-        return productStore.retrieveByOwnerId(ownerId);
-    }
-
     public List<Product> findByCategoryId(String categoryId) {
         //
         return productStore.retrieveByCategoryId(categoryId);
+    }
+
+    public long nextVariantSequence(String productId) {
+        //
+        Product product = findProduct(productId);
+        long sequence = product.getVariantSequence();
+        product.setVariantSequence(sequence + 1);
+        productStore.update(product);
+        return sequence;
     }
 }

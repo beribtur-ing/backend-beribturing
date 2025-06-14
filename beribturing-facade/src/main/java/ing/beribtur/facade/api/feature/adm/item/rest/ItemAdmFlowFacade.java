@@ -2,6 +2,9 @@ package ing.beribtur.facade.api.feature.adm.item.rest;
 
 import ing.beribtur.accent.message.CommandResponse;
 import ing.beribtur.facade.api.feature.adm.item.command.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface ItemAdmFlowFacade {
     //
@@ -13,11 +16,10 @@ public interface ItemAdmFlowFacade {
     CommandResponse<String> modifyProduct(ModifyProductAdmCommand command);
     CommandResponse<String> removeProduct(RemoveProductAdmCommand command);
 
-    CommandResponse<String> registerProductImage(RegisterProductImageAdmCommand command);
     CommandResponse<String> modifyProductImage(ModifyProductImageAdmCommand command);
     CommandResponse<String> removeProductImage(RemoveProductImageAdmCommand command);
 
-    CommandResponse<String> registerProductVariant(RegisterProductVariantAdmCommand command);
+    CommandResponse<String> registerProductVariant(RegisterProductVariantAdmCommand command,  List<MultipartFile> images) throws Exception;
     CommandResponse<String> modifyProductVariant(ModifyProductVariantAdmCommand command);
     CommandResponse<String> removeProductVariant(RemoveProductVariantAdmCommand command);
 }

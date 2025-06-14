@@ -2,9 +2,7 @@ package ing.beribtur.storejpa.aggregate.item;
 
 import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.item.entity.Product;
-import ing.beribtur.aggregate.item.entity.Product;
 import ing.beribtur.aggregate.item.store.ProductStore;
-import ing.beribtur.storejpa.aggregate.item.jpo.ProductJpo;
 import ing.beribtur.storejpa.aggregate.item.jpo.ProductJpo;
 import ing.beribtur.storejpa.aggregate.item.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -83,20 +81,14 @@ public class ProductJpaStore implements ProductStore {
     }
 
     @Override
-    public List<Product> retrieveByOwnerId(String ownerId) {
-        //
-        return productRepository.findByOwnerId(ownerId).stream().map(ProductJpo::toDomain).collect(Collectors.toList());
-    }
-
-    @Override
     public List<Product> retrieveByCategoryId(String categoryId) {
         //
         return productRepository.findByCategoryId(categoryId).stream().map(ProductJpo::toDomain).collect(Collectors.toList());
     }
 
     @Override
-    public List<Product> retrieveByTitleContaining(String title) {
+    public List<Product> retrieveByActive(boolean active) {
         //
-        return productRepository.findByTitleContaining(title).stream().map(ProductJpo::toDomain).collect(Collectors.toList());
+        return productRepository.findByActive(active).stream().map(ProductJpo::toDomain).collect(Collectors.toList());
     }
 }

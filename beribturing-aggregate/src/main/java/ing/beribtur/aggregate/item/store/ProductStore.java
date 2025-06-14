@@ -18,7 +18,8 @@ public interface ProductStore {
     void delete(String id);
     boolean exists(String id);
 
-    List<Product> retrieveByOwnerId(String ownerId);
     List<Product> retrieveByCategoryId(String categoryId);
-    List<Product> retrieveByTitleContaining(String title);
+
+    // Additional active filtering methods (requested API)
+    List<Product> retrieveByActive(boolean active);
 }

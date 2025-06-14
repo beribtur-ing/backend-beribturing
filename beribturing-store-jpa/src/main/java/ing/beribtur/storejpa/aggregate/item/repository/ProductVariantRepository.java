@@ -8,6 +8,4 @@ import java.util.List;
 public interface ProductVariantRepository extends JpaRepository<ProductVariantJpo, String> {
     List<ProductVariantJpo> findByProductId(String productId);
     List<ProductVariantJpo> findByActive(boolean isActive);
-    List<ProductVariantJpo> findByBrand(String brand);
-    List<ProductVariantJpo> findByColor(String color);
 }

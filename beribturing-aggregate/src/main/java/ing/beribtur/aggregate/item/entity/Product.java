@@ -25,6 +25,7 @@ public class Product extends DomainEntity implements Discountable {
     private String description;
     private String categoryId; // Reference to ProductCategory
     private long variantSequence;
+    private boolean active;
 
     // Domain relationships
     private transient Lendee owner;
@@ -36,6 +37,7 @@ public class Product extends DomainEntity implements Discountable {
         super(productCdo.genId());
         BeanUtils.copyProperties(productCdo, this);
         this.variantSequence = 1L;
+        this.active = true;
     }
 
 
@@ -61,6 +63,9 @@ public class Product extends DomainEntity implements Discountable {
                     break;
                 case "variantSequence":
                     this.variantSequence = Long.parseLong(value);
+                    break;
+                case "active":
+                    this.active = Boolean.parseBoolean(value);
                     break;
                 default:
                     throw new IllegalArgumentException("Update not allowed: " + nameValue);

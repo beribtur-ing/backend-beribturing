@@ -3,7 +3,7 @@ package ing.beribtur.facade.api.feature.rnt.auth.rest;
 import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.facade.api.feature.rnt.auth.query.AccountSignInRntQuery;
 import ing.beribtur.feature.rnt.auth.seek.AuthRntSeek;
-import ing.beribtur.feature.shared.rdo.AccountSignInTokenRdo;
+import ing.beribtur.feature.shared.sdo.AccountSignInTokenRdo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
