@@ -5,10 +5,6 @@ import ing.beribtur.facade.api.feature.own.item.command.*;
 
 public interface ItemOwnFlowFacade {
     //
-    CommandResponse<String> registerProductCategory(RegisterProductCategoryOwnCommand command);
-    CommandResponse<String> modifyProductCategory(ModifyProductCategoryOwnCommand command);
-    CommandResponse<String> removeProductCategory(RemoveProductCategoryOwnCommand command);
-
     CommandResponse<String> registerProduct(RegisterProductOwnCommand command);
     CommandResponse<String> modifyProduct(ModifyProductOwnCommand command);
     CommandResponse<String> removeProduct(RemoveProductOwnCommand command);

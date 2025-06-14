@@ -2,7 +2,6 @@ package ing.beribtur.facade.api.feature.own.item.rest;
 
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.accent.message.CommandResponse;
-import ing.beribtur.aggregate.item.entity.sdo.ProductCategoryCdo;
 import ing.beribtur.aggregate.item.entity.sdo.ProductCdo;
 import ing.beribtur.aggregate.item.entity.sdo.ProductImageCdo;
 import ing.beribtur.aggregate.item.entity.sdo.ProductVariantCdo;
@@ -20,37 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ItemOwnFlowResource implements ItemOwnFlowFacade {
     //
     private final ItemOwnFlow itemOwnFlow;
-
-    @Override
-    @PostMapping("/register-product-category/command")
-    public CommandResponse<String> registerProductCategory(@RequestBody RegisterProductCategoryOwnCommand command) {
-        //
-        command.validate();
-        ProductCategoryCdo productCategoryCdo = command.getProductCategoryCdo();
-        String entityId = itemOwnFlow.registerProductCategory(productCategoryCdo);
-        return new CommandResponse<>(entityId);
-    }
-
-    @Override
-    @PostMapping("/modify-product-category/command")
-    public CommandResponse<String> modifyProductCategory(@RequestBody ModifyProductCategoryOwnCommand command) {
-        //
-        command.validate();
-        String categoryId = command.getCategoryId();
-        NameValueList nameValueList = command.getNameValueList();
-        String entityId = itemOwnFlow.modifyProductCategory(categoryId, nameValueList);
-        return new CommandResponse<>(entityId);
-    }
-
-    @Override
-    @PostMapping("/remove-product-category/command")
-    public CommandResponse<String> removeProductCategory(@RequestBody RemoveProductCategoryOwnCommand command) {
-        //
-        command.validate();
-        String categoryId = command.getCategoryId();
-        String entityId = itemOwnFlow.removeProductCategory(categoryId);
-        return new CommandResponse<>(entityId);
-    }
 
     @Override
     @PostMapping("/register-product/command")

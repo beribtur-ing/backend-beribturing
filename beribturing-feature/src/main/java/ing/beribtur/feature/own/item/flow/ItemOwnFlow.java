@@ -1,11 +1,9 @@
 package ing.beribtur.feature.own.item.flow;
 
 import ing.beribtur.accent.domain.NameValueList;
-import ing.beribtur.aggregate.item.entity.sdo.ProductCategoryCdo;
 import ing.beribtur.aggregate.item.entity.sdo.ProductCdo;
 import ing.beribtur.aggregate.item.entity.sdo.ProductImageCdo;
 import ing.beribtur.aggregate.item.entity.sdo.ProductVariantCdo;
-import ing.beribtur.aggregate.item.logic.ProductCategoryLogic;
 import ing.beribtur.aggregate.item.logic.ProductImageLogic;
 import ing.beribtur.aggregate.item.logic.ProductLogic;
 import ing.beribtur.aggregate.item.logic.ProductVariantLogic;
@@ -18,27 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ItemOwnFlow {
     //
-    private final ProductCategoryLogic productCategoryLogic;
     private final ProductLogic productLogic;
     private final ProductVariantLogic productVariantLogic;
     private final ProductImageLogic productImageLogic;
-
-    public String registerProductCategory(ProductCategoryCdo productCategoryCdo) {
-        //
-        return productCategoryLogic.registerProductCategory(productCategoryCdo);
-    }
-
-    public String modifyProductCategory(String categoryId, NameValueList nameValueList) {
-        //
-        productCategoryLogic.modifyProductCategory(categoryId, nameValueList);
-        return categoryId;
-    }
-
-    public String removeProductCategory(String categoryId) {
-        //
-        productCategoryLogic.removeProductCategory(categoryId);
-        return categoryId;
-    }
 
     public String registerProduct(ProductCdo productCdo) {
         //
