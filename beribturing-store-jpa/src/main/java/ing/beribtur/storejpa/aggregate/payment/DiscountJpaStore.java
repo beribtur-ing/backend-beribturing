@@ -1,5 +1,6 @@
 package ing.beribtur.storejpa.aggregate.payment;
 
+import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.payment.entity.Discount;
 import ing.beribtur.aggregate.payment.entity.vo.DiscountScope;
 import ing.beribtur.aggregate.payment.entity.vo.DiscountType;
@@ -46,13 +47,13 @@ public class DiscountJpaStore implements DiscountStore {
     public void update(Discount discount) {
         DiscountJpo discountJpo = discountRepository.findById(discount.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Discount not found: " + discount.getId()));
-        
+
         // Update the JPO with the domain entity's values
         DiscountJpo updatedJpo = new DiscountJpo(discount);
         updatedJpo.setEntityVersion(discountJpo.getEntityVersion());
         updatedJpo.setRegisteredBy(discountJpo.getRegisteredBy());
         updatedJpo.setRegisteredOn(discountJpo.getRegisteredOn());
-        
+
         discountRepository.save(updatedJpo);
     }
 
@@ -60,32 +61,72 @@ public class DiscountJpaStore implements DiscountStore {
     public void delete(String id) {
         discountRepository.deleteById(id);
     }
-    
+
     // Additional methods for specific queries
     public List<Discount> findByName(String name) {
         return DiscountJpo.toDomains(discountRepository.findByName(name));
     }
-    
+
     public List<Discount> findByType(DiscountType type) {
         return DiscountJpo.toDomains(discountRepository.findByType(type.name()));
     }
-    
+
     public List<Discount> findByScope(DiscountScope scope) {
         return DiscountJpo.toDomains(discountRepository.findByScope(scope.name()));
     }
-    
+
     public List<Discount> findByTargetId(String targetId) {
         return DiscountJpo.toDomains(discountRepository.findByTargetId(targetId));
     }
-    
+
     public List<Discount> findByActive(boolean active) {
         return DiscountJpo.toDomains(discountRepository.findByActive(active));
     }
-    
+
     public List<Discount> findCurrentlyActive() {
         LocalDateTime now = LocalDateTime.now();
         return DiscountJpo.toDomains(
             discountRepository.findByStartDateBeforeAndEndDateAfterAndActive(now, now, true)
         );
+    }
+
+    @Override
+    public List<Discount> retrieveList(Offset offset) {
+        return List.of();
+    }
+
+    @Override
+    public boolean exists(String id) {
+        return false;
+    }
+
+    @Override
+    public List<Discount> retrieveByActive(boolean active) {
+        return List.of();
+    }
+
+    @Override
+    public List<Discount> retrieveByScope(DiscountScope scope) {
+        return List.of();
+    }
+
+    @Override
+    public List<Discount> retrieveByTargetId(String targetId) {
+        return List.of();
+    }
+
+    @Override
+    public List<Discount> retrieveByEndDateBefore(LocalDateTime dateTime) {
+        return List.of();
+    }
+
+    @Override
+    public List<Discount> retrieveValidDiscounts(LocalDateTime now) {
+        return List.of();
+    }
+
+    @Override
+    public List<Discount> retrieveApplicableDiscounts(String targetId, DiscountScope scope, LocalDateTime now) {
+        return List.of();
     }
 }
