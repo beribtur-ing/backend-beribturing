@@ -26,7 +26,7 @@ public class AuthOwnSeek {
         accountLogic.findByPhoneNumberAndRole(phoneNumber, roleName);
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(phoneNumber, password));
+                new UsernamePasswordAuthenticationToken(phoneNumber + "-" + roleName, password));
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String accessToken = jwtUtils.generateAccessToken(userDetails, roleName);

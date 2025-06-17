@@ -20,7 +20,8 @@ public class UserDetailsServiceLogic implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account user = userAccountStore.findByPhoneNumber(username);
+        String[] usernameRole = username.split("-");
+        Account user = userAccountStore.findByPhoneNumberAndRole(usernameRole[0], usernameRole[1]);
         if (user == null || !user.isEnabled()) {
             throw new UsernameNotFoundException(username);
         }
