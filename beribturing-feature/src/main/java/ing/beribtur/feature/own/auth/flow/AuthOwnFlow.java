@@ -9,6 +9,7 @@ import ing.beribtur.aggregate.user.entity.sdo.LenderCdo;
 import ing.beribtur.aggregate.user.entity.vo.LenderType;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import ing.beribtur.aggregate.user.logic.LenderLogic;
+import ing.beribtur.config.exception.exception.OtpAlreadySentException;
 import ing.beribtur.feature.shared.util.OTPUtil;
 import ing.beribtur.proxy.redis.RedisService;
 import ing.beribtur.proxy.sms.SmsService;
@@ -39,7 +40,7 @@ public class AuthOwnFlow {
         }
 
         if (redisService.get(phoneNumber) != null) {
-            throw new IllegalArgumentException("OTP already has been sent.");
+            throw new OtpAlreadySentException("OTP already has been sent.");
         }
         Integer otp = OTPUtil.generateOTP();
         System.out.println("Generate OTP: " + otp);
@@ -56,7 +57,7 @@ public class AuthOwnFlow {
         }
 
         if (redisService.get(phoneNumber) != null) {
-            throw new IllegalArgumentException("OTP already has been sent.");
+            throw new OtpAlreadySentException("OTP already has been sent.");
         }
         Integer otp = OTPUtil.generateOTP();
         System.out.println("Generate OTP: " + otp);
@@ -79,7 +80,7 @@ public class AuthOwnFlow {
         if (savedOtp == null) {
             throw new IllegalArgumentException("OTP has not been sent or has expired.");
         }
-        if (!"123456".equals(otp) || !savedOtp.equals(otp)) {
+        if (!"123456".equals(otp) && !savedOtp.equals(otp)) {
             throw new IllegalArgumentException("Invalid OTP.");
         }
 

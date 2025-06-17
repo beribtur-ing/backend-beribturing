@@ -1,14 +1,9 @@
 package ing.beribtur.feature.adm.auth.flow;
 
 import ing.beribtur.aggregate.account.entity.Account;
-import ing.beribtur.aggregate.account.entity.sdo.AccountCdo;
 import ing.beribtur.aggregate.account.entity.vo.Role;
 import ing.beribtur.aggregate.account.logic.AccountLogic;
-import ing.beribtur.aggregate.user.entity.Lender;
-import ing.beribtur.aggregate.user.entity.sdo.LenderCdo;
-import ing.beribtur.aggregate.user.entity.vo.LenderType;
-import ing.beribtur.aggregate.user.entity.vo.Profile;
-import ing.beribtur.aggregate.user.logic.LenderLogic;
+import ing.beribtur.config.exception.exception.OtpAlreadySentException;
 import ing.beribtur.feature.shared.util.OTPUtil;
 import ing.beribtur.proxy.redis.RedisService;
 import ing.beribtur.proxy.sms.SmsService;
@@ -29,7 +24,6 @@ public class AuthAdmFlow {
     private final RedisService redisService;
     private final SmsService smsService;
     private final PasswordEncoder passwordEncoder;
-    private final LenderLogic lenderLogic;
 
     public Boolean sendOTP(String phoneNumber) {
         //
@@ -39,7 +33,7 @@ public class AuthAdmFlow {
         }
 
         if (redisService.get(phoneNumber) != null) {
-            throw new IllegalArgumentException("OTP already has been sent.");
+            throw new OtpAlreadySentException("OTP already has been sent.");
         }
         Integer otp = OTPUtil.generateOTP();
         System.out.println("Generate OTP: " + otp);
@@ -56,7 +50,7 @@ public class AuthAdmFlow {
         }
 
         if (redisService.get(phoneNumber) != null) {
-            throw new IllegalArgumentException("OTP already has been sent.");
+            throw new OtpAlreadySentException("OTP already has been sent.");
         }
         Integer otp = OTPUtil.generateOTP();
         System.out.println("Generate OTP: " + otp);
