@@ -50,8 +50,6 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/feature/owner/review/find-reviews-by-product-variant-id/query").permitAll()
-                                .requestMatchers("/feature/owner/report/find-reports-by-product-variant-id/query").permitAll()
                                 .requestMatchers("/feature/admin/auth/**").permitAll()
                                 .requestMatchers("/feature/owner/auth/**").permitAll()
                                 .requestMatchers("/feature/renter/auth/**").permitAll()
