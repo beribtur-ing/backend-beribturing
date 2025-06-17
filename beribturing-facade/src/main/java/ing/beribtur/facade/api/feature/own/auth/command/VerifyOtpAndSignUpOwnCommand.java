@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor
 @Getter
@@ -26,12 +27,13 @@ public class VerifyOtpAndSignUpOwnCommand {
         Assert.hasText(otp, "otp must not be empty");
         AuthUtil.passwordValidation(password);
         Assert.hasText(name, "name must not be empty");
-        Assert.notNull(profile, "profile must not be null");
-        AuthUtil.emailValidation(getProfile().getEmail());
-        Assert.hasText(profile.getAddress(), "profile.address must not be empty");
-        Assert.notNull(profile.getLocation(), "profile.location must not be null");
-        Assert.notNull(profile.getLocation().getLatitude(), "profile.location.latitude must not be null");
-        Assert.notNull(profile.getLocation().getLongitude(), "profile.location.longitude must not be null");
+        if (profile != null && StringUtils.hasText(profile.getEmail())) {
+            AuthUtil.emailValidation(profile.getEmail());
+        }
+//        Assert.hasText(profile.getAddress(), "profile.address must not be empty");
+//        Assert.notNull(profile.getLocation(), "profile.location must not be null");
+//        Assert.notNull(profile.getLocation().getLatitude(), "profile.location.latitude must not be null");
+//        Assert.notNull(profile.getLocation().getLongitude(), "profile.location.longitude must not be null");
         Assert.notNull(lenderType, "lenderType must not be null");
     }
 }

@@ -8,6 +8,7 @@ import ing.beribtur.aggregate.user.entity.Lendee;
 import ing.beribtur.aggregate.user.entity.sdo.LendeeCdo;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import ing.beribtur.aggregate.user.logic.LendeeLogic;
+import ing.beribtur.config.exception.exception.OtpAlreadySentException;
 import ing.beribtur.feature.shared.util.OTPUtil;
 import ing.beribtur.proxy.redis.RedisService;
 import ing.beribtur.proxy.sms.SmsService;
@@ -38,7 +39,7 @@ public class AuthRntFlow {
         }
 
         if (redisService.get(phoneNumber) != null) {
-            throw new IllegalArgumentException("OTP already has been sent.");
+            throw new OtpAlreadySentException("OTP already has been sent.");
         }
         Integer otp = OTPUtil.generateOTP();
         System.out.println("Generate OTP: " + otp);
@@ -55,7 +56,7 @@ public class AuthRntFlow {
         }
 
         if (redisService.get(phoneNumber) != null) {
-            throw new IllegalArgumentException("OTP already has been sent.");
+            throw new OtpAlreadySentException("OTP already has been sent.");
         }
         Integer otp = OTPUtil.generateOTP();
         System.out.println("Generate OTP: " + otp);
