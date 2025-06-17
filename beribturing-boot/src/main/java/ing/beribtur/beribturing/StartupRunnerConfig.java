@@ -17,12 +17,16 @@ public class StartupRunnerConfig {
     @Bean
     public CommandLineRunner startupRunner() {
         return args -> {
-            accountLogic.create(new Account(AccountCdo.builder()
-                    .phoneNumber("998935367303")
-                    .password("Qwerty12@")
-                    .email("email")
-                    .role(Role.ROLE_ADMIN)
-                    .build()));
+            String number = "998935367303";
+            Role role = Role.ROLE_ADMIN;
+            if (!accountLogic.existsPhoneAndRole(number, role.name())) {
+                accountLogic.create(new Account(AccountCdo.builder()
+                        .phoneNumber(number)
+                        .password("Qwerty12@")
+                        .email("email")
+                        .role(role)
+                        .build()));
+            }
         };
     }
 }
