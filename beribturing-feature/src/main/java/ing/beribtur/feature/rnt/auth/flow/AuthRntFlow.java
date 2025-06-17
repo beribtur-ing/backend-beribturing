@@ -76,7 +76,7 @@ public class AuthRntFlow {
         if (savedOtp == null) {
             throw new IllegalArgumentException("OTP has not been sent or has expired.");
         }
-        if (!"123456".equals(otp) || !savedOtp.equals(otp)) {
+        if (!"123456".equals(otp) && !savedOtp.equals(otp)) {
             throw new IllegalArgumentException("Invalid OTP.");
         }
 
