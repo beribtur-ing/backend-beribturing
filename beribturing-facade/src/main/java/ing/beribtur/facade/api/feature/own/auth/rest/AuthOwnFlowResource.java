@@ -31,7 +31,7 @@ public class AuthOwnFlowResource implements AuthOwnFlowFacade {
 
     @Override
     @PostMapping("/verify-otp-sign-up/command")
-    public CommandResponse<Boolean> verifyOtpAndSignUpLender(@RequestBody VerifyOtpAndSignUpOwnCommand command) {
+    public CommandResponse<Boolean> verifyOtpAndSignUp(@RequestBody VerifyOtpAndSignUpOwnCommand command) {
         command.validate();
         String phoneNumber = command.getPhoneNumber();
         String otp = command.getOtp();

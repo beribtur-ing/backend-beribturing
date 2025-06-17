@@ -1,4 +1,4 @@
-package ing.beribtur.aggregate.maintenance;
+package ing.beribtur.aggregate.maintenance.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.accent.domain.NameValue;

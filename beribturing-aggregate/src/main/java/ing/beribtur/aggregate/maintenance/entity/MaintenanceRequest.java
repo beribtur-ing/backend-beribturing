@@ -1,10 +1,10 @@
-package ing.beribtur.aggregate.maintenance;
+package ing.beribtur.aggregate.maintenance.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.item.entity.ProductVariant;
-import ing.beribtur.aggregate.maintenance.vo.MaintenanceStatus;
+import ing.beribtur.aggregate.maintenance.entity.vo.MaintenanceStatus;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
 import ing.beribtur.aggregate.user.entity.Lendee;
 import ing.beribtur.aggregate.user.entity.Lender;

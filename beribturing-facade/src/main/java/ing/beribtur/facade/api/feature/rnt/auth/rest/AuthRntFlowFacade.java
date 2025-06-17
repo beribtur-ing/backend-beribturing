@@ -7,7 +7,7 @@ import ing.beribtur.facade.api.feature.rnt.auth.command.VerifyOtpAndSignUpRntCom
 
 public interface AuthRntFlowFacade {
     CommandResponse<Boolean> sendOtp(SendOtpRntCommand command);
-    CommandResponse<Boolean> verifyOtpAndSignUpLender(VerifyOtpAndSignUpRntCommand command);
+    CommandResponse<Boolean> verifyOtpAndSignUp(VerifyOtpAndSignUpRntCommand command);
     CommandResponse<Boolean> sendResetPasswordOTP(SendOtpRntCommand command);
     CommandResponse<Boolean> resetPassword(ResetPasswordRntCommand command);
 }

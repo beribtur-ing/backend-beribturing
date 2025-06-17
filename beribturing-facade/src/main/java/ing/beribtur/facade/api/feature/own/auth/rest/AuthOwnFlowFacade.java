@@ -8,6 +8,6 @@ import ing.beribtur.facade.api.feature.own.auth.command.VerifyOtpAndSignUpOwnCom
 public interface AuthOwnFlowFacade {
     CommandResponse<Boolean> sendOtp(SendOtpOwnCommand command);
     CommandResponse<Boolean> sendResetPasswordOTP(SendOtpOwnCommand command);
-    CommandResponse<Boolean> verifyOtpAndSignUpLender(VerifyOtpAndSignUpOwnCommand command);
+    CommandResponse<Boolean> verifyOtpAndSignUp(VerifyOtpAndSignUpOwnCommand command);
     CommandResponse<Boolean> resetPassword(ResetPasswordOwnCommand command);
 }

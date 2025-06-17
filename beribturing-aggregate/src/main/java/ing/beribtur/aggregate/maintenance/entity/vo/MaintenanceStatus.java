@@ -1,4 +1,4 @@
-package ing.beribtur.aggregate.maintenance.vo;
+package ing.beribtur.aggregate.maintenance.entity.vo;
 
 
 /**

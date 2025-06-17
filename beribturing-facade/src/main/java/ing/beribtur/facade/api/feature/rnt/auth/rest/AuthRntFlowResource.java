@@ -30,7 +30,7 @@ public class AuthRntFlowResource implements AuthRntFlowFacade {
 
     @Override
     @PostMapping("/verify-otp-sign-up/command")
-    public CommandResponse<Boolean> verifyOtpAndSignUpLender(@RequestBody VerifyOtpAndSignUpRntCommand command) {
+    public CommandResponse<Boolean> verifyOtpAndSignUp(@RequestBody VerifyOtpAndSignUpRntCommand command) {
         command.validate();
         String phoneNumber = command.getPhoneNumber();
         String otp = command.getOtp();
