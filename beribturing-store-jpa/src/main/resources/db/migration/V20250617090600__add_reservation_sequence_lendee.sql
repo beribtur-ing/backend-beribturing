@@ -1,0 +1,2 @@
+ALTER TABLE LENDEE
+    ADD COLUMN reservation_sequence BIGINT NOT NULL DEFAULT 0;
