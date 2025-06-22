@@ -5,7 +5,7 @@ import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.item.entity.sdo.ProductCdo;
 import ing.beribtur.aggregate.payment.entity.vo.Discountable;
-import ing.beribtur.aggregate.user.entity.Lendee;
+import ing.beribtur.aggregate.user.entity.Lender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +28,7 @@ public class Product extends DomainEntity implements Discountable {
     private boolean active;
 
     // Domain relationships
-    private transient Lendee owner;
+    private transient Lender owner;
     private transient ProductCategory category;
     private transient List<ProductVariant> variants;
 
