@@ -52,4 +52,8 @@ public class LenderLogic {
         update(lender);
         return sequence;
     }
+
+    public Lender findByPhoneNumber(String username) {
+        return lenderStore.findByPhoneNumber(username);
+    }
 }

@@ -58,8 +58,12 @@ public class LenderJpaStore implements LenderStore {
     }
 
     // Additional query methods
-    public List<Lender> findByPhoneNumber(String phoneNumber) {
-        return LenderJpo.toDomains(lenderRepository.findByPhoneNumber(phoneNumber));
+    public Lender findByPhoneNumber(String phoneNumber) {
+        LenderJpo lenderJpo = lenderRepository.findByPhoneNumber(phoneNumber);
+        if (lenderJpo == null) {
+            throw new IllegalArgumentException("Lender not found with phone number: " + phoneNumber);
+        }
+        return lenderJpo.toDomain();
     }
 
     public List<Lender> findByEmail(String email) {

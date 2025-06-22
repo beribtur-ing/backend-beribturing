@@ -15,4 +15,6 @@ public interface LenderStore {
     void update(Lender lender);
     void delete(String id);
     Page<Lender> findDisabledLenders(Pageable pageable);
+
+    Lender findByPhoneNumber(String username);
 }
