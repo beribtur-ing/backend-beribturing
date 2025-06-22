@@ -35,4 +35,7 @@ public class LendeeLogic {
         lendeeStore.delete(id);
     }
 
+    public Lendee findByPhoneNumber(String username) {
+        return lendeeStore.findByPhoneNumber(username);
+    }
 }

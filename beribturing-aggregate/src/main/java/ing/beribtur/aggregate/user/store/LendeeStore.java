@@ -12,4 +12,6 @@ public interface LendeeStore {
     List<Lendee> retrieveAll(List<String> ids);
     void update(Lendee lendee);
     void delete(String id);
+
+    Lendee findByPhoneNumber(String username);
 }

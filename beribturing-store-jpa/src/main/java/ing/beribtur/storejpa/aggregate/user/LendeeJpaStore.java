@@ -54,8 +54,12 @@ public class LendeeJpaStore implements LendeeStore {
     }
 
     // Additional query methods
-    public List<Lendee> findByPhoneNumber(String phoneNumber) {
-        return LendeeJpo.toDomains(lendeeRepository.findByPhoneNumber(phoneNumber));
+    public Lendee findByPhoneNumber(String phoneNumber) {
+        LendeeJpo lendeeJpo = lendeeRepository.findByPhoneNumber(phoneNumber);
+        if (lendeeJpo == null) {
+            throw new IllegalArgumentException("Lendee not found with phone number: " + phoneNumber);
+        }
+        return lendeeJpo.toDomain();
     }
 
     public List<Lendee> findByEmail(String email) {
