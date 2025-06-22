@@ -1,12 +1,11 @@
 package ing.beribtur.facade.api.feature.rnt.item.rest;
 
+import ing.beribtur.accent.message.Offset;
 import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.accent.util.QueryResponseUtil;
-import ing.beribtur.facade.api.feature.rnt.item.query.FindProductCategoryRdoRntQuery;
-import ing.beribtur.facade.api.feature.rnt.item.query.FindProductCategoryRdosRntQuery;
-import ing.beribtur.facade.api.feature.rnt.item.query.FindProductRdoRntQuery;
-import ing.beribtur.facade.api.feature.rnt.item.query.FindProductRdosRntQuery;
+import ing.beribtur.facade.api.feature.rnt.item.query.*;
 import ing.beribtur.feature.rnt.item.seek.ItemRntSeek;
+import ing.beribtur.feature.shared.sdo.PopularProductRdo;
 import ing.beribtur.feature.shared.sdo.ProductCategoryRdo;
 import ing.beribtur.feature.shared.sdo.ProductRdo;
 import ing.beribtur.feature.shared.sdo.ProductSearchQdo;
@@ -63,5 +62,15 @@ public class ItemRntSeekResource implements ItemRntSeekFacade {
         String productId = query.getProductId();
         ProductRdo response = itemRntSeek.findProductRdo(productId);
         return new QueryResponse<>(response);
+    }
+
+    @Override
+    public QueryResponse<List<PopularProductRdo>> findPopularProductRdos(FindPopularProductRdosRntQuery query) {
+        //
+        query.validate();
+        Integer maxCount = query.getMaxCount();
+        Offset offset = query.getOffset();
+        Page<PopularProductRdo> responsePage = itemRntSeek.findPopularProductRdos(maxCount, offset);
+        return QueryResponseUtil.fromPage(responsePage);
     }
 }

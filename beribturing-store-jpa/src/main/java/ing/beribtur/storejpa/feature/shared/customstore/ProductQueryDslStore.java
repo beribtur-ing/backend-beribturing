@@ -1,14 +1,17 @@
 package ing.beribtur.storejpa.feature.shared.customstore;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.item.entity.ProductImage;
 import ing.beribtur.feature.shared.customstore.ProductCustomStore;
+import ing.beribtur.feature.shared.sdo.PopularProductRdo;
 import ing.beribtur.feature.shared.sdo.ProductRdo;
 import ing.beribtur.feature.shared.sdo.ProductSearchQdo;
 import ing.beribtur.feature.shared.sdo.ProductVariantRdo;
@@ -18,15 +21,24 @@ import ing.beribtur.storejpa.feature.shared.customstore.pdo.ProductRdoPdo;
 import ing.beribtur.storejpa.util.QuerydslUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static ing.beribtur.storejpa.aggregate.item.jpo.QProductCategoryJpo.productCategoryJpo;
 import static ing.beribtur.storejpa.aggregate.item.jpo.QProductImageJpo.productImageJpo;
 import static ing.beribtur.storejpa.aggregate.item.jpo.QProductJpo.productJpo;
 import static ing.beribtur.storejpa.aggregate.item.jpo.QProductVariantJpo.productVariantJpo;
+import static ing.beribtur.storejpa.aggregate.rental.jpo.QRentalRecordJpo.rentalRecordJpo;
+import static ing.beribtur.storejpa.aggregate.review.jpo.QReviewJpo.reviewJpo;
+import static ing.beribtur.storejpa.aggregate.user.jpo.QLenderJpo.lenderJpo;
 
 @Repository
 @RequiredArgsConstructor
@@ -213,6 +225,141 @@ public class ProductQueryDslStore implements ProductCustomStore {
         }
 
         return productRdoPdo.toRdo(this::findProductVariantRdos);
+    }
+
+    @Override
+    public Page<PopularProductRdo> findPopularProductRdos(Integer maxCount, Offset offset) {
+        // Validate and set pagination parameters
+        int limit = (offset != null && offset.getLimit() > 0) ? offset.getLimit() : 20;
+        int offsetVal = (offset != null && offset.getOffset() >= 0) ? offset.getOffset() : 0;
+
+        // Step 1: Get normalization bounds with a lightweight query
+        List<Tuple> boundsData = jpaQueryFactory
+                .select(
+                        rentalRecordJpo.id.countDistinct().as("rentalCount"),
+                        reviewJpo.rating.avg().coalesce(0.0).as("averageRating")
+                )
+                .from(productVariantJpo)
+                .join(productJpo).on(productVariantJpo.productId.eq(productJpo.id))
+                .leftJoin(rentalRecordJpo).on(rentalRecordJpo.productVariantId.eq(productVariantJpo.id))
+                .leftJoin(reviewJpo).on(reviewJpo.recordId.eq(rentalRecordJpo.id).and(reviewJpo.visible.isTrue()))
+                .leftJoin(lenderJpo).on(lenderJpo.id.eq(productJpo.ownerId))
+                .where(productJpo.active.isTrue()
+                        .and(productVariantJpo.active.isTrue())
+                        .and(lenderJpo.active.isTrue()))
+                .groupBy(productJpo.id)
+                .fetch();
+
+        if (boundsData.isEmpty()) {
+            return Page.empty(PageRequest.of(offsetVal / limit, limit));
+        }
+
+        // Calculate normalization bounds
+        long minRental = Long.MAX_VALUE, maxRental = Long.MIN_VALUE;
+        double minRating = Double.MAX_VALUE, maxRating = Double.MIN_VALUE;
+
+        for (Tuple tuple : boundsData) {
+            long rentalCount = Optional.ofNullable(tuple.get(0, Long.class)).orElse(0L);
+            double rating = Optional.ofNullable(tuple.get(1, Double.class)).orElse(0.0);
+
+            minRental = Math.min(minRental, rentalCount);
+            maxRental = Math.max(maxRental, rentalCount);
+            minRating = Math.min(minRating, rating);
+            maxRating = Math.max(maxRating, rating);
+        }
+
+        // Handle edge cases to prevent division by zero
+        if (maxRental == minRental) {
+            maxRental = minRental + 1;
+        }
+        if (Double.compare(maxRating, minRating) == 0) {
+            maxRating = minRating + 1.0;
+        }
+
+
+        // Step 2: Main query with popularity calculation in database
+        NumberExpression<Double> rentalCountNormalized = rentalRecordJpo.id.countDistinct()
+                .subtract(minRental)
+                .castToNum(Double.class)
+                .divide(maxRental - minRental);
+
+        NumberExpression<Double> ratingNormalized = reviewJpo.rating.avg().coalesce(0.0)
+                .subtract(minRating)
+                .divide(maxRating - minRating);
+
+        NumberExpression<Double> popularityScore = rentalCountNormalized.multiply(0.7)
+                .add(ratingNormalized.multiply(0.3));
+
+        // Get total count for pagination
+        Long totalCountResult = jpaQueryFactory
+                .select(productJpo.id.countDistinct())
+                .from(productVariantJpo)
+                .join(productJpo).on(productVariantJpo.productId.eq(productJpo.id))
+                .leftJoin(lenderJpo).on(lenderJpo.id.eq(productJpo.ownerId))
+                .where(productJpo.active.isTrue()
+                        .and(productVariantJpo.active.isTrue())
+                        .and(lenderJpo.active.isTrue()))
+                .fetchOne();
+
+        long totalCount = Optional.ofNullable(totalCountResult).orElse(0L);
+
+        // Apply maxCount to total if specified
+        long effectiveTotal = (maxCount != null && maxCount > 0) ?
+                Math.min(maxCount, totalCount) : totalCount;
+
+        // Main query with database-level sorting and pagination
+        List<Tuple> results = jpaQueryFactory
+                .select(
+                        productJpo.id,
+                        productJpo.title,
+                        productVariantJpo.priceAmount,
+                        productVariantJpo.priceCurrency,
+                        productVariantJpo.priceUnit,
+                        productImageJpo.url.min().as("imageUrl"),
+                        lenderJpo.address,
+                        rentalRecordJpo.id.countDistinct().as("rentalCount"),
+                        reviewJpo.rating.avg().coalesce(0.0).as("averageRating"),
+                        reviewJpo.id.countDistinct().as("reviewCount"),
+                        popularityScore.as("popularityScore")
+                )
+                .from(productVariantJpo)
+                .join(productJpo).on(productVariantJpo.productId.eq(productJpo.id))
+                .leftJoin(rentalRecordJpo).on(rentalRecordJpo.productVariantId.eq(productVariantJpo.id))
+                .leftJoin(reviewJpo).on(reviewJpo.recordId.eq(rentalRecordJpo.id).and(reviewJpo.visible.isTrue()))
+                .leftJoin(productImageJpo).on(productImageJpo.variantId.eq(productVariantJpo.id)
+                        .and(productImageJpo.active.isTrue()))
+                .leftJoin(lenderJpo).on(lenderJpo.id.eq(productJpo.ownerId))
+                .where(productJpo.active.isTrue()
+                        .and(productVariantJpo.active.isTrue())
+                        .and(lenderJpo.active.isTrue()))
+                .groupBy(productJpo.id, productJpo.title, productVariantJpo.priceAmount,
+                        productVariantJpo.priceCurrency, productVariantJpo.priceUnit, lenderJpo.address)
+                .orderBy(popularityScore.desc(), productJpo.id.asc()) // Secondary sort for consistency
+                .offset(offsetVal)
+                .limit(Math.min(limit, (int)(effectiveTotal - offsetVal)))
+                .fetch();
+
+        // Step 3: Map results to DTOs
+        List<PopularProductRdo> products = results.stream()
+                .map(tuple -> {
+                    double avgRating = Optional.ofNullable(tuple.get(8, Double.class)).orElse(0.0);
+
+                    return PopularProductRdo.builder()
+                            .title(tuple.get(1, String.class))
+                            .averageRating((int) Math.round(avgRating))
+                            .reviewCount(Optional.ofNullable(tuple.get(9, Long.class)).orElse(0L).intValue())
+                            .url(tuple.get(5, String.class))
+                            .priceAmount(tuple.get(2, BigDecimal.class))
+                            .priceCurrency(tuple.get(3, String.class))
+                            .priceUnit(tuple.get(4, String.class))
+                            .address(tuple.get(6, String.class))
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        // Create proper pageable object
+        Pageable pageable = PageRequest.of(offsetVal / limit, limit);
+        return new PageImpl<>(products, pageable, effectiveTotal);
     }
 
     private List<ProductVariantRdo> findProductVariantRdos(String productId) {

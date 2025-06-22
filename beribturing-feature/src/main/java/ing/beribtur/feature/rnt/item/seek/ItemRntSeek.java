@@ -3,6 +3,7 @@ package ing.beribtur.feature.rnt.item.seek;
 import ing.beribtur.accent.message.Offset;
 import ing.beribtur.feature.shared.customstore.ProductCategoryCustomStore;
 import ing.beribtur.feature.shared.customstore.ProductCustomStore;
+import ing.beribtur.feature.shared.sdo.PopularProductRdo;
 import ing.beribtur.feature.shared.sdo.ProductCategoryRdo;
 import ing.beribtur.feature.shared.sdo.ProductRdo;
 import ing.beribtur.feature.shared.sdo.ProductSearchQdo;
@@ -54,5 +55,10 @@ public class ItemRntSeek {
         }
 
         return productRdo;
+    }
+
+    public Page<PopularProductRdo> findPopularProductRdos(Integer maxCount, Offset offset) {
+        //
+        return productCustomStore.findPopularProductRdos(maxCount, offset);
     }
 }
