@@ -15,4 +15,6 @@ public interface DiscountRepository extends JpaRepository<DiscountJpo, String> {
     List<DiscountJpo> findByStartDateBefore(LocalDateTime date);
     List<DiscountJpo> findByEndDateAfter(LocalDateTime date);
     List<DiscountJpo> findByStartDateBeforeAndEndDateAfterAndActive(LocalDateTime now, LocalDateTime now2, boolean active);
+    List<DiscountJpo> findByEndDateBefore(LocalDateTime dateTime);
+    List<DiscountJpo> findByTargetIdAndScopeAndStartDateBeforeAndEndDateAfterAndActive(String targetId, String name, LocalDateTime now, LocalDateTime now1, boolean b);
 }

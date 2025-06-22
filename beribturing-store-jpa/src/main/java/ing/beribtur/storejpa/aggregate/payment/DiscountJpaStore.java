@@ -8,6 +8,8 @@ import ing.beribtur.aggregate.payment.store.DiscountStore;
 import ing.beribtur.storejpa.aggregate.payment.jpo.DiscountJpo;
 import ing.beribtur.storejpa.aggregate.payment.repository.DiscountRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -86,47 +88,56 @@ public class DiscountJpaStore implements DiscountStore {
     public List<Discount> findCurrentlyActive() {
         LocalDateTime now = LocalDateTime.now();
         return DiscountJpo.toDomains(
-            discountRepository.findByStartDateBeforeAndEndDateAfterAndActive(now, now, true)
+                discountRepository.findByStartDateBeforeAndEndDateAfterAndActive(now, now, true)
         );
     }
 
     @Override
     public List<Discount> retrieveList(Offset offset) {
-        return List.of();
+        Pageable pageable = PageRequest.of(offset.page(), offset.limit());
+
+        return discountRepository.findAll(pageable).map(DiscountJpo::toDomain).toList();
     }
 
     @Override
     public boolean exists(String id) {
-        return false;
+        return discountRepository.existsById(id);
     }
 
     @Override
     public List<Discount> retrieveByActive(boolean active) {
-        return List.of();
+        return discountRepository.findByActive(active).stream().map(DiscountJpo::toDomain).toList();
     }
 
     @Override
     public List<Discount> retrieveByScope(DiscountScope scope) {
-        return List.of();
+        return discountRepository.findByScope(scope.name()).stream().map(DiscountJpo::toDomain).toList();
     }
 
     @Override
     public List<Discount> retrieveByTargetId(String targetId) {
-        return List.of();
+        return discountRepository.findByTargetId(targetId).stream().map(DiscountJpo::toDomain).toList();
     }
 
     @Override
     public List<Discount> retrieveByEndDateBefore(LocalDateTime dateTime) {
-        return List.of();
+        return discountRepository.findByEndDateBefore(dateTime).stream()
+                .map(DiscountJpo::toDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Discount> retrieveValidDiscounts(LocalDateTime now) {
-        return List.of();
+        return discountRepository.findByStartDateBeforeAndEndDateAfterAndActive(now, now, true)
+                .stream()
+                .map(DiscountJpo::toDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Discount> retrieveApplicableDiscounts(String targetId, DiscountScope scope, LocalDateTime now) {
-        return List.of();
+        return discountRepository.findByTargetIdAndScopeAndStartDateBeforeAndEndDateAfterAndActive(
+                targetId, scope.name(), now, now, true
+        ).stream().map(DiscountJpo::toDomain).collect(Collectors.toList());
     }
 }
