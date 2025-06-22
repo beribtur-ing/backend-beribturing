@@ -61,6 +61,9 @@ public class WebSecurityConfig {
                                         "/webjars/**",
                                         "/error"
                                 ).permitAll()
+                                .requestMatchers("/feature/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/feature/owner/**").hasRole("OWNER")
+                                .requestMatchers("/feature/renter/**").hasRole("RENTER")
                                 .anyRequest()
                                 .authenticated()
                 );
