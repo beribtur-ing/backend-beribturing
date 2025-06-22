@@ -4,6 +4,7 @@ import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.item.entity.ProductVariant;
+import ing.beribtur.aggregate.maintenance.entity.sdo.MaintenanceRequestCdo;
 import ing.beribtur.aggregate.maintenance.entity.vo.MaintenanceStatus;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
 import ing.beribtur.aggregate.user.entity.Lendee;
@@ -12,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,6 +45,17 @@ public class MaintenanceRequest extends DomainEntity {
     private transient Lender owner;                     // The Lender who owns the product
     private transient RentalRecord rentalRecord;        // The rental record associated with this request
     private transient List<MaintenancePhoto> photos;    // Photos attached to this maintenance request
+
+    public MaintenanceRequest(MaintenanceRequestCdo maintenanceRequestCdo) {
+        //
+        super(maintenanceRequestCdo.genId());
+        BeanUtils.copyProperties(maintenanceRequestCdo, this);
+    }
+
+    public static String genId(String productVariantId, long sequence) {
+        //
+        return String.format("%s-%d", productVariantId, sequence);
+    }
 
     @Override
     protected void modifyAttributes(NameValueList nameValues) {
