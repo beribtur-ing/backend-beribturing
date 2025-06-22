@@ -23,7 +23,7 @@ public class MaintenancePhoto extends DomainEntity {
     private String maintenanceRequestId;  // Reference to the MaintenanceRequest this photo is attached to
     private String url;                   // URL to the photo
     private String description;           // Optional description of what the photo shows
-    private int order;                    // Order of the photo in the maintenance request
+    private int photoOrder;               // Order of the photo in the maintenance request
 
     // Domain relationships
     private transient MaintenanceRequest maintenanceRequest;  // The maintenance request this photo is attached to
@@ -49,7 +49,7 @@ public class MaintenancePhoto extends DomainEntity {
                 case "maintenanceRequestId" -> this.maintenanceRequestId = value;
                 case "url" -> this.url = value;
                 case "description" -> this.description = value;
-                case "order" -> this.order = Integer.parseInt(value);
+                case "photoOrder" -> this.photoOrder = Integer.parseInt(value);
                 default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
             }
         }
