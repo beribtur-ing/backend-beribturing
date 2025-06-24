@@ -53,21 +53,16 @@ public class ProductQueryDslStore implements ProductCustomStore {
         BooleanBuilder whereClause = new BooleanBuilder();
 
         boolean hasVariantFilters = hasProductVariantFilters(qdo);
-        
+
         // Text search
         if (StringUtils.hasText(qdo.getSearchKeyword())) {
+            whereClause.and(
+                productJpo.title.containsIgnoreCase(qdo.getSearchKeyword())
+                    .or(productJpo.description.containsIgnoreCase(qdo.getSearchKeyword())));
             if (hasVariantFilters) {
-                whereClause.and(
-                    productJpo.title.containsIgnoreCase(qdo.getSearchKeyword())
-                        .or(productJpo.description.containsIgnoreCase(qdo.getSearchKeyword()))
-                        .or(productVariantJpo.brand.containsIgnoreCase(qdo.getSearchKeyword()))
-                        .or(productVariantJpo.model.containsIgnoreCase(qdo.getSearchKeyword()))
-                );
-            } else {
-                whereClause.and(
-                    productJpo.title.containsIgnoreCase(qdo.getSearchKeyword())
-                        .or(productJpo.description.containsIgnoreCase(qdo.getSearchKeyword()))
-                );
+                whereClause.or(
+                        productVariantJpo.brand.containsIgnoreCase(qdo.getSearchKeyword()))
+                    .or(productVariantJpo.model.containsIgnoreCase(qdo.getSearchKeyword()));
             }
         }
 
@@ -124,7 +119,9 @@ public class ProductQueryDslStore implements ProductCustomStore {
 
         // Availability filters
         if (qdo.getActive() != null) {
-            whereClause.and(productVariantJpo.active.eq(qdo.getActive()));
+            if (hasVariantFilters)
+                whereClause.and(productVariantJpo.active.eq(qdo.getActive()));
+            whereClause.and(productJpo.active.eq(qdo.getActive()));
         }
 
         if (qdo.getAvailableFrom() != null) {
@@ -254,20 +251,20 @@ public class ProductQueryDslStore implements ProductCustomStore {
 
         // Step 1: Get normalization bounds with a lightweight query
         List<Tuple> boundsData = jpaQueryFactory
-                .select(
-                        rentalRecordJpo.id.countDistinct().as("rentalCount"),
-                        reviewJpo.rating.avg().coalesce(0.0).as("averageRating")
-                )
-                .from(productVariantJpo)
-                .join(productJpo).on(productVariantJpo.productId.eq(productJpo.id))
-                .leftJoin(rentalRecordJpo).on(rentalRecordJpo.productVariantId.eq(productVariantJpo.id))
-                .leftJoin(reviewJpo).on(reviewJpo.recordId.eq(rentalRecordJpo.id).and(reviewJpo.visible.isTrue()))
-                .leftJoin(lenderJpo).on(lenderJpo.id.eq(productJpo.ownerId))
-                .where(productJpo.active.isTrue()
-                        .and(productVariantJpo.active.isTrue())
-                        .and(lenderJpo.active.isTrue()))
-                .groupBy(productJpo.id)
-                .fetch();
+            .select(
+                rentalRecordJpo.id.countDistinct().as("rentalCount"),
+                reviewJpo.rating.avg().coalesce(0.0).as("averageRating")
+            )
+            .from(productVariantJpo)
+            .join(productJpo).on(productVariantJpo.productId.eq(productJpo.id))
+            .leftJoin(rentalRecordJpo).on(rentalRecordJpo.productVariantId.eq(productVariantJpo.id))
+            .leftJoin(reviewJpo).on(reviewJpo.recordId.eq(rentalRecordJpo.id).and(reviewJpo.visible.isTrue()))
+            .leftJoin(lenderJpo).on(lenderJpo.id.eq(productJpo.ownerId))
+            .where(productJpo.active.isTrue()
+                .and(productVariantJpo.active.isTrue())
+                .and(lenderJpo.active.isTrue()))
+            .groupBy(productJpo.id)
+            .fetch();
 
         if (boundsData.isEmpty()) {
             return Page.empty(PageRequest.of(offsetVal / limit, limit));
@@ -298,83 +295,83 @@ public class ProductQueryDslStore implements ProductCustomStore {
 
         // Step 2: Main query with popularity calculation in database
         NumberExpression<Double> rentalCountNormalized = rentalRecordJpo.id.countDistinct()
-                .subtract(minRental)
-                .castToNum(Double.class)
-                .divide(maxRental - minRental);
+            .subtract(minRental)
+            .castToNum(Double.class)
+            .divide(maxRental - minRental);
 
         NumberExpression<Double> ratingNormalized = reviewJpo.rating.avg().coalesce(0.0)
-                .subtract(minRating)
-                .divide(maxRating - minRating);
+            .subtract(minRating)
+            .divide(maxRating - minRating);
 
         NumberExpression<Double> popularityScore = rentalCountNormalized.multiply(0.7)
-                .add(ratingNormalized.multiply(0.3));
+            .add(ratingNormalized.multiply(0.3));
 
         // Get total count for pagination
         Long totalCountResult = jpaQueryFactory
-                .select(productJpo.id.countDistinct())
-                .from(productVariantJpo)
-                .join(productJpo).on(productVariantJpo.productId.eq(productJpo.id))
-                .leftJoin(lenderJpo).on(lenderJpo.id.eq(productJpo.ownerId))
-                .where(productJpo.active.isTrue()
-                        .and(productVariantJpo.active.isTrue())
-                        .and(lenderJpo.active.isTrue()))
-                .fetchOne();
+            .select(productJpo.id.countDistinct())
+            .from(productVariantJpo)
+            .join(productJpo).on(productVariantJpo.productId.eq(productJpo.id))
+            .leftJoin(lenderJpo).on(lenderJpo.id.eq(productJpo.ownerId))
+            .where(productJpo.active.isTrue()
+                .and(productVariantJpo.active.isTrue())
+                .and(lenderJpo.active.isTrue()))
+            .fetchOne();
 
         long totalCount = Optional.ofNullable(totalCountResult).orElse(0L);
 
         // Apply maxCount to total if specified
         long effectiveTotal = (maxCount != null && maxCount > 0) ?
-                Math.min(maxCount, totalCount) : totalCount;
+            Math.min(maxCount, totalCount) : totalCount;
 
         // Main query with database-level sorting and pagination
         List<Tuple> results = jpaQueryFactory
-                .select(
-                        productJpo.id,
-                        productJpo.title,
-                        productVariantJpo.priceAmount,
-                        productVariantJpo.priceCurrency,
-                        productVariantJpo.priceUnit,
-                        productImageJpo.url.min().as("imageUrl"),
-                        lenderJpo.address,
-                        rentalRecordJpo.id.countDistinct().as("rentalCount"),
-                        reviewJpo.rating.avg().coalesce(0.0).as("averageRating"),
-                        reviewJpo.id.countDistinct().as("reviewCount"),
-                        popularityScore.as("popularityScore")
-                )
-                .from(productVariantJpo)
-                .join(productJpo).on(productVariantJpo.productId.eq(productJpo.id))
-                .leftJoin(rentalRecordJpo).on(rentalRecordJpo.productVariantId.eq(productVariantJpo.id))
-                .leftJoin(reviewJpo).on(reviewJpo.recordId.eq(rentalRecordJpo.id).and(reviewJpo.visible.isTrue()))
-                .leftJoin(productImageJpo).on(productImageJpo.variantId.eq(productVariantJpo.id)
-                        .and(productImageJpo.active.isTrue()))
-                .leftJoin(lenderJpo).on(lenderJpo.id.eq(productJpo.ownerId))
-                .where(productJpo.active.isTrue()
-                        .and(productVariantJpo.active.isTrue())
-                        .and(lenderJpo.active.isTrue()))
-                .groupBy(productJpo.id, productJpo.title, productVariantJpo.priceAmount,
-                        productVariantJpo.priceCurrency, productVariantJpo.priceUnit, lenderJpo.address)
-                .orderBy(popularityScore.desc(), productJpo.id.asc()) // Secondary sort for consistency
-                .offset(offsetVal)
-                .limit(Math.min(limit, (int)(effectiveTotal - offsetVal)))
-                .fetch();
+            .select(
+                productJpo.id,
+                productJpo.title,
+                productVariantJpo.priceAmount,
+                productVariantJpo.priceCurrency,
+                productVariantJpo.priceUnit,
+                productImageJpo.url.min().as("imageUrl"),
+                lenderJpo.address,
+                rentalRecordJpo.id.countDistinct().as("rentalCount"),
+                reviewJpo.rating.avg().coalesce(0.0).as("averageRating"),
+                reviewJpo.id.countDistinct().as("reviewCount"),
+                popularityScore.as("popularityScore")
+            )
+            .from(productVariantJpo)
+            .join(productJpo).on(productVariantJpo.productId.eq(productJpo.id))
+            .leftJoin(rentalRecordJpo).on(rentalRecordJpo.productVariantId.eq(productVariantJpo.id))
+            .leftJoin(reviewJpo).on(reviewJpo.recordId.eq(rentalRecordJpo.id).and(reviewJpo.visible.isTrue()))
+            .leftJoin(productImageJpo).on(productImageJpo.variantId.eq(productVariantJpo.id)
+                .and(productImageJpo.active.isTrue()))
+            .leftJoin(lenderJpo).on(lenderJpo.id.eq(productJpo.ownerId))
+            .where(productJpo.active.isTrue()
+                .and(productVariantJpo.active.isTrue())
+                .and(lenderJpo.active.isTrue()))
+            .groupBy(productJpo.id, productJpo.title, productVariantJpo.priceAmount,
+                productVariantJpo.priceCurrency, productVariantJpo.priceUnit, lenderJpo.address)
+            .orderBy(popularityScore.desc(), productJpo.id.asc()) // Secondary sort for consistency
+            .offset(offsetVal)
+            .limit(Math.min(limit, (int) (effectiveTotal - offsetVal)))
+            .fetch();
 
         // Step 3: Map results to DTOs
         List<PopularProductRdo> products = results.stream()
-                .map(tuple -> {
-                    double avgRating = Optional.ofNullable(tuple.get(8, Double.class)).orElse(0.0);
+            .map(tuple -> {
+                double avgRating = Optional.ofNullable(tuple.get(8, Double.class)).orElse(0.0);
 
-                    return PopularProductRdo.builder()
-                            .title(tuple.get(1, String.class))
-                            .averageRating((int) Math.round(avgRating))
-                            .reviewCount(Optional.ofNullable(tuple.get(9, Long.class)).orElse(0L).intValue())
-                            .url(tuple.get(5, String.class))
-                            .priceAmount(tuple.get(2, BigDecimal.class))
-                            .priceCurrency(tuple.get(3, String.class))
-                            .priceUnit(tuple.get(4, String.class))
-                            .address(tuple.get(6, String.class))
-                            .build();
-                })
-                .collect(Collectors.toList());
+                return PopularProductRdo.builder()
+                    .title(tuple.get(1, String.class))
+                    .averageRating((int) Math.round(avgRating))
+                    .reviewCount(Optional.ofNullable(tuple.get(9, Long.class)).orElse(0L).intValue())
+                    .url(tuple.get(5, String.class))
+                    .priceAmount(tuple.get(2, BigDecimal.class))
+                    .priceCurrency(tuple.get(3, String.class))
+                    .priceUnit(tuple.get(4, String.class))
+                    .address(tuple.get(6, String.class))
+                    .build();
+            })
+            .collect(Collectors.toList());
 
         // Create proper pageable object
         Pageable pageable = PageRequest.of(offsetVal / limit, limit);
@@ -419,20 +416,19 @@ public class ProductQueryDslStore implements ProductCustomStore {
     private boolean hasProductVariantFilters(ProductSearchQdo qdo) {
         //
         return (qdo.getBrands() != null && !qdo.getBrands().isEmpty()) ||
-               (qdo.getModels() != null && !qdo.getModels().isEmpty()) ||
-               (qdo.getManufacturers() != null && !qdo.getManufacturers().isEmpty()) ||
-               (qdo.getColors() != null && !qdo.getColors().isEmpty()) ||
-               (qdo.getMaterials() != null && !qdo.getMaterials().isEmpty()) ||
-               (qdo.getMadeInCountries() != null && !qdo.getMadeInCountries().isEmpty()) ||
-               (qdo.getProducedYears() != null && !qdo.getProducedYears().isEmpty()) ||
-               qdo.getMinPrice() != null ||
-               qdo.getMaxPrice() != null ||
-               qdo.getPriceUnit() != null ||
-               qdo.getActive() != null ||
-               qdo.getAvailableFrom() != null ||
-               qdo.getAvailableUntil() != null ||
-               qdo.getIsAvailable() != null ||
-               qdo.getHasVariants() != null ||
-               qdo.getHasImages() != null;
+            (qdo.getModels() != null && !qdo.getModels().isEmpty()) ||
+            (qdo.getManufacturers() != null && !qdo.getManufacturers().isEmpty()) ||
+            (qdo.getColors() != null && !qdo.getColors().isEmpty()) ||
+            (qdo.getMaterials() != null && !qdo.getMaterials().isEmpty()) ||
+            (qdo.getMadeInCountries() != null && !qdo.getMadeInCountries().isEmpty()) ||
+            (qdo.getProducedYears() != null && !qdo.getProducedYears().isEmpty()) ||
+            qdo.getMinPrice() != null ||
+            qdo.getMaxPrice() != null ||
+            qdo.getPriceUnit() != null ||
+            qdo.getAvailableFrom() != null ||
+            qdo.getAvailableUntil() != null ||
+            qdo.getIsAvailable() != null ||
+            qdo.getHasVariants() != null ||
+            qdo.getHasImages() != null;
     }
 }
