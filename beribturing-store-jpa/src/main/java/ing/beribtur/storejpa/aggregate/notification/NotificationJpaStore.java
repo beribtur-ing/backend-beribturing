@@ -1,7 +1,8 @@
 package ing.beribtur.storejpa.aggregate.notification;
 
+import ing.beribtur.aggregate.notification.entity.Contact;
 import ing.beribtur.aggregate.notification.entity.Notification;
-import ing.beribtur.aggregate.notification.entity.vo.NotificationType;
+import ing.beribtur.aggregate.notification.entity.vo.*;
 import ing.beribtur.aggregate.notification.store.NotificationStore;
 import ing.beribtur.storejpa.aggregate.notification.jpo.NotificationJpo;
 import ing.beribtur.storejpa.aggregate.notification.repository.NotificationRepository;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class NotificationJpaStore implements NotificationStore {
     //
     private final NotificationRepository notificationRepository;
+    private final ContactJpaStore contactJpaStore;
 
     @Override
     public void create(Notification notification) {
@@ -44,13 +46,14 @@ public class NotificationJpaStore implements NotificationStore {
     public void update(Notification notification) {
         NotificationJpo notificationJpo = notificationRepository.findById(notification.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Notification not found: " + notification.getId()));
-        
+
         // Update the JPO with the domain entity's values
         NotificationJpo updatedJpo = new NotificationJpo(notification);
+        updatedJpo.setId(notificationJpo.getId());
         updatedJpo.setEntityVersion(notificationJpo.getEntityVersion());
         updatedJpo.setRegisteredBy(notificationJpo.getRegisteredBy());
         updatedJpo.setRegisteredOn(notificationJpo.getRegisteredOn());
-        
+
         notificationRepository.save(updatedJpo);
     }
 
@@ -58,21 +61,54 @@ public class NotificationJpaStore implements NotificationStore {
     public void delete(String id) {
         notificationRepository.deleteById(id);
     }
-    
-    // Additional methods for specific queries
-    public List<Notification> findByRecipientId(String recipientId) {
-        return NotificationJpo.toDomains(notificationRepository.findByRecipientId(recipientId));
+
+    @Override
+    public List<Notification> retrieveByReceiverId(String receiverId) {
+        return NotificationJpo.toDomains(notificationRepository.findByReceiverId(receiverId));
     }
-    
-    public List<Notification> findByIsRead(boolean isRead) {
-        return NotificationJpo.toDomains(notificationRepository.findByRead(isRead));
+
+    @Override
+    public List<Notification> retrieveByStatus(Status status) {
+        return NotificationJpo.toDomains(notificationRepository.findByStatus(status));
     }
-    
+
+    @Override
+    public List<Notification> retrieveByChannelType(ChannelType channelType) {
+        return NotificationJpo.toDomains(notificationRepository.findByChannelType(channelType));
+    }
+
+    @Override
+    public List<Notification> retrieveByReceiverIdAndStatus(String receiverId, Status status) {
+        return NotificationJpo.toDomains(notificationRepository.findByReceiverIdAndStatus(receiverId, status));
+    }
+
+    @Override
+    public void createContact(Contact contact) {
+        contactJpaStore.create(contact);
+    }
+
+    @Override
+    public Contact retrieveContact(String userId) {
+        return contactJpaStore.retrieve(userId);
+    }
+
+    @Override
+    public void updateContact(Contact contact) {
+        contactJpaStore.update(contact);
+    }
+
+    @Override
+    public void deleteContact(String userId) {
+        contactJpaStore.delete(userId);
+    }
+
+    // Additional query methods
     public List<Notification> findByType(NotificationType type) {
-        return NotificationJpo.toDomains(notificationRepository.findByType(type.name()));
+        return NotificationJpo.toDomains(notificationRepository.findByType(type));
     }
-    
-    public List<Notification> findByRecipientIdAndIsRead(String recipientId, boolean isRead) {
-        return NotificationJpo.toDomains(notificationRepository.findByRecipientIdAndRead(recipientId, isRead));
+
+    public List<Notification> findBySenderId(String senderId) {
+        return NotificationJpo.toDomains(notificationRepository.findBySenderId(senderId));
     }
+
 }

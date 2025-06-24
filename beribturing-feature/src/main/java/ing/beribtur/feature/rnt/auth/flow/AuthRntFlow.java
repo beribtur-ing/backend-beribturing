@@ -11,7 +11,7 @@ import ing.beribtur.aggregate.user.logic.LendeeLogic;
 import ing.beribtur.config.exception.exception.OtpAlreadySentException;
 import ing.beribtur.feature.shared.util.OTPUtil;
 import ing.beribtur.proxy.redis.RedisService;
-import ing.beribtur.proxy.sms.SmsService;
+import ing.beribtur.proxy.notisender.sms.SmsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;

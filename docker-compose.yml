@@ -14,7 +14,7 @@ services:
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_REDIS_HOST=redis
       - SPRING_REDIS_PORT=6379
-      - MINIO_ACCESS_KEY=iamroott
+      - MINIO_ACCESS_KEY=iamroot
       - MINIO_SECRET_KEY=Alphraganus17
       - MINIO_BUCKET_NAME=beribturing
     depends_on:
