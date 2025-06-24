@@ -190,12 +190,23 @@ public class ProductQueryDslStore implements ProductCustomStore {
             productJpo.registeredOn.desc()
         };
 
-        JPAQuery<?> from = jpaQueryFactory
-            .from(productJpo)
-            .leftJoin(productCategoryJpo).on(productJpo.categoryId.eq(productCategoryJpo.id))
-            .leftJoin(productVariantJpo).on(productJpo.id.eq(productVariantJpo.productId))
-            .where(whereClause)
-            .distinct();
+        JPAQuery<?> from;
+        boolean hasVariantFilters = hasProductVariantFilters(qdo);
+
+        if (hasVariantFilters) {
+            from = jpaQueryFactory
+                .from(productJpo)
+                .leftJoin(productCategoryJpo).on(productJpo.categoryId.eq(productCategoryJpo.id))
+                .leftJoin(productVariantJpo).on(productJpo.id.eq(productVariantJpo.productId))
+                .where(whereClause)
+                .distinct();
+        } else {
+            from = jpaQueryFactory
+                .from(productJpo)
+                .leftJoin(productCategoryJpo).on(productJpo.categoryId.eq(productCategoryJpo.id))
+                .where(whereClause)
+                .distinct();
+        }
 
         Predicate[] predicates = whereClause.hasValue() ? new Predicate[]{whereClause} : new Predicate[0];
 
@@ -395,5 +406,26 @@ public class ProductQueryDslStore implements ProductCustomStore {
             .variant(variantJpo.toDomain())
             .images(images)
             .build();
+    }
+
+    private boolean hasProductVariantFilters(ProductSearchQdo qdo) {
+        //
+        return StringUtils.hasText(qdo.getSearchKeyword()) ||
+               (qdo.getBrands() != null && !qdo.getBrands().isEmpty()) ||
+               (qdo.getModels() != null && !qdo.getModels().isEmpty()) ||
+               (qdo.getManufacturers() != null && !qdo.getManufacturers().isEmpty()) ||
+               (qdo.getColors() != null && !qdo.getColors().isEmpty()) ||
+               (qdo.getMaterials() != null && !qdo.getMaterials().isEmpty()) ||
+               (qdo.getMadeInCountries() != null && !qdo.getMadeInCountries().isEmpty()) ||
+               (qdo.getProducedYears() != null && !qdo.getProducedYears().isEmpty()) ||
+               qdo.getMinPrice() != null ||
+               qdo.getMaxPrice() != null ||
+               qdo.getPriceUnit() != null ||
+               qdo.getActive() != null ||
+               qdo.getAvailableFrom() != null ||
+               qdo.getAvailableUntil() != null ||
+               qdo.getIsAvailable() != null ||
+               qdo.getHasVariants() != null ||
+               qdo.getHasImages() != null;
     }
 }
