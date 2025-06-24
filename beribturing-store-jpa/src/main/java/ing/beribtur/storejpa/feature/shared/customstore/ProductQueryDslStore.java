@@ -52,14 +52,23 @@ public class ProductQueryDslStore implements ProductCustomStore {
         //
         BooleanBuilder whereClause = new BooleanBuilder();
 
+        boolean hasVariantFilters = hasProductVariantFilters(qdo);
+        
         // Text search
         if (StringUtils.hasText(qdo.getSearchKeyword())) {
-            whereClause.and(
-                productJpo.title.containsIgnoreCase(qdo.getSearchKeyword())
-                    .or(productJpo.description.containsIgnoreCase(qdo.getSearchKeyword()))
-                    .or(productVariantJpo.brand.containsIgnoreCase(qdo.getSearchKeyword()))
-                    .or(productVariantJpo.model.containsIgnoreCase(qdo.getSearchKeyword()))
-            );
+            if (hasVariantFilters) {
+                whereClause.and(
+                    productJpo.title.containsIgnoreCase(qdo.getSearchKeyword())
+                        .or(productJpo.description.containsIgnoreCase(qdo.getSearchKeyword()))
+                        .or(productVariantJpo.brand.containsIgnoreCase(qdo.getSearchKeyword()))
+                        .or(productVariantJpo.model.containsIgnoreCase(qdo.getSearchKeyword()))
+                );
+            } else {
+                whereClause.and(
+                    productJpo.title.containsIgnoreCase(qdo.getSearchKeyword())
+                        .or(productJpo.description.containsIgnoreCase(qdo.getSearchKeyword()))
+                );
+            }
         }
 
         // Product filters
@@ -191,7 +200,6 @@ public class ProductQueryDslStore implements ProductCustomStore {
         };
 
         JPAQuery<?> from;
-        boolean hasVariantFilters = hasProductVariantFilters(qdo);
 
         if (hasVariantFilters) {
             from = jpaQueryFactory
@@ -410,8 +418,7 @@ public class ProductQueryDslStore implements ProductCustomStore {
 
     private boolean hasProductVariantFilters(ProductSearchQdo qdo) {
         //
-        return StringUtils.hasText(qdo.getSearchKeyword()) ||
-               (qdo.getBrands() != null && !qdo.getBrands().isEmpty()) ||
+        return (qdo.getBrands() != null && !qdo.getBrands().isEmpty()) ||
                (qdo.getModels() != null && !qdo.getModels().isEmpty()) ||
                (qdo.getManufacturers() != null && !qdo.getManufacturers().isEmpty()) ||
                (qdo.getColors() != null && !qdo.getColors().isEmpty()) ||
