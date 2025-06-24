@@ -49,6 +49,7 @@ public class ItemConditionCheck extends DomainEntity {
             String value = nameValue.getValue();
             switch (nameValue.getName().trim()) {
                 case "checkType" -> this.checkType = ConditionCheckType.valueOf(value);
+                case "photoSequence" -> this.photoSequence = Long.parseLong(value);
                 default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
             }
         }
