@@ -5,9 +5,9 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ReviewCdo extends CreationDataObject {
     //
     private String reviewerId;

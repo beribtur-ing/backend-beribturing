@@ -2,13 +2,13 @@ package ing.beribtur.aggregate.item.entity.sdo;
 
 import ing.beribtur.accent.domain.CreationDataObject;
 import ing.beribtur.aggregate.item.entity.Product;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductCdo extends CreationDataObject {
     //
     private String ownerId; // Reference to User (Lender)

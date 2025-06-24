@@ -8,9 +8,9 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ReservationCdo extends CreationDataObject {
     //
     private String productVariantId;      // Reference to Product Variant

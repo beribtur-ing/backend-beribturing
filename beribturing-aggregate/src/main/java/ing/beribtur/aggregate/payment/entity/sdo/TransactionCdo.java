@@ -10,9 +10,9 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class TransactionCdo extends CreationDataObject {
     //
     private UUID rentalRecordId;              // The ID of the RentalRecord this transaction is associated with

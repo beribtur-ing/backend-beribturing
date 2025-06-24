@@ -1,15 +1,15 @@
 package ing.beribtur.aggregate.chat.entity.sdo;
 
 import ing.beribtur.accent.domain.CreationDataObject;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ChatMessageCdo extends CreationDataObject {
     private String senderId;
     private String receiverId;

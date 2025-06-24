@@ -6,9 +6,9 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class MaintenanceRequestCdo extends CreationDataObject {
     //
     private String productVariantId;     // Reference to Product Variant

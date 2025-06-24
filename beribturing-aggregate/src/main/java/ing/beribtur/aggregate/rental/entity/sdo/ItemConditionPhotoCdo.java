@@ -6,9 +6,9 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ItemConditionPhotoCdo extends CreationDataObject {
     //
     private String checkId; // The ID of the ItemConditionCheck this photo belongs to

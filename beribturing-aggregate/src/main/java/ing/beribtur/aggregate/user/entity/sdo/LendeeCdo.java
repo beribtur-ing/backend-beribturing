@@ -7,9 +7,9 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class LendeeCdo extends CreationDataObject {
     //
     private String name;
