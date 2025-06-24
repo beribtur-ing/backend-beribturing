@@ -45,6 +45,8 @@ public class LenderJpo extends DomainEntityJpo {
     private Double latitude;
     private Double longitude;
 
+    private long productSequence;
+
     public LenderJpo(Lender lender) {
         super(lender);
         BeanUtils.copyProperties(lender, this);

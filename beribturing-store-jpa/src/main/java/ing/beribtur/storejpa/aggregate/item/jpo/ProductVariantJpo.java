@@ -61,13 +61,13 @@ public class ProductVariantJpo extends DomainEntityJpo {
 
     private boolean active;
     private String notes;
-    private String imageSequence;
+    private long imageSequence;
 
     public ProductVariantJpo(ProductVariant productVariant) {
         //
         super(productVariant);
         BeanUtils.copyProperties(productVariant, this);
-        
+
         // Handle Price
         if (productVariant.getPrice() != null) {
             Price price = productVariant.getPrice();
@@ -79,7 +79,7 @@ public class ProductVariantJpo extends DomainEntityJpo {
                 this.priceUnit = price.getUnit().name();
             }
         }
-        
+
         // Handle Size
         if (productVariant.getSize() != null) {
             Size size = productVariant.getSize();
@@ -90,7 +90,7 @@ public class ProductVariantJpo extends DomainEntityJpo {
             this.sizeWeight = size.getWeight();
             this.sizeMeasureUnit = size.getMeasureUnit();
         }
-        
+
         // Handle ProductAvailability
         if (productVariant.getAvailability() != null) {
             ProductAvailability availability = productVariant.getAvailability();
@@ -108,7 +108,7 @@ public class ProductVariantJpo extends DomainEntityJpo {
         //
         ProductVariant productVariant = new ProductVariant();
         BeanUtils.copyProperties(this, productVariant);
-        
+
         // Reconstruct Price
         Price price = new Price();
         if (this.priceAmount != null && this.priceCurrency != null) {
@@ -119,7 +119,7 @@ public class ProductVariantJpo extends DomainEntityJpo {
             price.setUnit(PriceUnit.valueOf(this.priceUnit));
         }
         productVariant.setPrice(price);
-        
+
         // Reconstruct Size
         Size size = new Size();
         size.setLabel(this.sizeLabel);
@@ -129,7 +129,7 @@ public class ProductVariantJpo extends DomainEntityJpo {
         size.setWeight(this.sizeWeight);
         size.setMeasureUnit(this.sizeMeasureUnit);
         productVariant.setSize(size);
-        
+
         // Reconstruct ProductAvailability
         ProductAvailability availability = new ProductAvailability();
         availability.setAvailableFrom(this.availableFrom);
@@ -141,7 +141,7 @@ public class ProductVariantJpo extends DomainEntityJpo {
             availability.setAvailableDays(days);
         }
         productVariant.setAvailability(availability);
-        
+
         return productVariant;
     }
 

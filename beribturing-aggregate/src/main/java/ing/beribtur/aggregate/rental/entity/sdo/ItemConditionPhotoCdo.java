@@ -13,10 +13,10 @@ public class ItemConditionPhotoCdo extends CreationDataObject {
     //
     private String checkId; // The ID of the ItemConditionCheck this photo belongs to
     private String url;
-    private long photoSequence; // Sequence number for photos, starting from 1
+    private long sequence; // Sequence number for photos, starting from 1
 
     @Override
     public String genId() {
-        return ItemConditionPhoto.genId(checkId, photoSequence);
+        return ItemConditionPhoto.genId(checkId, sequence);
     }
 }
