@@ -3,6 +3,7 @@ package ing.beribtur.feature.rnt.user.seek;
 import ing.beribtur.aggregate.account.entity.Account;
 import ing.beribtur.aggregate.account.logic.AccountLogic;
 import ing.beribtur.aggregate.user.entity.Lendee;
+import ing.beribtur.aggregate.user.entity.vo.Profile;
 import ing.beribtur.aggregate.user.logic.LendeeLogic;
 import ing.beribtur.feature.shared.sdo.UserMeRdo;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 import static ing.beribtur.aggregate.account.entity.vo.Role.ROLE_RENTER;
 
@@ -27,6 +30,7 @@ public class UserRntSeek {
         Lendee lendee = lendeeLogic.retrieve(account.getId());
         
         return UserMeRdo.builder()
+                .avatarUrl(Optional.ofNullable(lendee.getProfile()).map(Profile::getAvatarUrl).orElse(null))
                 .phoneNumber(account.getPhoneNumber())
                 .email(account.getEmail())
                 .role(account.getRole())
