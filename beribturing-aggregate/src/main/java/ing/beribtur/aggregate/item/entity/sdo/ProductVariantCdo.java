@@ -5,13 +5,13 @@ import ing.beribtur.aggregate.item.entity.ProductVariant;
 import ing.beribtur.aggregate.item.entity.vo.Price;
 import ing.beribtur.aggregate.item.entity.vo.ProductAvailability;
 import ing.beribtur.aggregate.item.entity.vo.Size;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductVariantCdo extends CreationDataObject {
     //
     private String productId;

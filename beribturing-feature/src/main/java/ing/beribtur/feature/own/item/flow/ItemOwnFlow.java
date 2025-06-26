@@ -2,6 +2,7 @@ package ing.beribtur.feature.own.item.flow;
 
 import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
+import ing.beribtur.aggregate.account.entity.vo.Role;
 import ing.beribtur.aggregate.item.entity.ProductImage;
 import ing.beribtur.aggregate.item.entity.ProductVariant;
 import ing.beribtur.aggregate.item.entity.sdo.ProductCdo;
@@ -35,7 +36,7 @@ public class ItemOwnFlow {
 
     public String registerProduct(ProductOwnRegCdo productOwnRegCdo) {
         //
-        String ownerId = authHelper.currentUserId();
+        String ownerId = authHelper.currentUserId(Role.ROLE_OWNER);
         long sequence = lenderLogic.nextProductSequence(ownerId);
         ProductCdo productCdo = productOwnRegCdo.toCdo(ownerId, sequence);
         return productLogic.registerProduct(productCdo);

@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class RentalRecordCdo extends CreationDataObject {
     //
     private Period period;

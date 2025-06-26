@@ -6,9 +6,9 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class MaintenancePhotoCdo extends CreationDataObject {
     //
     private String maintenanceRequestId;

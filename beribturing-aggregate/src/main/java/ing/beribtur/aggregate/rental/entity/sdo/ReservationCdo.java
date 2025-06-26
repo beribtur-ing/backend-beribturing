@@ -8,9 +8,9 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ReservationCdo extends CreationDataObject {
     //
     private String productVariantId;      // Reference to Product Variant
@@ -19,10 +19,10 @@ public class ReservationCdo extends CreationDataObject {
     private Period period;              // The period for which the product is reserved
     private ReservationStatus status;
     private String note;
-    private long reservationSequence; // Unique sequence for the reservation
+    private long sequence; // Unique sequence for the reservation
 
     @Override
     public String genId() {
-        return Reservation.genId(productVariantId, reservationSequence);
+        return Reservation.genId(productVariantId, sequence);
     }
 }

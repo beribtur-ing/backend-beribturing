@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class UserMeRdo {
+    private String avatarUrl;
     private String phoneNumber;
     private String email;
     private Role role;

@@ -38,6 +38,8 @@ public class RentalRecord extends DomainEntity {
     private Currency fee;
     private String discountId;                    // Reference to any discount applied to the rental
     private String depositId;                     // Rental Deposit id
+    private long maintenanceRequestSequence;
+
 
     // Domain relationships
     private transient ProductVariant productVariant;    // The product variant being rented
@@ -54,6 +56,7 @@ public class RentalRecord extends DomainEntity {
         //
         super(rentalRecordCdo.genId());
         BeanUtils.copyProperties(rentalRecordCdo, this);
+        this.maintenanceRequestSequence = 1L;
     }
 
     public static String genId(String reservationId) {
@@ -71,6 +74,7 @@ public class RentalRecord extends DomainEntity {
                 case "returnedAt" -> this.returnedAt = LocalDateTime.parse(value);
                 case "cancelledAt" -> this.cancelledAt = LocalDateTime.parse(value);
                 case "status" -> this.status = RentalStatus.valueOf(value);
+                case "maintenanceRequestSequence" -> this.maintenanceRequestSequence = Long.parseLong(value);
                 case "fee" -> this.fee = JsonUtil.fromJson(value, Currency.class);
                 default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
             }

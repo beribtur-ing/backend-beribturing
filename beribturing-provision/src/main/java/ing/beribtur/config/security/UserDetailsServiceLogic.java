@@ -23,9 +23,9 @@ public class UserDetailsServiceLogic implements UserDetailsService {
         String[] usernameRole = username.split("-");
         Account user = userAccountStore.findByPhoneNumberAndRole(usernameRole[0], usernameRole[1]);
         if (user == null || !user.isEnabled()) {
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException(usernameRole[0]);
         }
-        SpaceContext.get().setUsername(username);
+        SpaceContext.get().setUsername(usernameRole[0]);
         return UserDetailsLogic.build(user);
     }
 }

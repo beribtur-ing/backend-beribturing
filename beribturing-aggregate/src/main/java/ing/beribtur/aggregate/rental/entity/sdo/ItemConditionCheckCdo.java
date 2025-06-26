@@ -7,9 +7,9 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ItemConditionCheckCdo extends CreationDataObject {
     //
     private String rentalRecordId; // The ID of the RentalRecord this check belongs to

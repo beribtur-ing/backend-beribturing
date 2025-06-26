@@ -1,13 +1,13 @@
 package ing.beribtur.aggregate.item.entity.sdo;
 
 import ing.beribtur.accent.domain.CreationDataObject;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductCategoryCdo extends CreationDataObject {
     //
     private String name;

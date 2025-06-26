@@ -64,6 +64,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/feature/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/feature/owner/**").hasRole("OWNER")
                                 .requestMatchers("/feature/renter/**").hasRole("RENTER")
+                                .requestMatchers("/feature/renter/item/**").permitAll()
                                 .anyRequest()
                                 .authenticated()
                 );

@@ -2,14 +2,14 @@ package ing.beribtur.feature.adm.item.sdo;
 
 import ing.beribtur.accent.domain.CreationDataObject;
 import ing.beribtur.aggregate.item.entity.sdo.ProductCdo;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.beans.BeanUtils;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductAdmRegCdo extends CreationDataObject {
     //
     private String ownerId;

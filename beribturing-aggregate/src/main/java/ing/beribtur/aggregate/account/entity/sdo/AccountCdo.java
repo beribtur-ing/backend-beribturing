@@ -3,13 +3,13 @@ package ing.beribtur.aggregate.account.entity.sdo;
 
 import ing.beribtur.accent.domain.CreationDataObject;
 import ing.beribtur.aggregate.account.entity.vo.Role;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccountCdo extends CreationDataObject {
     private String phoneNumber;
     private String password;

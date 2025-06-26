@@ -3,9 +3,7 @@ package ing.beribtur.aggregate.payment.entity.sdo;
 import ing.beribtur.accent.domain.CreationDataObject;
 import ing.beribtur.aggregate.payment.entity.vo.DiscountScope;
 import ing.beribtur.aggregate.payment.entity.vo.DiscountType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,6 +11,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DiscountCdo extends CreationDataObject {
     //
     private String name;                      // e.g., "Summer Promo", "VIP Discount"

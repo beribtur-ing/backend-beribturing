@@ -60,6 +60,7 @@ public class Lendee extends DomainEntity implements Discountable {
                 case "phoneNumber" -> this.phoneNumber = value;
                 case "active" -> this.active = Boolean.parseBoolean(value);
                 case "profile" -> this.profile = JsonUtil.fromJson(value, Profile.class);
+                case "reservationSequence" -> this.reservationSequence = Long.parseLong(value);
                 default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
             }
         }

@@ -21,16 +21,16 @@ public class ProductJpo extends DomainEntityJpo {
 
     @Column(nullable = false)
     private String ownerId;
-    
+
     @Column(nullable = false)
     private String title;
-    
+
     private String description;
-    
+
     private String categoryId;
-    
-    private String variantSequence;
-    
+
+    private long variantSequence;
+
     @Column(nullable = false)
     private boolean active = true;
 

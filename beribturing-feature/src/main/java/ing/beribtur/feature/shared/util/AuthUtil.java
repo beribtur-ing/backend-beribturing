@@ -27,12 +27,4 @@ public class AuthUtil {
         Assert.isTrue(password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!.,]).{6,}$"),
                 "password must contain at least one digit, one lowercase letter, one uppercase letter, and one special character");
     }
-
-    public static String currentUserId(AccountLogic accountLogic) {
-        //
-        String phoneNumber = SpaceContext.get().getUsername();
-        Account currentAccount = accountLogic.findByPhoneNumber(phoneNumber);
-        String ownerId = currentAccount.getId();
-        return ownerId;
-    }
 }

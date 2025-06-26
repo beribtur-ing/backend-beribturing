@@ -2,14 +2,14 @@ package ing.beribtur.feature.shared.sdo;
 
 import ing.beribtur.accent.domain.CreationDataObject;
 import ing.beribtur.aggregate.item.entity.sdo.ProductVariantCdo;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.beans.BeanUtils;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductVariantRegCdo extends CreationDataObject {
     //
     private String productId;

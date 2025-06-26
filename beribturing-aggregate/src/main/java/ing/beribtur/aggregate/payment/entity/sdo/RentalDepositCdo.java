@@ -3,15 +3,15 @@ package ing.beribtur.aggregate.payment.entity.sdo;
 import ing.beribtur.accent.domain.CreationDataObject;
 import ing.beribtur.aggregate.payment.entity.vo.Currency;
 import ing.beribtur.aggregate.payment.entity.vo.DepositStatus;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RentalDepositCdo extends CreationDataObject {
     //
     private String rentalRecordId;
