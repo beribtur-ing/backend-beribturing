@@ -1,5 +1,7 @@
 package ing.beribtur.feature.own.rental.seek;
 
+import ing.beribtur.accent.context.SpaceContext;
+import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.rental.entity.ItemConditionCheck;
 import ing.beribtur.aggregate.rental.entity.ItemConditionPhoto;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
@@ -10,7 +12,10 @@ import ing.beribtur.aggregate.rental.logic.ItemConditionCheckLogic;
 import ing.beribtur.aggregate.rental.logic.ItemConditionPhotoLogic;
 import ing.beribtur.aggregate.rental.logic.RentalRecordLogic;
 import ing.beribtur.aggregate.rental.logic.ReservationLogic;
+import ing.beribtur.feature.shared.customstore.RentalRecordCustomStore;
+import ing.beribtur.feature.shared.sdo.RentalRecordRdo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +30,7 @@ public class RentalOwnSeek {
     private final RentalRecordLogic rentalRecordLogic;
     private final ItemConditionCheckLogic itemConditionCheckLogic;
     private final ItemConditionPhotoLogic itemConditionPhotoLogic;
+    private final RentalRecordCustomStore rentalRecordCustomStore;
 
     public RentalRecord findRentalRecordById(String rentalRecordId) {
         //
@@ -46,8 +52,9 @@ public class RentalOwnSeek {
         return reservationLogic.findAllByOwnerId(ownerId, status);
     }
 
-    public List<RentalRecord> findRentalRecords(String ownerId, RentalStatus status) {
+    public Page<RentalRecordRdo> findRentalRecords(RentalStatus status, String searchKeyword, Offset offset) {
         //
-        return rentalRecordLogic.findAllByOwnerId(ownerId, status);
+        String username = SpaceContext.get().getUsername();
+        return rentalRecordCustomStore.findRentalRecords(username, status, searchKeyword, offset);
     }
 }
