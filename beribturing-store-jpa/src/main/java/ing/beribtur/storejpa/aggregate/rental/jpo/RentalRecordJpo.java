@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -76,6 +78,18 @@ public class RentalRecordJpo extends DomainEntityJpo {
         }
     }
 
+    public static List<RentalRecord> toDomains(List<RentalRecordJpo> jpos) {
+        //
+        return jpos.stream().map(RentalRecordJpo::toDomain).toList();
+    }
+
+    public static Page<RentalRecord> toDomains(Page<RentalRecordJpo> jposPage) {
+        //
+        List<RentalRecordJpo> rentalRecordJpos = jposPage.getContent();
+        List<RentalRecord> rentalRecords = toDomains(rentalRecordJpos);
+        return new PageImpl<>(rentalRecords, jposPage.getPageable(), jposPage.getTotalElements());
+    }
+
     public RentalRecord toDomain() {
         //
         RentalRecord rentalRecord = new RentalRecord();
@@ -97,10 +111,5 @@ public class RentalRecordJpo extends DomainEntityJpo {
         }
 
         return rentalRecord;
-    }
-
-    public static List<RentalRecord> toDomains(List<RentalRecordJpo> jpos) {
-        //
-        return jpos.stream().map(RentalRecordJpo::toDomain).toList();
     }
 }
