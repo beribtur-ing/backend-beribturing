@@ -9,6 +9,8 @@ import ing.beribtur.aggregate.user.entity.sdo.LendeeCdo;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import ing.beribtur.aggregate.user.logic.LendeeLogic;
 import ing.beribtur.config.exception.exception.OtpAlreadySentException;
+import ing.beribtur.feature.shared.action.AuthHelper;
+import ing.beribtur.feature.shared.sdo.AccountSignInTokenRdo;
 import ing.beribtur.feature.shared.util.OTPUtil;
 import ing.beribtur.proxy.redis.RedisService;
 import ing.beribtur.proxy.sms.SmsService;
@@ -30,6 +32,7 @@ public class AuthRntFlow {
     private final SmsService smsService;
     private final PasswordEncoder passwordEncoder;
     private final LendeeLogic lendeeLogic;
+    private final AuthHelper authHelper;
 
     public Boolean sendSignUpOTP(String phoneNumber) {
         //
@@ -122,5 +125,9 @@ public class AuthRntFlow {
             return true;
         }
         return false;
+    }
+
+    public AccountSignInTokenRdo refreshToken(String refreshToken) {
+        return authHelper.refreshAccessToken(refreshToken);
     }
 }

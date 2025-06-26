@@ -1,12 +1,15 @@
 package ing.beribtur.facade.api.feature.own.auth.rest;
 
 import ing.beribtur.accent.message.CommandResponse;
+import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.aggregate.user.entity.vo.LenderType;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
+import ing.beribtur.facade.api.feature.own.auth.command.RefreshTokenOwnCommand;
 import ing.beribtur.facade.api.feature.own.auth.command.ResetPasswordOwnCommand;
 import ing.beribtur.facade.api.feature.own.auth.command.SendOtpOwnCommand;
 import ing.beribtur.facade.api.feature.own.auth.command.VerifyOtpAndSignUpOwnCommand;
 import ing.beribtur.feature.own.auth.flow.AuthOwnFlow;
+import ing.beribtur.feature.shared.sdo.AccountSignInTokenRdo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,5 +68,14 @@ public class AuthOwnFlowResource implements AuthOwnFlowFacade {
         Boolean response = this.authOwnFlow.resetPassword(phoneNumber, newPassword, otp);
 
         return new CommandResponse<>(response);
+    }
+    
+    @Override
+    @PostMapping("/refresh-token/query")
+    public QueryResponse<AccountSignInTokenRdo> refreshToken(@RequestBody RefreshTokenOwnCommand command) {
+        //
+        command.validate();
+        AccountSignInTokenRdo rdo = this.authOwnFlow.refreshToken(command.getRefreshToken());
+        return new QueryResponse<>(rdo);
     }
 }
