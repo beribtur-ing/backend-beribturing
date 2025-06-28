@@ -1,15 +1,18 @@
 package ing.beribtur.facade.api.feature.own.rental.query;
 
+import ing.beribtur.accent.message.QueryRequest;
+import ing.beribtur.aggregate.rental.entity.Reservation;
 import ing.beribtur.aggregate.rental.entity.vo.ReservationStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.Assert;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Getter
 @Setter
-public class FindReservationsOwnQuery {
+public class FindReservationsOwnQuery extends QueryRequest<List<Reservation>> {
     //
     private String ownerId;
     private ReservationStatus status;

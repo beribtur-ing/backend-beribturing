@@ -35,7 +35,8 @@ public class RentalOwnSeekResource implements RentalOwnSeekFacade {
         String ownerId = query.getOwnerId();
         ReservationStatus status = query.getStatus();
         List<Reservation> response = rentalOwnSeek.findReservations(ownerId, status);
-        return new QueryResponse<>(response);
+        query.setResponse(response);
+        return query.getResponse();
     }
 
     @Override
@@ -45,7 +46,8 @@ public class RentalOwnSeekResource implements RentalOwnSeekFacade {
         query.validate();
         String rentalRecordId = query.getRentalRecordId();
         RentalRecord response = rentalOwnSeek.findRentalRecordById(rentalRecordId);
-        return new QueryResponse<>(response);
+        query.setResponse(response);
+        return query.getResponse();
     }
 
     @Override
@@ -68,7 +70,8 @@ public class RentalOwnSeekResource implements RentalOwnSeekFacade {
         query.validate();
         String itemConditionCheckId = query.getItemConditionCheckId();
         ItemConditionCheck response = rentalOwnSeek.findItemConditionCheckById(itemConditionCheckId);
-        return new QueryResponse<>(response);
+        query.setResponse(response);
+        return query.getResponse();
     }
 
     @Override
@@ -78,6 +81,7 @@ public class RentalOwnSeekResource implements RentalOwnSeekFacade {
         query.validate();
         String itemConditionPhotoId = query.getItemConditionPhotoId();
         ItemConditionPhoto response = rentalOwnSeek.findItemConditionPhotoById(itemConditionPhotoId);
-        return new QueryResponse<>(response);
+        query.setResponse(response);
+        return query.getResponse();
     }
 }
