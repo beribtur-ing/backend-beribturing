@@ -15,13 +15,10 @@ import java.util.List;
 @Setter
 public class FindReservationsOwnQuery extends OffsetQueryRequest<List<Reservation>> {
     //
-    private String ownerId;
     private ReservationStatus status;
 
     public void validate() {
         //
-        Assert.hasText(ownerId, "'ownerId' must not be empty");
-        Assert.isTrue(ownerId.trim().equals(ownerId), "'ownerId' must not contain leading or trailing spaces");
         if (status != null) {
             Assert.isTrue(Arrays.stream(ReservationStatus.values()).anyMatch(s -> s.equals(status)), "'status' is invalid");
         }

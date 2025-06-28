@@ -2,6 +2,7 @@ package ing.beribtur.feature.own.rental.seek;
 
 import ing.beribtur.accent.context.SpaceContext;
 import ing.beribtur.accent.message.Offset;
+import ing.beribtur.aggregate.account.entity.vo.Role;
 import ing.beribtur.aggregate.rental.entity.ItemConditionCheck;
 import ing.beribtur.aggregate.rental.entity.ItemConditionPhoto;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
@@ -12,6 +13,7 @@ import ing.beribtur.aggregate.rental.logic.ItemConditionCheckLogic;
 import ing.beribtur.aggregate.rental.logic.ItemConditionPhotoLogic;
 import ing.beribtur.aggregate.rental.logic.RentalRecordLogic;
 import ing.beribtur.aggregate.rental.logic.ReservationLogic;
+import ing.beribtur.feature.shared.action.AuthHelper;
 import ing.beribtur.feature.shared.customstore.RentalRecordCustomStore;
 import ing.beribtur.feature.shared.sdo.RentalRecordRdo;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,7 @@ public class RentalOwnSeek {
     private final ItemConditionCheckLogic itemConditionCheckLogic;
     private final ItemConditionPhotoLogic itemConditionPhotoLogic;
     private final RentalRecordCustomStore rentalRecordCustomStore;
+    private final AuthHelper authHelper;
 
     public RentalRecord findRentalRecordById(String rentalRecordId) {
         //
@@ -47,8 +50,9 @@ public class RentalOwnSeek {
         return itemConditionPhotoLogic.findItemConditionPhoto(itemConditionPhotoId);
     }
 
-    public List<Reservation> findReservations(String ownerId, ReservationStatus status,Offset offset) {
+    public List<Reservation> findReservations(ReservationStatus status, Offset offset) {
         //
+        String ownerId = authHelper.currentUserId(Role.ROLE_OWNER);
         return reservationLogic.findAllByOwnerId(ownerId, status, offset);
     }
 
