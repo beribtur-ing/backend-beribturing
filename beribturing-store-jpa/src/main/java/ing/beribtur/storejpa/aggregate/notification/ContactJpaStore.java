@@ -1,43 +1,46 @@
 package ing.beribtur.storejpa.aggregate.notification;
 
 import ing.beribtur.aggregate.notification.entity.Contact;
+import ing.beribtur.aggregate.notification.store.ContactStore;
 import ing.beribtur.storejpa.aggregate.notification.jpo.ContactJpo;
 import ing.beribtur.storejpa.aggregate.notification.repository.ContactRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class ContactJpaStore {
+public class ContactJpaStore implements ContactStore {
     //
     private final ContactRepository contactRepository;
 
-    public void create(Contact contact) {
+    @Override
+    public void createContact(Contact contact) {
         ContactJpo contactJpo = new ContactJpo(contact);
         contactRepository.save(contactJpo);
         contact.setId(contactJpo.getId());
     }
 
-    public Contact retrieve(String userId) {
-        ContactJpo contactJpo = contactRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Contact not found for user: " + userId));
-        return contactJpo.toDomain();
+    @Override
+    public Contact retrieveContact(String userId) {
+        return contactRepository.findByUserId(userId)
+                .map(ContactJpo::toDomain)
+                .orElse(null);
     }
 
-    public void update(Contact contact) {
+    @Override
+    public void updateContact(Contact contact) {
         ContactJpo existingJpo = contactRepository.findByUserId(contact.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("Contact not found for user: " + contact.getUserId()));
 
         ContactJpo updatedJpo = new ContactJpo(contact);
-        updatedJpo.setId(existingJpo.getId());
-        updatedJpo.setEntityVersion(existingJpo.getEntityVersion());
-        updatedJpo.setRegisteredBy(existingJpo.getRegisteredBy());
-        updatedJpo.setRegisteredOn(existingJpo.getRegisteredOn());
+        BeanUtils.copyProperties(existingJpo, updatedJpo);
 
         contactRepository.save(updatedJpo);
     }
 
-    public void delete(String userId) {
+    @Override
+    public void deleteContact(String userId) {
         contactRepository.deleteByUserId(userId);
     }
 

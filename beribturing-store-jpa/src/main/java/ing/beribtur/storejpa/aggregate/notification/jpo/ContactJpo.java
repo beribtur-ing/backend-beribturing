@@ -1,12 +1,14 @@
 package ing.beribtur.storejpa.aggregate.notification.jpo;
 
 import ing.beribtur.accent.domain.DomainEntityJpo;
+import ing.beribtur.accent.util.Beans;
 import ing.beribtur.aggregate.notification.entity.Contact;
 import ing.beribtur.accent.util.JsonUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
@@ -19,13 +21,14 @@ public class ContactJpo extends DomainEntityJpo {
 
     @Column(nullable = false, unique = true)
     private String userId;
-    
+
     private String email;
-    
+
     private String phoneNumber;
-    
+
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column(columnDefinition = "TEXT")
-    private String fcmTokens;
+    private List<String> fcmTokens;
 
     public ContactJpo(Contact contact) {
         //
@@ -33,32 +36,23 @@ public class ContactJpo extends DomainEntityJpo {
         this.userId = contact.getUserId();
         this.email = contact.getEmail();
         this.phoneNumber = contact.getPhoneNumber();
-        
+
         // Convert List<String> to JSON
         if (contact.getFcmTokens() != null) {
-            this.fcmTokens = JsonUtil.toJson(contact.getFcmTokens());
+            this.fcmTokens = contact.getFcmTokens();
         }
     }
 
     public Contact toDomain() {
         //
         Contact contact = new Contact();
-        contact.setId(this.getId());
-        contact.setEntityVersion(this.getEntityVersion());
-        contact.setRegisteredBy(this.getRegisteredBy());
-        contact.setRegisteredOn(this.getRegisteredOn());
-        contact.setModifiedBy(this.getModifiedBy());
-        contact.setModifiedOn(this.getModifiedOn());
-        
-        contact.setUserId(this.userId);
-        contact.setEmail(this.email);
-        contact.setPhoneNumber(this.phoneNumber);
-        
+        BeanUtils.copyProperties(this, contact);
+
         // Convert JSON back to List<String>
         if (this.fcmTokens != null) {
-            contact.setFcmTokens(JsonUtil.fromJsonToList(this.fcmTokens, String.class));
+            contact.setFcmTokens(this.fcmTokens);
         }
-        
+
         return contact;
     }
 

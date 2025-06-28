@@ -1,12 +1,12 @@
 package ing.beribtur.storejpa.aggregate.notification;
 
-import ing.beribtur.aggregate.notification.entity.Contact;
 import ing.beribtur.aggregate.notification.entity.Notification;
 import ing.beribtur.aggregate.notification.entity.vo.*;
 import ing.beribtur.aggregate.notification.store.NotificationStore;
 import ing.beribtur.storejpa.aggregate.notification.jpo.NotificationJpo;
 import ing.beribtur.storejpa.aggregate.notification.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -49,10 +49,7 @@ public class NotificationJpaStore implements NotificationStore {
 
         // Update the JPO with the domain entity's values
         NotificationJpo updatedJpo = new NotificationJpo(notification);
-        updatedJpo.setId(notificationJpo.getId());
-        updatedJpo.setEntityVersion(notificationJpo.getEntityVersion());
-        updatedJpo.setRegisteredBy(notificationJpo.getRegisteredBy());
-        updatedJpo.setRegisteredOn(notificationJpo.getRegisteredOn());
+        BeanUtils.copyProperties(notificationJpo, updatedJpo);
 
         notificationRepository.save(updatedJpo);
     }
@@ -80,26 +77,6 @@ public class NotificationJpaStore implements NotificationStore {
     @Override
     public List<Notification> retrieveByReceiverIdAndStatus(String receiverId, Status status) {
         return NotificationJpo.toDomains(notificationRepository.findByReceiverIdAndStatus(receiverId, status));
-    }
-
-    @Override
-    public void createContact(Contact contact) {
-        contactJpaStore.create(contact);
-    }
-
-    @Override
-    public Contact retrieveContact(String userId) {
-        return contactJpaStore.retrieve(userId);
-    }
-
-    @Override
-    public void updateContact(Contact contact) {
-        contactJpaStore.update(contact);
-    }
-
-    @Override
-    public void deleteContact(String userId) {
-        contactJpaStore.delete(userId);
     }
 
     // Additional query methods
