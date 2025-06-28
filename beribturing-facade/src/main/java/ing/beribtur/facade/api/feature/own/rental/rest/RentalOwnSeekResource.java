@@ -34,7 +34,8 @@ public class RentalOwnSeekResource implements RentalOwnSeekFacade {
         query.validate();
         String ownerId = query.getOwnerId();
         ReservationStatus status = query.getStatus();
-        List<Reservation> response = rentalOwnSeek.findReservations(ownerId, status);
+        Offset offset = query.getOffset();
+        List<Reservation> response = rentalOwnSeek.findReservations(ownerId, status, offset);
         query.setResponse(response);
         return query.getResponse();
     }

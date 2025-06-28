@@ -47,9 +47,9 @@ public class RentalOwnSeek {
         return itemConditionPhotoLogic.findItemConditionPhoto(itemConditionPhotoId);
     }
 
-    public List<Reservation> findReservations(String ownerId, ReservationStatus status) {
+    public List<Reservation> findReservations(String ownerId, ReservationStatus status,Offset offset) {
         //
-        return reservationLogic.findAllByOwnerId(ownerId, status);
+        return reservationLogic.findAllByOwnerId(ownerId, status, offset);
     }
 
     public Page<RentalRecordRdo> findRentalRecords(RentalStatus status, String searchKeyword, Offset offset) {
