@@ -70,7 +70,7 @@ services:
       - "4222:4222"
       - "6222:6222"
       - "8222:8222"
-    command: [ "-c", "nats.conf" ]
+    command: [ "-c", "/etc/nats/nats.conf" ]
     volumes:
       - ./nats.conf:/etc/nats/nats.conf:ro
       - nats_data:/data
