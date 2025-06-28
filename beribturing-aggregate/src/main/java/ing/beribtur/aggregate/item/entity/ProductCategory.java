@@ -47,6 +47,9 @@ public class ProductCategory extends DomainEntity implements Discountable {
                 case "description":
                     this.description = value;
                     break;
+                case "parentId":
+                    this.parentId = value;
+                    break;
                 case "iconUrl":
                     this.iconUrl = value;
                     break;

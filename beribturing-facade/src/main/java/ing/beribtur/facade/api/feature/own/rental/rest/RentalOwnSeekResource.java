@@ -1,5 +1,6 @@
 package ing.beribtur.facade.api.feature.own.rental.rest;
 
+import ing.beribtur.accent.message.Offset;
 import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.aggregate.rental.entity.ItemConditionCheck;
 import ing.beribtur.aggregate.rental.entity.ItemConditionPhoto;
@@ -9,7 +10,9 @@ import ing.beribtur.aggregate.rental.entity.vo.RentalStatus;
 import ing.beribtur.aggregate.rental.entity.vo.ReservationStatus;
 import ing.beribtur.facade.api.feature.own.rental.query.*;
 import ing.beribtur.feature.own.rental.seek.RentalOwnSeek;
+import ing.beribtur.feature.shared.sdo.RentalRecordRdo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +35,8 @@ public class RentalOwnSeekResource implements RentalOwnSeekFacade {
         String ownerId = query.getOwnerId();
         ReservationStatus status = query.getStatus();
         List<Reservation> response = rentalOwnSeek.findReservations(ownerId, status);
-        return new QueryResponse<>(response);
+        query.setResponse(response);
+        return query.getResponse();
     }
 
     @Override
@@ -42,18 +46,21 @@ public class RentalOwnSeekResource implements RentalOwnSeekFacade {
         query.validate();
         String rentalRecordId = query.getRentalRecordId();
         RentalRecord response = rentalOwnSeek.findRentalRecordById(rentalRecordId);
-        return new QueryResponse<>(response);
+        query.setResponse(response);
+        return query.getResponse();
     }
 
     @Override
-    @PostMapping("/find-rental-records/query")
-    public QueryResponse<List<RentalRecord>> findRentalRecords(FindRentalRecordsOwnQuery query) {
+    @PostMapping("/find-rental-record-rdos/query")
+    public QueryResponse<List<RentalRecordRdo>> findRentalRecords(FindRentalRecordsOwnQuery query) {
         //
         query.validate();
-        String ownerId = query.getOwnerId();
         RentalStatus status = query.getStatus();
-        List<RentalRecord> response = rentalOwnSeek.findRentalRecords(ownerId, status);
-        return new QueryResponse<>(response);
+        String searchKeyword = query.getSearchKeyword();
+        Offset offset = query.getOffset();
+        Page<RentalRecordRdo> response = rentalOwnSeek.findRentalRecords(status, searchKeyword, offset);
+        query.setResponse(response);
+        return query.getResponse();
     }
 
     @Override
@@ -63,7 +70,8 @@ public class RentalOwnSeekResource implements RentalOwnSeekFacade {
         query.validate();
         String itemConditionCheckId = query.getItemConditionCheckId();
         ItemConditionCheck response = rentalOwnSeek.findItemConditionCheckById(itemConditionCheckId);
-        return new QueryResponse<>(response);
+        query.setResponse(response);
+        return query.getResponse();
     }
 
     @Override
@@ -73,6 +81,7 @@ public class RentalOwnSeekResource implements RentalOwnSeekFacade {
         query.validate();
         String itemConditionPhotoId = query.getItemConditionPhotoId();
         ItemConditionPhoto response = rentalOwnSeek.findItemConditionPhotoById(itemConditionPhotoId);
-        return new QueryResponse<>(response);
+        query.setResponse(response);
+        return query.getResponse();
     }
 }

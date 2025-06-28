@@ -17,6 +17,7 @@ public class NameValueList implements JsonSerializable {
 
     private NameValueList(NameValueList nameValues) {
         this();
+        this.nameValues = new java.util.ArrayList<>();
         this.nameValues.addAll(nameValues.list());
     }
 

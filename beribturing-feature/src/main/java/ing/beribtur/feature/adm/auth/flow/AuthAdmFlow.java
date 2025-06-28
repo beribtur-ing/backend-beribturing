@@ -4,6 +4,8 @@ import ing.beribtur.aggregate.account.entity.Account;
 import ing.beribtur.aggregate.account.entity.vo.Role;
 import ing.beribtur.aggregate.account.logic.AccountLogic;
 import ing.beribtur.config.exception.exception.OtpAlreadySentException;
+import ing.beribtur.feature.shared.action.AuthHelper;
+import ing.beribtur.feature.shared.sdo.AccountSignInTokenRdo;
 import ing.beribtur.feature.shared.util.OTPUtil;
 import ing.beribtur.proxy.redis.RedisService;
 import ing.beribtur.proxy.notisender.sms.SmsService;
@@ -24,6 +26,7 @@ public class AuthAdmFlow {
     private final RedisService redisService;
     private final SmsService smsService;
     private final PasswordEncoder passwordEncoder;
+    private final AuthHelper authHelper;
 
     public Boolean sendOTP(String phoneNumber) {
         //
@@ -74,5 +77,9 @@ public class AuthAdmFlow {
             return true;
         }
         return false;
+    }
+
+    public AccountSignInTokenRdo refreshToken(String refreshToken) {
+        return authHelper.refreshAccessToken(refreshToken);
     }
 }

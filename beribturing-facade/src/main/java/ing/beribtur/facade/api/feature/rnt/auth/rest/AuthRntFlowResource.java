@@ -1,11 +1,14 @@
 package ing.beribtur.facade.api.feature.rnt.auth.rest;
 
 import ing.beribtur.accent.message.CommandResponse;
+import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
+import ing.beribtur.facade.api.feature.rnt.auth.command.RefreshTokenRntCommand;
 import ing.beribtur.facade.api.feature.rnt.auth.command.ResetPasswordRntCommand;
 import ing.beribtur.facade.api.feature.rnt.auth.command.SendOtpRntCommand;
 import ing.beribtur.facade.api.feature.rnt.auth.command.VerifyOtpAndSignUpRntCommand;
 import ing.beribtur.feature.rnt.auth.flow.AuthRntFlow;
+import ing.beribtur.feature.shared.sdo.AccountSignInTokenRdo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,5 +66,14 @@ public class AuthRntFlowResource implements AuthRntFlowFacade {
         Boolean response = this.authRntFlow.resetPassword(phoneNumber, newPassword, otp);
 
         return new CommandResponse<>(response);
+    }
+    
+    @Override
+    @PostMapping("/refresh-token/query")
+    public QueryResponse<AccountSignInTokenRdo> refreshToken(@RequestBody RefreshTokenRntCommand command) {
+        //
+        command.validate();
+        AccountSignInTokenRdo rdo = this.authRntFlow.refreshToken(command.getRefreshToken());
+        return new QueryResponse<>(rdo);
     }
 }
