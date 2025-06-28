@@ -72,7 +72,7 @@ otp:
 
 firebase:
   config:
-  path: ./firebase.json
+    path: ./firebase.json
 
 sms:
   gateway:
