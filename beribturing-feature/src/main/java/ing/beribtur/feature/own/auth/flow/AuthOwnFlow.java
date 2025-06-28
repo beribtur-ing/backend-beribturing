@@ -14,7 +14,7 @@ import ing.beribtur.feature.shared.action.AuthHelper;
 import ing.beribtur.feature.shared.sdo.AccountSignInTokenRdo;
 import ing.beribtur.feature.shared.util.OTPUtil;
 import ing.beribtur.proxy.redis.RedisService;
-import ing.beribtur.proxy.sms.SmsService;
+import ing.beribtur.proxy.notisender.sms.SmsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
