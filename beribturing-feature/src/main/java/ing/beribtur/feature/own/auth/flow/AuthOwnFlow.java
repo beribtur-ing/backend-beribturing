@@ -4,6 +4,8 @@ import ing.beribtur.aggregate.account.entity.Account;
 import ing.beribtur.aggregate.account.entity.sdo.AccountCdo;
 import ing.beribtur.aggregate.account.entity.vo.Role;
 import ing.beribtur.aggregate.account.logic.AccountLogic;
+import ing.beribtur.aggregate.notification.entity.sdo.ContactCdo;
+import ing.beribtur.aggregate.notification.logic.ContactLogic;
 import ing.beribtur.aggregate.user.entity.Lender;
 import ing.beribtur.aggregate.user.entity.sdo.LenderCdo;
 import ing.beribtur.aggregate.user.entity.vo.LenderType;
@@ -14,7 +16,7 @@ import ing.beribtur.feature.shared.action.AuthHelper;
 import ing.beribtur.feature.shared.sdo.AccountSignInTokenRdo;
 import ing.beribtur.feature.shared.util.OTPUtil;
 import ing.beribtur.proxy.redis.RedisService;
-import ing.beribtur.proxy.notisender.sms.SmsService;
+import ing.beribtur.proxy.sms.SmsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,6 +36,7 @@ public class AuthOwnFlow {
     private final PasswordEncoder passwordEncoder;
     private final LenderLogic lenderLogic;
     private final AuthHelper authHelper;
+    private final ContactLogic contactLogic;
 
     public Boolean sendSignUpOTP(String phoneNumber) {
         //
@@ -100,6 +103,7 @@ public class AuthOwnFlow {
         ));
 
         //create lender
+        String accountId = accountLogic.findByPhoneNumberAndRole(phoneNumber, roleName.name()).getId();
         lenderLogic.create(new Lender(
                 LenderCdo.builder()
                         .name(name)
@@ -107,10 +111,11 @@ public class AuthOwnFlow {
                         .lenderType(lenderType)
                         .active(true)
                         .profile(profile)
-                        .accountId(accountLogic.findByPhoneNumberAndRole(phoneNumber, roleName.name()).getId())
+                        .accountId(accountId)
                         .build()
         ));
         redisService.delete(phoneNumber);
+        this.contactLogic.registerContact(new ContactCdo(accountId, phoneNumber, profile.getEmail()));
         return true;
     }
 

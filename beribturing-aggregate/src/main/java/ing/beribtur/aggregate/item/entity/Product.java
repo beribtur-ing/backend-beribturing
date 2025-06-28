@@ -40,7 +40,6 @@ public class Product extends DomainEntity implements Discountable {
         this.active = true;
     }
 
-
     public static String genId(String ownerId, long sequence) {
         //
         return String.format("%s-%d", ownerId, sequence);

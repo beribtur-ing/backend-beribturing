@@ -85,6 +85,17 @@ sms:
     reset-password: "beribtur.ing'da maxfiy so'zni o'zgartirish uchun tasdiqlash kodi:"
     test: "Bu Eskiz dan test"
 
+nats:
+  url: nats://206.189.55.6:8090
+  jetstream:
+    streams:
+      - name: notifications
+        subjects:
+          - beribturing.notifications
+      - name: messaging
+        subjects:
+          - beribturing.messaging
+
 management:
   endpoints.web.exposure.include: health, loggers, info, metrics, prometheus
 

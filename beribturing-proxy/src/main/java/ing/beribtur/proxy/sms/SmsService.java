@@ -1,4 +1,4 @@
-package ing.beribtur.proxy.notisender.sms;
+package ing.beribtur.proxy.sms;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
