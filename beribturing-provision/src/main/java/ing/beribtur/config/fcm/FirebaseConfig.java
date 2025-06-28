@@ -19,7 +19,7 @@ public class FirebaseConfig {
     @PostConstruct
     public void initialize() {
         //
-        try (InputStream serviceAccount = new FileInputStream(firebaseConfigPath)) {
+        /*try (InputStream serviceAccount = new FileInputStream(firebaseConfigPath)) {
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .build();
@@ -29,6 +29,6 @@ public class FirebaseConfig {
             }
         } catch (Exception e) {
             throw new RuntimeException("Failed to init Firebase", e);
-        }
+        }*/
     }
 }
