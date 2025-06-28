@@ -67,7 +67,7 @@ services:
     image: nats:2.10-alpine
     container_name: beribturing-nats
     ports:
-      - "4222:4222"
+      - "8090:4222"
       - "6222:6222"
       - "8222:8222"
     command: [ "-c", "/etc/nats/nats.conf" ]
