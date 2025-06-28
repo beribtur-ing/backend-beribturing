@@ -34,9 +34,9 @@ public class Contact extends DomainEntity {
 
     @Override
     protected void modifyAttributes(NameValueList nameValueList) {
-        this.userId = nameValueList.getValueOfName("userId");
+        /*this.userId = nameValueList.getValueOfName("userId");
         this.email = nameValueList.getValueOfName("email");
         this.phoneNumber = nameValueList.getValueOfName("phoneNumber");
-        this.fcmTokens = nameValueList.getValueOfName("fcmTokens");
+        this.fcmTokens = nameValueList.getValueOfName("fcmTokens");*/
     }
 }
