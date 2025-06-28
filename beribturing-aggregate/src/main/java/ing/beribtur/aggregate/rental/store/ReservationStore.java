@@ -21,5 +21,5 @@ public interface ReservationStore {
     List<Reservation> retrieveByRequesterId(String requesterId);
     List<Reservation> retrieveByProductVariantId(String productVariantId);
     List<Reservation> retrieveByStatus(String status);
-    List<Reservation> retrieveAllByOwnerId(String ownerId, String reservationStatus);
+    List<Reservation> retrieveAllByOwnerId(String ownerId, String reservationStatus, Offset offset);
 }

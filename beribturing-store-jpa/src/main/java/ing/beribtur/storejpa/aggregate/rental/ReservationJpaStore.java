@@ -7,6 +7,8 @@ import ing.beribtur.storejpa.aggregate.rental.jpo.ReservationJpo;
 import ing.beribtur.storejpa.aggregate.rental.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,6 +19,15 @@ import java.util.stream.Collectors;
 public class ReservationJpaStore implements ReservationStore {
 
     private final ReservationRepository reservationRepository;
+
+    private Pageable createPageable(Offset offset) {
+        /* Gen by Vizend Vista v7.0.0 */
+        if (offset.getSortDirection() != null && offset.getSortingField() != null) {
+            return PageRequest.of(offset.page(), offset.limit(), (offset.ascendingSort() ? Sort.Direction.ASC : Sort.Direction.DESC), offset.getSortingField());
+        } else {
+            return PageRequest.of(offset.page(), offset.limit());
+        }
+    }
 
     @Override
     public void create(Reservation reservation) {
@@ -104,8 +115,9 @@ public class ReservationJpaStore implements ReservationStore {
     }
 
     @Override
-    public List<Reservation> retrieveAllByOwnerId(String ownerId, String status) {
-        return ReservationJpo.toDomains(reservationRepository.findAllByOwnerIdAndStatusIsOrStatusIsNull(ownerId, status));
+    public List<Reservation> retrieveAllByOwnerId(String ownerId, String status, Offset offset) {
+        Pageable pageable = createPageable(offset);
+        return ReservationJpo.toDomains(reservationRepository.findAllByOwnerIdAndStatusIsOrStatusIsNull(ownerId, status,  pageable));
     }
 
     // Additional methods for specific queries

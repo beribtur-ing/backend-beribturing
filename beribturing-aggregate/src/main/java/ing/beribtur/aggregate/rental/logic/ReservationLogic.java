@@ -93,11 +93,11 @@ public class ReservationLogic {
         return reservationStore.retrieveByStatus(status.name());
     }
 
-    public List<Reservation> findAllByOwnerId(String ownerId, ReservationStatus status) {
+    public List<Reservation> findAllByOwnerId(String ownerId, ReservationStatus status, Offset offset) {
         //
         if (status == null) {
-            return reservationStore.retrieveAllByOwnerId(ownerId, null);
+            return reservationStore.retrieveAllByOwnerId(ownerId, null, offset);
         }
-        return reservationStore.retrieveAllByOwnerId(ownerId, status.name());
+        return reservationStore.retrieveAllByOwnerId(ownerId, status.name(), offset);
     }
 }

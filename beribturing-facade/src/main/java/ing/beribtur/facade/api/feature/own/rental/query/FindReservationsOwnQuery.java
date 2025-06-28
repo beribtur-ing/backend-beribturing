@@ -1,5 +1,6 @@
 package ing.beribtur.facade.api.feature.own.rental.query;
 
+import ing.beribtur.accent.message.OffsetQueryRequest;
 import ing.beribtur.accent.message.QueryRequest;
 import ing.beribtur.aggregate.rental.entity.Reservation;
 import ing.beribtur.aggregate.rental.entity.vo.ReservationStatus;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class FindReservationsOwnQuery extends QueryRequest<List<Reservation>> {
+public class FindReservationsOwnQuery extends OffsetQueryRequest<List<Reservation>> {
     //
     private String ownerId;
     private ReservationStatus status;
