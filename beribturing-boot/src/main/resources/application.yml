@@ -66,9 +66,13 @@ beribturing:
   refreshExpirationMs: 604800000 # week
 
 otp:
-  duration:   #Units are in milliseconds
+  duration: #Units are in milliseconds
     sign-up: 180000    #3 minutes
     reset-password: 300000  #5 minutes
+
+firebase:
+  config:
+    path: ./firebase.json
 
 sms:
   gateway:
