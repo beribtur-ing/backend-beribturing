@@ -13,6 +13,8 @@ import ing.beribtur.aggregate.rental.logic.ItemConditionCheckLogic;
 import ing.beribtur.aggregate.rental.logic.ItemConditionPhotoLogic;
 import ing.beribtur.aggregate.rental.logic.RentalRecordLogic;
 import ing.beribtur.aggregate.rental.logic.ReservationLogic;
+import ing.beribtur.aggregate.user.entity.Lender;
+import ing.beribtur.aggregate.user.logic.LenderLogic;
 import ing.beribtur.feature.shared.action.AuthHelper;
 import ing.beribtur.feature.shared.customstore.RentalRecordCustomStore;
 import ing.beribtur.feature.shared.sdo.RentalRecordRdo;
@@ -34,6 +36,7 @@ public class RentalOwnSeek {
     private final ItemConditionPhotoLogic itemConditionPhotoLogic;
     private final RentalRecordCustomStore rentalRecordCustomStore;
     private final AuthHelper authHelper;
+    private final LenderLogic lenderLogic;
 
     public RentalRecord findRentalRecordById(String rentalRecordId) {
         //
@@ -59,6 +62,7 @@ public class RentalOwnSeek {
     public Page<RentalRecordRdo> findRentalRecords(RentalStatus status, String searchKeyword, Offset offset) {
         //
         String username = SpaceContext.get().getUsername();
-        return rentalRecordCustomStore.findRentalRecords(username, status, searchKeyword, offset);
+        Lender lender = lenderLogic.findByPhoneNumber(username);
+        return rentalRecordCustomStore.findRentalRecords(lender.getId(), status, searchKeyword, offset);
     }
 }
