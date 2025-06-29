@@ -25,7 +25,7 @@ public class RentalRecordLogic {
     public String registerRentalRecord(RentalRecordCdo rentalRecordCdo) {
         //
         RentalRecord rentalRecord = new RentalRecord(rentalRecordCdo);
-        if (rentalRecordStore.exists(rentalRecord.getId())) {
+        if (rentalRecord.getId() != null && rentalRecordStore.exists(rentalRecord.getId())) {
             throw new IllegalArgumentException("rental record already exists. " + rentalRecord.getId());
         }
         rentalRecordStore.create(rentalRecord);
