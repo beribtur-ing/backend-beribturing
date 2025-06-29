@@ -9,6 +9,7 @@ import ing.beribtur.aggregate.notification.entity.vo.ChannelType;
 import ing.beribtur.aggregate.notification.entity.vo.Status;
 import ing.beribtur.aggregate.notification.store.NotificationStore;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -102,5 +103,10 @@ public class NotificationLogic {
     public long nextNotificationSequence(String senderId) {
         //
         return notificationStore.getNextSequence(senderId);
+    }
+
+    public Page<Notification> findUnreadNotifications(String userId, Offset offset) {
+        //
+        return notificationStore.retrieveUnreadNotifications(userId, offset);
     }
 }

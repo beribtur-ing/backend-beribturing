@@ -5,11 +5,13 @@ import ing.beribtur.aggregate.notification.entity.Notification;
 import ing.beribtur.aggregate.notification.entity.vo.ChannelType;
 import ing.beribtur.aggregate.notification.entity.vo.Status;
 import ing.beribtur.aggregate.notification.store.NotificationStore;
+import ing.beribtur.feature.notification.sdo.NotificationSearchQdo;
 import ing.beribtur.storejpa.aggregate.notification.jpo.NotificationJpo;
 import ing.beribtur.storejpa.aggregate.notification.repository.NotificationRepository;
+import ing.beribtur.storejpa.aggregate.user.jpo.LenderJpo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.aspectj.weaver.ast.Not;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -125,5 +127,17 @@ public class NotificationJpaStore implements NotificationStore {
     public long getNextSequence(String senderId) {
         //
         return notificationRepository.getNextSequenceForSender(senderId);
+    }
+
+    @Override
+    public Page<Notification> retrieveUnreadNotifications(String receiverId, Offset offset) {
+        //
+        Pageable pageable = PageRequest.of(offset.page(), offset.limit());
+        Page<NotificationJpo> jpos = this.notificationRepository.findByReceiverIdAndStatusOrderBySentAtDesc(receiverId, Status.SENT, pageable);
+        return new PageImpl<>(
+                NotificationJpo.toDomains(jpos.getContent()),
+                pageable,
+                jpos.getTotalElements()
+        );
     }
 }

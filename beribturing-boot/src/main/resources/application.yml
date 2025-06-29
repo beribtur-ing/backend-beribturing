@@ -87,6 +87,9 @@ sms:
 
 nats:
   url: nats://206.189.55.6:8090
+  subjects:
+    notification: notifications
+    messaging: messaging
   jetstream:
     streams:
       - name: notifications
