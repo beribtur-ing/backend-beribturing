@@ -27,5 +27,10 @@ public interface NotificationRepository extends JpaRepository<NotificationJpo, S
     Page<NotificationJpo> findByReceiverIdAndStatusAndTypeOrderBySentAtDesc(String receiverId, Status status, NotificationType type, Pageable pageable);
     Page<NotificationJpo> findByReceiverIdAndStatusAndChannelTypeOrderBySentAtDesc(String receiverId, Status status, ChannelType channelType, Pageable pageable);
     Page<NotificationJpo> findByReceiverIdAndStatusAndTypeAndChannelTypeOrderBySentAtDesc(String receiverId, Status status, NotificationType type, ChannelType channelType, Pageable pageable);
+    
+    Page<NotificationJpo> findByReceiverIdOrderBySentAtDesc(String receiverId, Pageable pageable);
+    Page<NotificationJpo> findByReceiverIdAndTypeOrderBySentAtDesc(String receiverId, NotificationType type, Pageable pageable);
+    Page<NotificationJpo> findByReceiverIdAndChannelTypeOrderBySentAtDesc(String receiverId, ChannelType channelType, Pageable pageable);
+    Page<NotificationJpo> findByReceiverIdAndTypeAndChannelTypeOrderBySentAtDesc(String receiverId, NotificationType type, ChannelType channelType, Pageable pageable);
 
 }

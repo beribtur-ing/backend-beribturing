@@ -3,14 +3,13 @@ package ing.beribtur.storejpa.aggregate.notification;
 import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.notification.entity.Notification;
 import ing.beribtur.aggregate.notification.entity.vo.ChannelType;
+import ing.beribtur.aggregate.notification.entity.vo.NotificationType;
 import ing.beribtur.aggregate.notification.entity.vo.Status;
 import ing.beribtur.aggregate.notification.store.NotificationStore;
 import ing.beribtur.feature.notification.sdo.NotificationSearchQdo;
 import ing.beribtur.storejpa.aggregate.notification.jpo.NotificationJpo;
 import ing.beribtur.storejpa.aggregate.notification.repository.NotificationRepository;
-import ing.beribtur.storejpa.aggregate.user.jpo.LenderJpo;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 
@@ -138,6 +137,45 @@ public class NotificationJpaStore implements NotificationStore {
                 NotificationJpo.toDomains(jpos.getContent()),
                 pageable,
                 jpos.getTotalElements()
+        );
+    }
+
+    @Override
+    public Page<Notification> retrieveReceivedNotifications(String receiverId, Status status, NotificationType type, ChannelType channelType, Offset offset) {
+        //
+        Pageable pageable = PageRequest.of(offset.page(), offset.limit());
+        Page<NotificationJpo> notificationJpos;
+        
+        if (status != null && type != null && channelType != null) {
+            notificationJpos = notificationRepository.findByReceiverIdAndStatusAndTypeAndChannelTypeOrderBySentAtDesc(
+                receiverId, status, type, channelType, pageable);
+        } else if (status != null && type != null) {
+            notificationJpos = notificationRepository.findByReceiverIdAndStatusAndTypeOrderBySentAtDesc(
+                receiverId, status, type, pageable);
+        } else if (status != null && channelType != null) {
+            notificationJpos = notificationRepository.findByReceiverIdAndStatusAndChannelTypeOrderBySentAtDesc(
+                receiverId, status, channelType, pageable);
+        } else if (type != null && channelType != null) {
+            notificationJpos = notificationRepository.findByReceiverIdAndTypeAndChannelTypeOrderBySentAtDesc(
+                receiverId, type, channelType, pageable);
+        } else if (status != null) {
+            notificationJpos = notificationRepository.findByReceiverIdAndStatusOrderBySentAtDesc(
+                receiverId, status, pageable);
+        } else if (type != null) {
+            notificationJpos = notificationRepository.findByReceiverIdAndTypeOrderBySentAtDesc(
+                receiverId, type, pageable);
+        } else if (channelType != null) {
+            notificationJpos = notificationRepository.findByReceiverIdAndChannelTypeOrderBySentAtDesc(
+                receiverId, channelType, pageable);
+        } else {
+            notificationJpos = notificationRepository.findByReceiverIdOrderBySentAtDesc(
+                receiverId, pageable);
+        }
+        
+        return new PageImpl<>(
+                NotificationJpo.toDomains(notificationJpos.getContent()),
+                pageable,
+                notificationJpos.getTotalElements()
         );
     }
 }

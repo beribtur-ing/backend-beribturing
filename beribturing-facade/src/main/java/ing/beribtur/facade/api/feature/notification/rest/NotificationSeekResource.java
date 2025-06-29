@@ -3,6 +3,7 @@ package ing.beribtur.facade.api.feature.notification.rest;
 import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.accent.util.QueryResponseUtil;
 import ing.beribtur.aggregate.notification.entity.Notification;
+import ing.beribtur.facade.api.feature.notification.query.FindReceivedNotificationsQuery;
 import ing.beribtur.facade.api.feature.notification.query.FindUnreadNotificationsQuery;
 import ing.beribtur.feature.notification.NotificationSeek;
 import ing.beribtur.feature.notification.sdo.NotificationSearchQdo;
@@ -29,6 +30,17 @@ public class NotificationSeekResource implements NotificationSeekFacade {
         query.validate();
         String receiverId = query.getReceiverId();
         Page<Notification> responsePage = notificationSeek.findUnreadNotifications(receiverId, query.getOffset());
+        return QueryResponseUtil.fromPage(responsePage);
+    }
+
+    @Override
+    @PostMapping("/find-received-notifications/query")
+    public QueryResponse<List<Notification>> findReceivedNotifications(@RequestBody FindReceivedNotificationsQuery query) {
+        //
+        query.validate();
+        String receiverId = query.getReceiverId();
+        Page<Notification> responsePage = notificationSeek.findReceivedNotifications(
+            receiverId, query.getStatus(), query.getType(), query.getChannelType(), query.getOffset());
         return QueryResponseUtil.fromPage(responsePage);
     }
 }

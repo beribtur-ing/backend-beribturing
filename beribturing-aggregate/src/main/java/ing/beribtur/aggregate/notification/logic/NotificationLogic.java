@@ -6,6 +6,7 @@ import ing.beribtur.accent.util.Entities;
 import ing.beribtur.aggregate.notification.entity.Notification;
 import ing.beribtur.aggregate.notification.entity.sdo.NotificationCdo;
 import ing.beribtur.aggregate.notification.entity.vo.ChannelType;
+import ing.beribtur.aggregate.notification.entity.vo.NotificationType;
 import ing.beribtur.aggregate.notification.entity.vo.Status;
 import ing.beribtur.aggregate.notification.store.NotificationStore;
 import lombok.RequiredArgsConstructor;
@@ -108,5 +109,10 @@ public class NotificationLogic {
     public Page<Notification> findUnreadNotifications(String userId, Offset offset) {
         //
         return notificationStore.retrieveUnreadNotifications(userId, offset);
+    }
+
+    public Page<Notification> findReceivedNotifications(String receiverId, Status status, NotificationType type, ChannelType channelType, Offset offset) {
+        //
+        return notificationStore.retrieveReceivedNotifications(receiverId, status, type, channelType, offset);
     }
 }
