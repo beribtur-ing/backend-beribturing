@@ -31,6 +31,9 @@ public class UserOwnSeek {
 
         return UserMeRdo.builder()
                 .avatarUrl(Optional.ofNullable(lender.getProfile()).map(Profile::getAvatarUrl).orElse(null))
+                .address(Optional.ofNullable(lender.getProfile()).map(Profile::getAddress).orElse(null))
+                .location(Optional.ofNullable(lender.getProfile()).map(Profile::getLocation).orElse(null))
+                .gender(Optional.ofNullable(lender.getProfile()).map(Profile::getGender).orElse(null))
                 .phoneNumber(account.getPhoneNumber())
                 .email(account.getEmail())
                 .role(account.getRole())
