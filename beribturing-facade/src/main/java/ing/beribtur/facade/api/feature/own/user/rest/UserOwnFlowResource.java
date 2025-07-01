@@ -4,9 +4,11 @@ import ing.beribtur.accent.message.CommandResponse;
 import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
 import ing.beribtur.facade.api.feature.own.user.command.ModifyProfileOwnCommand;
+import ing.beribtur.facade.api.feature.own.user.command.UpdateNotificationPreferencesOwnCommand;
 import ing.beribtur.feature.own.user.flow.UserOwnFlow;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +33,23 @@ public class UserOwnFlowResource implements UserOwnFlowFacade {
         String address = command.getAddress();
         GeoLocation location = command.getLocation();
         String entityId = userOwnFlow.modifyProfile(name, gender, email, address, location, image);
+        return new CommandResponse<>(entityId);
+    }
+
+    @Override
+    @PostMapping("/update-notification-preferences/command")
+    public CommandResponse<String> updateNotificationPreferences(@RequestBody UpdateNotificationPreferencesOwnCommand command) throws Exception {
+        //
+        command.validate();
+        boolean emailNewBookingsAndReservations = command.getEmailNotifications().isNewBookingsAndReservations();
+        boolean emailMessagesFromCustomers = command.getEmailNotifications().isMessagesFromCustomers();
+        boolean emailPaymentConfirmations = command.getEmailNotifications().isPaymentConfirmations();
+
+        boolean smsNewBookingsAndReservations = command.getSmsNotifications().isNewBookingsAndReservations();
+        boolean smsMessagesFromCustomers = command.getSmsNotifications().isMessagesFromCustomers();
+        boolean smsPaymentConfirmations = command.getSmsNotifications().isPaymentConfirmations();
+
+        String entityId = userOwnFlow.updateNotificationPreferences(emailNewBookingsAndReservations, emailMessagesFromCustomers, emailPaymentConfirmations, smsNewBookingsAndReservations, smsMessagesFromCustomers, smsPaymentConfirmations);
         return new CommandResponse<>(entityId);
     }
 }

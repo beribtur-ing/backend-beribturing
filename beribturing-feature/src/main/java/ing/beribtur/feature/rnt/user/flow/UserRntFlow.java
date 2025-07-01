@@ -2,6 +2,7 @@ package ing.beribtur.feature.rnt.user.flow;
 
 import ing.beribtur.accent.context.SpaceContext;
 import ing.beribtur.aggregate.account.entity.Account;
+import ing.beribtur.aggregate.account.entity.vo.RenterNotificationPreferences;
 import ing.beribtur.aggregate.account.entity.vo.Role;
 import ing.beribtur.aggregate.account.logic.AccountLogic;
 import ing.beribtur.aggregate.user.entity.Lendee;
@@ -46,5 +47,53 @@ public class UserRntFlow {
         lendeeLogic.update(lendee);
 
         return lendee.getId();
+    }
+
+    public String updateNotificationPreferences(boolean emailRentalReminders,
+                                              boolean emailNewMessages,
+                                              boolean pushRentalReminders,
+                                              boolean pushNewMessages,
+                                              boolean pushPromotionsAndDeals,
+                                              boolean smsRentalReminders,
+                                              boolean smsNewMessages,
+                                              boolean marketingPromotionsAndDeals,
+                                              boolean marketingEmails) {
+        //
+        String username = SpaceContext.get().getUsername();
+
+        Account account = accountLogic.findByPhoneNumberAndRole(username, Role.ROLE_RENTER.name());
+        
+        RenterNotificationPreferences.EmailNotifications renterEmailNotifications = new RenterNotificationPreferences.EmailNotifications(
+            emailRentalReminders,
+            emailNewMessages
+        );
+        
+        RenterNotificationPreferences.PushNotifications renterPushNotifications = new RenterNotificationPreferences.PushNotifications(
+            pushRentalReminders,
+            pushNewMessages,
+            pushPromotionsAndDeals
+        );
+        
+        RenterNotificationPreferences.SmsNotifications renterSmsNotifications = new RenterNotificationPreferences.SmsNotifications(
+            smsRentalReminders,
+            smsNewMessages
+        );
+        
+        RenterNotificationPreferences.MarketingNotifications renterMarketingNotifications = new RenterNotificationPreferences.MarketingNotifications(
+            marketingPromotionsAndDeals,
+            marketingEmails
+        );
+        
+        RenterNotificationPreferences notificationPreferences = new RenterNotificationPreferences(
+            renterEmailNotifications,
+            renterPushNotifications,
+            renterSmsNotifications,
+            renterMarketingNotifications
+        );
+        
+        account.setNotificationPreferences(notificationPreferences);
+        accountLogic.update(account);
+
+        return account.getId();
     }
 } 

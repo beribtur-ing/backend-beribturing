@@ -1,17 +1,20 @@
 package ing.beribtur.aggregate.payment.entity.vo;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Currency {
     //
-    private final BigDecimal amount;
-    private final String currency;
+    private BigDecimal amount;
+    private String currency;
 
     public Currency(BigDecimal amount, String currency) {
         //

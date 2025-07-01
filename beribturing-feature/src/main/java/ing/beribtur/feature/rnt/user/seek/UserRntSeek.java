@@ -31,10 +31,14 @@ public class UserRntSeek {
         
         return UserMeRdo.builder()
                 .avatarUrl(Optional.ofNullable(lendee.getProfile()).map(Profile::getAvatarUrl).orElse(null))
+                .address(Optional.ofNullable(lendee.getProfile()).map(Profile::getAddress).orElse(null))
+                .location(Optional.ofNullable(lendee.getProfile()).map(Profile::getLocation).orElse(null))
+                .gender(Optional.ofNullable(lendee.getProfile()).map(Profile::getGender).orElse(null))
                 .phoneNumber(account.getPhoneNumber())
                 .email(account.getEmail())
                 .role(account.getRole())
                 .name(lendee.getName())
+                .notificationPreferences(account.getNotificationPreferences())
                 .build();
     }
 } 

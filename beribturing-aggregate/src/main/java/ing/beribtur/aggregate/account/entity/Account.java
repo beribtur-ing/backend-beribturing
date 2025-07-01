@@ -5,6 +5,7 @@ import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
 import ing.beribtur.aggregate.account.entity.sdo.AccountCdo;
+import ing.beribtur.aggregate.account.entity.vo.NotificationPreferences;
 import ing.beribtur.aggregate.account.entity.vo.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,11 +27,13 @@ public class Account extends DomainEntity {
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
+    private NotificationPreferences notificationPreferences;
 
     public Account(AccountCdo accountCdo) {
         //
         super(accountCdo.genId());
         BeanUtils.copyProperties(accountCdo, this);
+        this.notificationPreferences = NotificationPreferences.createDefault(this.role);
     }
 
     @Override
