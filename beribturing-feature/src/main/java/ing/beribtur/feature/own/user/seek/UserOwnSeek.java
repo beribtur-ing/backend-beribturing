@@ -38,6 +38,7 @@ public class UserOwnSeek {
                 .email(account.getEmail())
                 .role(account.getRole())
                 .name(lender.getName())
+                .notificationPreferences(account.getNotificationPreferences())
                 .build();
     }
 } 

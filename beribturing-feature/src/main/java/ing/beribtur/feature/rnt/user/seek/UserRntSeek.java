@@ -38,6 +38,7 @@ public class UserRntSeek {
                 .email(account.getEmail())
                 .role(account.getRole())
                 .name(lendee.getName())
+                .notificationPreferences(account.getNotificationPreferences())
                 .build();
     }
 } 
