@@ -9,12 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class NotificationSenderService {
     //
-    @Value("${nats.subjects.notification}")
     private final String subjectsNotification;
     private final NatsPublisherService natsPublisherService;
     private final NatsSubjectManagerService natsSubjectManagerService;
 
-    public NotificationSenderService(String subjectsNotification, NatsPublisherService natsPublisherService, NatsSubjectManagerService natsSubjectManagerService) {
+    public NotificationSenderService(@Value("${nats.subjects.notification}") String subjectsNotification, NatsPublisherService natsPublisherService, NatsSubjectManagerService natsSubjectManagerService) {
         //
         this.subjectsNotification = subjectsNotification;
         this.natsPublisherService = natsPublisherService;
