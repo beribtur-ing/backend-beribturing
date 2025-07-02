@@ -4,6 +4,7 @@ import io.nats.client.Connection;
 import io.nats.client.JetStreamManagement;
 import io.nats.client.api.StreamConfiguration;
 import io.nats.client.api.StreamInfo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -11,6 +12,8 @@ import java.util.*;
 @Service
 public class NatsSubjectManagerService {
     //
+    @Value("${nats.subjects.notification}")
+    private String subjectsNotification;
     private final JetStreamManagement jsm;
 
     public NatsSubjectManagerService(Connection connection) throws Exception {
@@ -18,9 +21,9 @@ public class NatsSubjectManagerService {
         this.jsm = connection.jetStreamManagement();
     }
 
-    public void addUserSubjectToStream(String streamName, String username) {
+    public boolean addUserSubjectToStream(String streamName, String username) {
         //
-        String newSubject = "beribturing.notifications." + username;
+        String newSubject = String.format("%s.%s", subjectsNotification, username);
 
         try {
             StreamInfo info = jsm.getStreamInfo(streamName);
@@ -29,7 +32,7 @@ public class NatsSubjectManagerService {
 
             if (currentSubjects.contains(newSubject)) {
                 System.out.printf("Subject already exists: %s%n", newSubject);
-                return;
+                return false;
             }
 
             currentSubjects.add(newSubject);
@@ -42,8 +45,10 @@ public class NatsSubjectManagerService {
 
             jsm.updateStream(newConfig);
             System.out.printf("Added subject [%s] to stream [%s]%n", newSubject, streamName);
+            return true;
         } catch (Exception e) {
             System.err.printf("Failed to update stream [%s]: %s%n", streamName, e.getMessage());
+            return false;
         }
     }
 }

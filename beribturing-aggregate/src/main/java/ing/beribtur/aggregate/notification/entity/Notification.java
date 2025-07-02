@@ -2,7 +2,6 @@ package ing.beribtur.aggregate.notification.entity;
 
 import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.accent.domain.NameValueList;
-import ing.beribtur.aggregate.item.entity.sdo.ProductCdo;
 import ing.beribtur.aggregate.notification.entity.sdo.NotificationCdo;
 import ing.beribtur.aggregate.notification.entity.vo.*;
 import ing.beribtur.aggregate.user.entity.vo.Notifiable;
@@ -55,7 +54,7 @@ public class Notification extends DomainEntity {
 
         NotificationMessage message = new NotificationMessage(
             "Welcome to BeribTuring",
-            "Thank you for joining our rental platform",
+            "Thank you for joining our rental platform.",
             additionalInfo
         );
 

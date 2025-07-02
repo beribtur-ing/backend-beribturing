@@ -26,6 +26,7 @@ public class Contact extends DomainEntity {
 
     public Contact(ContactCdo contactCdo) {
         //
+        super(contactCdo.genId());
         BeanUtils.copyProperties(contactCdo,this);
         this.fcmTokens = new ArrayList<>();
     }
