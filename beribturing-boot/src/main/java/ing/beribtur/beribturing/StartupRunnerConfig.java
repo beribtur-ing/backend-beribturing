@@ -28,6 +28,25 @@ public class StartupRunnerConfig {
                         .role(role)
                         .build()));
             }
+
+            //owner
+            if(!accountLogic.existsPhoneAndRole(number, Role.ROLE_OWNER.name())) {
+                accountLogic.create(new Account(AccountCdo.builder()
+                        .phoneNumber(number)
+                        .password(passwordEncoder.encode("Qwerty12@"))
+                        .email("email")
+                        .role(Role.ROLE_OWNER)
+                        .build()));
+            }
+            //renter
+            if (!accountLogic.existsPhoneAndRole(number, Role.ROLE_RENTER.name())) {
+                accountLogic.create(new Account(AccountCdo.builder()
+                        .phoneNumber(number)
+                        .password(passwordEncoder.encode("Qwerty12@"))
+                        .email("email")
+                        .role(Role.ROLE_RENTER)
+                        .build()));
+            }
         };
     }
 }
