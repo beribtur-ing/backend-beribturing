@@ -14,8 +14,8 @@ services:
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_REDIS_HOST=redis
       - SPRING_REDIS_PORT=6379
-      - MINIO_ACCESS_KEY=iamroot
-      - MINIO_SECRET_KEY=Alphraganus17
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin123
       - MINIO_BUCKET_NAME=beribturing
       - NATS_URL=nats://nats:4222
     depends_on:
@@ -101,6 +101,14 @@ services:
       timeout: 20s
       retries: 3
     restart: unless-stopped
+
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8081:8080
 
 volumes:
   postgres_data:
