@@ -1,10 +1,7 @@
 package ing.beribtur.feature.rnt.user.flow;
 
 import ing.beribtur.accent.context.SpaceContext;
-import ing.beribtur.aggregate.account.entity.Account;
-import ing.beribtur.aggregate.account.entity.vo.RenterNotificationPreferences;
-import ing.beribtur.aggregate.account.entity.vo.Role;
-import ing.beribtur.aggregate.account.logic.AccountLogic;
+import ing.beribtur.aggregate.user.entity.vo.LendeeNotificationPreferences;
 import ing.beribtur.aggregate.user.entity.Lendee;
 import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
@@ -23,15 +20,10 @@ public class UserRntFlow {
     //
     private final LendeeLogic lendeeLogic;
     private final MinioService minioService;
-    private final AccountLogic accountLogic;
 
     public String modifyProfile(String name, Gender gender, String email, String address, GeoLocation location, MultipartFile image) throws Exception {
         //
         String username = SpaceContext.get().getUsername();
-
-        Account account = accountLogic.findByPhoneNumberAndRole(username, Role.ROLE_RENTER.name());
-        account.setEmail(email);
-        accountLogic.update(account);
 
         Lendee lendee = lendeeLogic.findByPhoneNumber(username);
         lendee.setName(name);
@@ -61,39 +53,50 @@ public class UserRntFlow {
         //
         String username = SpaceContext.get().getUsername();
 
-        Account account = accountLogic.findByPhoneNumberAndRole(username, Role.ROLE_RENTER.name());
+        Lendee lendee = lendeeLogic.findByPhoneNumber(username);
         
-        RenterNotificationPreferences.EmailNotifications renterEmailNotifications = new RenterNotificationPreferences.EmailNotifications(
+        LendeeNotificationPreferences.EmailNotifications lendeeEmailNotifications = new LendeeNotificationPreferences.EmailNotifications(
             emailRentalReminders,
             emailNewMessages
         );
         
-        RenterNotificationPreferences.PushNotifications renterPushNotifications = new RenterNotificationPreferences.PushNotifications(
+        LendeeNotificationPreferences.PushNotifications lendeePushNotifications = new LendeeNotificationPreferences.PushNotifications(
             pushRentalReminders,
             pushNewMessages,
             pushPromotionsAndDeals
         );
         
-        RenterNotificationPreferences.SmsNotifications renterSmsNotifications = new RenterNotificationPreferences.SmsNotifications(
+        LendeeNotificationPreferences.SmsNotifications lendeeSmsNotifications = new LendeeNotificationPreferences.SmsNotifications(
             smsRentalReminders,
             smsNewMessages
         );
         
-        RenterNotificationPreferences.MarketingNotifications renterMarketingNotifications = new RenterNotificationPreferences.MarketingNotifications(
+        LendeeNotificationPreferences.MarketingNotifications lendeeMarketingNotifications = new LendeeNotificationPreferences.MarketingNotifications(
             marketingPromotionsAndDeals,
             marketingEmails
         );
         
-        RenterNotificationPreferences notificationPreferences = new RenterNotificationPreferences(
-            renterEmailNotifications,
-            renterPushNotifications,
-            renterSmsNotifications,
-            renterMarketingNotifications
+        LendeeNotificationPreferences notificationPreferences = new LendeeNotificationPreferences(
+            lendeeEmailNotifications,
+            lendeePushNotifications,
+            lendeeSmsNotifications,
+            lendeeMarketingNotifications
         );
         
-        account.setNotificationPreferences(notificationPreferences);
-        accountLogic.update(account);
+        lendee.setNotificationPreferences(notificationPreferences);
+        lendeeLogic.update(lendee);
 
-        return account.getId();
+        return lendee.getId();
+    }
+
+    public LendeeNotificationPreferences getNotificationPreferences() {
+        String username = SpaceContext.get().getUsername();
+        Lendee lendee = lendeeLogic.findByPhoneNumber(username);
+        
+        LendeeNotificationPreferences preferences = lendee.getNotificationPreferences();
+        if (preferences == null) {
+            return LendeeNotificationPreferences.createDefault();
+        }
+        return preferences;
     }
 } 

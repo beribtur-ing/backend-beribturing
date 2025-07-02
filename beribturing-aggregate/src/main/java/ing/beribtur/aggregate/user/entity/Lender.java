@@ -9,6 +9,7 @@ import ing.beribtur.aggregate.item.entity.Product;
 import ing.beribtur.aggregate.user.entity.sdo.LenderCdo;
 import ing.beribtur.aggregate.user.entity.vo.LenderType;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
+import ing.beribtur.aggregate.user.entity.vo.LenderNotificationPreferences;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class Lender extends DomainEntity {
     private boolean active;
     private Profile profile;
     private long productSequence;
+    private LenderNotificationPreferences notificationPreferences;
 
     // Domain relationships
     private transient List<Product> listedItems;
@@ -55,6 +57,7 @@ public class Lender extends DomainEntity {
                 case "active" -> this.active = Boolean.parseBoolean(value);
                 case "profile" -> this.profile = JsonUtil.fromJson(value, Profile.class);
                 case "productSequence" -> this.productSequence = Long.parseLong(value);
+                case "notificationPreferences" -> this.notificationPreferences = JsonUtil.fromJson(value, LenderNotificationPreferences.class);
                 default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
             }
         }

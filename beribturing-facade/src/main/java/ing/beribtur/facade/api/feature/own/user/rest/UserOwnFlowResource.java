@@ -1,12 +1,14 @@
 package ing.beribtur.facade.api.feature.own.user.rest;
 
 import ing.beribtur.accent.message.CommandResponse;
+import ing.beribtur.aggregate.user.entity.vo.LenderNotificationPreferences;
 import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
 import ing.beribtur.facade.api.feature.own.user.command.ModifyProfileOwnCommand;
 import ing.beribtur.facade.api.feature.own.user.command.UpdateNotificationPreferencesOwnCommand;
 import ing.beribtur.feature.own.user.flow.UserOwnFlow;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,5 +53,10 @@ public class UserOwnFlowResource implements UserOwnFlowFacade {
 
         String entityId = userOwnFlow.updateNotificationPreferences(emailNewBookingsAndReservations, emailMessagesFromCustomers, emailPaymentConfirmations, smsNewBookingsAndReservations, smsMessagesFromCustomers, smsPaymentConfirmations);
         return new CommandResponse<>(entityId);
+    }
+
+    @GetMapping("/notification-preferences")
+    public LenderNotificationPreferences getNotificationPreferences() {
+        return userOwnFlow.getNotificationPreferences();
     }
 }

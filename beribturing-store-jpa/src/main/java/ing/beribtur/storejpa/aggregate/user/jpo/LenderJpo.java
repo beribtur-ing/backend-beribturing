@@ -2,10 +2,13 @@ package ing.beribtur.storejpa.aggregate.user.jpo;
 
 import ing.beribtur.accent.domain.DomainEntityJpo;
 import ing.beribtur.aggregate.user.entity.Lender;
+import ing.beribtur.aggregate.user.entity.vo.LenderNotificationPreferences;
 import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
 import ing.beribtur.aggregate.user.entity.vo.LenderType;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -47,6 +50,9 @@ public class LenderJpo extends DomainEntityJpo {
 
     private long productSequence;
 
+    @Column(columnDefinition = "TEXT")
+    private String notificationPreferences;
+
     public LenderJpo(Lender lender) {
         super(lender);
         BeanUtils.copyProperties(lender, this);
@@ -70,6 +76,8 @@ public class LenderJpo extends DomainEntityJpo {
                 this.longitude = profile.getLocation().getLongitude();
             }
         }
+
+        this.setNotificationPreferencesFromDomain(lender.getNotificationPreferences());
     }
 
     public Lender toDomain() {
@@ -97,12 +105,36 @@ public class LenderJpo extends DomainEntityJpo {
         }
 
         lender.setProfile(profile);
+        lender.setNotificationPreferences(getNotificationPreferencesAsDomain());
 
         return lender;
     }
 
     public static List<Lender> toDomains(List<LenderJpo> jpos) {
         return jpos.stream().map(LenderJpo::toDomain).toList();
+    }
+
+    private void setNotificationPreferencesFromDomain(LenderNotificationPreferences preferences) {
+        if (preferences != null) {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                this.notificationPreferences = mapper.writeValueAsString(preferences);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Failed to serialize notification preferences", e);
+            }
+        }
+    }
+
+    private LenderNotificationPreferences getNotificationPreferencesAsDomain() {
+        if (notificationPreferences == null || notificationPreferences.isEmpty()) {
+            return LenderNotificationPreferences.createDefault();
+        }
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(notificationPreferences, LenderNotificationPreferences.class);
+        } catch (JsonProcessingException e) {
+            return LenderNotificationPreferences.createDefault();
+        }
     }
 }
 

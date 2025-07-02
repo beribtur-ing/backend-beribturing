@@ -12,6 +12,7 @@ import ing.beribtur.aggregate.report.entity.Report;
 import ing.beribtur.aggregate.review.entity.Review;
 import ing.beribtur.aggregate.user.entity.sdo.LendeeCdo;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
+import ing.beribtur.aggregate.user.entity.vo.LendeeNotificationPreferences;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,7 @@ public class Lendee extends DomainEntity implements Discountable {
     private boolean active;
     private Profile profile;
     private long reservationSequence;
+    private LendeeNotificationPreferences notificationPreferences;
 
     // Domain relationships
     private transient List<Review> reviews;
@@ -61,6 +63,7 @@ public class Lendee extends DomainEntity implements Discountable {
                 case "active" -> this.active = Boolean.parseBoolean(value);
                 case "profile" -> this.profile = JsonUtil.fromJson(value, Profile.class);
                 case "reservationSequence" -> this.reservationSequence = Long.parseLong(value);
+                case "notificationPreferences" -> this.notificationPreferences = JsonUtil.fromJson(value, LendeeNotificationPreferences.class);
                 default -> throw new IllegalArgumentException("Update not allowed: " + nameValue);
             }
         }

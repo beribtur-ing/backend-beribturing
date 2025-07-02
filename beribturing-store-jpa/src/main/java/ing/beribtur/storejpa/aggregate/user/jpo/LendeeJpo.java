@@ -2,9 +2,12 @@ package ing.beribtur.storejpa.aggregate.user.jpo;
 
 import ing.beribtur.accent.domain.DomainEntityJpo;
 import ing.beribtur.aggregate.user.entity.Lendee;
+import ing.beribtur.aggregate.user.entity.vo.LendeeNotificationPreferences;
 import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -44,6 +47,9 @@ public class LendeeJpo extends DomainEntityJpo {
     private Double latitude;
     private Double longitude;
 
+    @Column(columnDefinition = "TEXT")
+    private String notificationPreferences;
+
     public LendeeJpo(Lendee lendee) {
         super(lendee);
         BeanUtils.copyProperties(lendee, this);
@@ -64,6 +70,8 @@ public class LendeeJpo extends DomainEntityJpo {
                 this.longitude = profile.getLocation().getLongitude();
             }
         }
+
+        this.setNotificationPreferencesFromDomain(lendee.getNotificationPreferences());
     }
 
     public Lendee toDomain() {
@@ -88,11 +96,35 @@ public class LendeeJpo extends DomainEntityJpo {
         }
 
         lendee.setProfile(profile);
+        lendee.setNotificationPreferences(getNotificationPreferencesAsDomain());
         return lendee;
     }
 
     public static List<Lendee> toDomains(List<LendeeJpo> jpos) {
         return jpos.stream().map(LendeeJpo::toDomain).toList();
+    }
+
+    private void setNotificationPreferencesFromDomain(LendeeNotificationPreferences preferences) {
+        if (preferences != null) {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                this.notificationPreferences = mapper.writeValueAsString(preferences);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Failed to serialize notification preferences", e);
+            }
+        }
+    }
+
+    private LendeeNotificationPreferences getNotificationPreferencesAsDomain() {
+        if (notificationPreferences == null || notificationPreferences.isEmpty()) {
+            return LendeeNotificationPreferences.createDefault();
+        }
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(notificationPreferences, LendeeNotificationPreferences.class);
+        } catch (JsonProcessingException e) {
+            return LendeeNotificationPreferences.createDefault();
+        }
     }
 }
 

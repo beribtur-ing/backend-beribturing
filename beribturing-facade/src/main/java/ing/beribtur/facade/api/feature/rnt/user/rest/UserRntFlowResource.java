@@ -1,12 +1,14 @@
 package ing.beribtur.facade.api.feature.rnt.user.rest;
 
 import ing.beribtur.accent.message.CommandResponse;
+import ing.beribtur.aggregate.user.entity.vo.LendeeNotificationPreferences;
 import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
 import ing.beribtur.facade.api.feature.rnt.user.command.ModifyProfileRntCommand;
 import ing.beribtur.facade.api.feature.rnt.user.command.UpdateNotificationPreferencesRntCommand;
 import ing.beribtur.feature.rnt.user.flow.UserRntFlow;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,5 +58,10 @@ public class UserRntFlowResource implements UserRntFlowFacade {
 
         String entityId = userRntFlow.updateNotificationPreferences(emailRentalReminders, emailNewMessages, pushRentalReminders, pushNewMessages, pushPromotionsAndDeals, smsRentalReminders, smsNewMessages, marketingPromotionsAndDeals, marketingEmails);
         return new CommandResponse<>(entityId);
+    }
+
+    @GetMapping("/notification-preferences")
+    public LendeeNotificationPreferences getNotificationPreferences() {
+        return userRntFlow.getNotificationPreferences();
     }
 }

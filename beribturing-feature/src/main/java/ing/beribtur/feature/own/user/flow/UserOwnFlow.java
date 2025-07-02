@@ -1,10 +1,7 @@
 package ing.beribtur.feature.own.user.flow;
 
 import ing.beribtur.accent.context.SpaceContext;
-import ing.beribtur.aggregate.account.entity.Account;
-import ing.beribtur.aggregate.account.entity.vo.OwnerNotificationPreferences;
-import ing.beribtur.aggregate.account.entity.vo.Role;
-import ing.beribtur.aggregate.account.logic.AccountLogic;
+import ing.beribtur.aggregate.user.entity.vo.LenderNotificationPreferences;
 import ing.beribtur.aggregate.user.entity.Lender;
 import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
@@ -23,15 +20,10 @@ public class UserOwnFlow {
     //
     private final LenderLogic lenderLogic;
     private final MinioService minioService;
-    private final AccountLogic accountLogic;
 
     public String modifyProfile(String name, Gender gender, String email, String address, GeoLocation location, MultipartFile image) throws Exception {
         //
         String username = SpaceContext.get().getUsername();
-
-        Account account = accountLogic.findByPhoneNumberAndRole(username, Role.ROLE_OWNER.name());
-        account.setEmail(email);
-        accountLogic.update(account);
 
         Lender lender = lenderLogic.findByPhoneNumber(username);
         lender.setName(name);
@@ -58,24 +50,35 @@ public class UserOwnFlow {
         //
         String username = SpaceContext.get().getUsername();
 
-        Account account = accountLogic.findByPhoneNumberAndRole(username, Role.ROLE_OWNER.name());
+        Lender lender = lenderLogic.findByPhoneNumber(username);
 
-        OwnerNotificationPreferences.EmailNotifications ownerEmailNotifications = new OwnerNotificationPreferences.EmailNotifications(
+        LenderNotificationPreferences.EmailNotifications lenderEmailNotifications = new LenderNotificationPreferences.EmailNotifications(
                 emailNewBookingsAndReservations,
                 emailMessagesFromCustomers,
                 emailPaymentConfirmations
         );
 
-        OwnerNotificationPreferences.SmsNotifications ownerSmsNotifications = new OwnerNotificationPreferences.SmsNotifications(
+        LenderNotificationPreferences.SmsNotifications lenderSmsNotifications = new LenderNotificationPreferences.SmsNotifications(
                 smsNewBookingsAndReservations,
                 smsMessagesFromCustomers,
                 smsPaymentConfirmations
         );
 
-        OwnerNotificationPreferences notificationPreferences = new OwnerNotificationPreferences(ownerEmailNotifications, ownerSmsNotifications);
-        account.setNotificationPreferences(notificationPreferences);
-        accountLogic.update(account);
+        LenderNotificationPreferences notificationPreferences = new LenderNotificationPreferences(lenderEmailNotifications, lenderSmsNotifications);
+        lender.setNotificationPreferences(notificationPreferences);
+        lenderLogic.update(lender);
 
-        return account.getId();
+        return lender.getId();
+    }
+
+    public LenderNotificationPreferences getNotificationPreferences() {
+        String username = SpaceContext.get().getUsername();
+        Lender lender = lenderLogic.findByPhoneNumber(username);
+        
+        LenderNotificationPreferences preferences = lender.getNotificationPreferences();
+        if (preferences == null) {
+            return LenderNotificationPreferences.createDefault();
+        }
+        return preferences;
     }
 }
