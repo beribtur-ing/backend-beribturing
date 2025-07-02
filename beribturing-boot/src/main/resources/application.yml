@@ -21,7 +21,7 @@ spring:
       connection-test-query: SELECT 1
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     database: postgresql
     properties:
       hibernate:
@@ -87,6 +87,9 @@ sms:
 
 nats:
   url: nats://206.189.55.6:8090
+  subjects:
+    notification: notifications
+    messaging: messaging
   jetstream:
     streams:
       - name: notifications

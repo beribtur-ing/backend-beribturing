@@ -17,7 +17,7 @@ public class NatsPublisherService {
         this.jetStream = jetStream;
     }
 
-    public void publish(String subject, String message) {
+    public boolean publish(String subject, String message) {
         //
         try {
             PublishAck ack = jetStream.publish(
@@ -27,8 +27,10 @@ public class NatsPublisherService {
                             .build()
             );
             System.out.printf("Sent to subject [%s], sequence: %d%n", subject, ack.getSeqno());
+            return true;
         } catch (Exception e) {
             System.err.printf("Failed to publish to [%s]: %s%n", subject, e.getMessage());
         }
+        return false;
     }
 }

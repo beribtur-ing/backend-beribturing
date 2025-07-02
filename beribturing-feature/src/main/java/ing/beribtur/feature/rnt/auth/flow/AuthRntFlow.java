@@ -4,6 +4,7 @@ import ing.beribtur.aggregate.account.entity.Account;
 import ing.beribtur.aggregate.account.entity.sdo.AccountCdo;
 import ing.beribtur.aggregate.account.entity.vo.Role;
 import ing.beribtur.aggregate.account.logic.AccountLogic;
+import ing.beribtur.aggregate.notification.entity.Notification;
 import ing.beribtur.aggregate.notification.entity.sdo.ContactCdo;
 import ing.beribtur.aggregate.notification.logic.ContactLogic;
 import ing.beribtur.aggregate.user.entity.Lendee;
@@ -14,6 +15,7 @@ import ing.beribtur.config.exception.exception.OtpAlreadySentException;
 import ing.beribtur.feature.shared.action.AuthHelper;
 import ing.beribtur.feature.shared.sdo.AccountSignInTokenRdo;
 import ing.beribtur.feature.shared.util.OTPUtil;
+import ing.beribtur.proxy.notisender.NotificationSenderService;
 import ing.beribtur.proxy.redis.RedisService;
 import ing.beribtur.proxy.sms.SmsService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,7 @@ public class AuthRntFlow {
     private final LendeeLogic lendeeLogic;
     private final AuthHelper authHelper;
     private final ContactLogic contactLogic;
+    private final NotificationSenderService notificationSenderService;
 
     public Boolean sendSignUpOTP(String phoneNumber) {
         //
@@ -112,6 +115,8 @@ public class AuthRntFlow {
         ));
         redisService.delete(phoneNumber);
         this.contactLogic.registerContact(new ContactCdo(accountId, phoneNumber, profile.getEmail()));
+        this.notificationSenderService.registerUserForNotification(phoneNumber);
+        this.notificationSenderService.sendNotificationToUser(phoneNumber, Notification.sample());
         return true;
     }
 

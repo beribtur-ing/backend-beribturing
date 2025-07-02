@@ -2,6 +2,7 @@ package ing.beribtur.facade.api.feature.notification.rest;
 
 import ing.beribtur.accent.message.CommandResponse;
 import ing.beribtur.aggregate.notification.entity.sdo.NotificationCdo;
+import ing.beribtur.facade.api.feature.notification.command.MarkNotificationsAsReadCommand;
 import ing.beribtur.facade.api.feature.notification.command.RegisterNotificationCommand;
 import ing.beribtur.feature.notification.NotificationFlow;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,14 @@ public class NotificationFlowResource implements NotificationFlowFacade {
         NotificationCdo cdo = command.getNotificationCdo();
         String id = this.notificationFlow.register(cdo);
         return new CommandResponse<>(id);
+    }
+
+    @Override
+    @PostMapping("/mark-notifications-as-read/command")
+    public CommandResponse<Integer> markNotificationsAsRead(@RequestBody MarkNotificationsAsReadCommand command) {
+        //
+        command.validate();
+        int updatedCount = this.notificationFlow.markAsRead(command.getNotificationIds());
+        return new CommandResponse<>(updatedCount);
     }
 }

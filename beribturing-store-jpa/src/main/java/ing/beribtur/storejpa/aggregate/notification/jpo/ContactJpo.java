@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -26,9 +27,8 @@ public class ContactJpo extends DomainEntityJpo {
 
     private String phoneNumber;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Column(columnDefinition = "TEXT")
-    private List<String> fcmTokens;
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<FcmTokenJpo> fcmTokens = new ArrayList<>();
 
     public ContactJpo(Contact contact) {
         //
@@ -36,11 +36,6 @@ public class ContactJpo extends DomainEntityJpo {
         this.userId = contact.getUserId();
         this.email = contact.getEmail();
         this.phoneNumber = contact.getPhoneNumber();
-
-        // Convert List<String> to JSON
-        if (contact.getFcmTokens() != null) {
-            this.fcmTokens = contact.getFcmTokens();
-        }
     }
 
     public Contact toDomain() {
@@ -50,7 +45,11 @@ public class ContactJpo extends DomainEntityJpo {
 
         // Convert JSON back to List<String>
         if (this.fcmTokens != null) {
-            contact.setFcmTokens(this.fcmTokens);
+            List<String> fcmTokens = new ArrayList<>();
+            for (FcmTokenJpo fcmTokenJpo : this.fcmTokens) {
+                fcmTokens.add(fcmTokenJpo.getToken());
+            }
+            contact.setFcmTokens(fcmTokens);
         }
 
         return contact;
