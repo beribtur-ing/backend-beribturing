@@ -11,6 +11,7 @@ import ing.beribtur.aggregate.rental.entity.vo.ReservationStatus;
 import ing.beribtur.facade.api.feature.own.rental.query.*;
 import ing.beribtur.feature.own.rental.seek.RentalOwnSeek;
 import ing.beribtur.feature.shared.sdo.RentalRecordRdo;
+import ing.beribtur.feature.shared.sdo.ReservationRdo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,13 +29,13 @@ public class RentalOwnSeekResource implements RentalOwnSeekFacade {
     private final RentalOwnSeek rentalOwnSeek;
 
     @Override
-    @PostMapping("/find-reservations/query")
-    public QueryResponse<List<Reservation>> findReservations(FindReservationsOwnQuery query) {
+    @PostMapping("/find-reservation-rdos/query")
+    public QueryResponse<List<ReservationRdo>> findReservationRdos(FindReservationRdosOwnQuery query) {
         //
         query.validate();
         ReservationStatus status = query.getStatus();
         Offset offset = query.getOffset();
-        List<Reservation> response = rentalOwnSeek.findReservations(status, offset);
+        Page<ReservationRdo> response = rentalOwnSeek.findReservationRdos(status, offset);
         query.setResponse(response);
         return query.getResponse();
     }
