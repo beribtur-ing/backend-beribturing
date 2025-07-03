@@ -5,6 +5,7 @@ import ing.beribtur.aggregate.user.entity.vo.LendeeNotificationPreferences;
 import ing.beribtur.feature.rnt.user.seek.UserRntSeek;
 import ing.beribtur.feature.shared.sdo.UserMeRdo;
 import ing.beribtur.feature.shared.sdo.LendeePrivacySettingsRdo;
+import ing.beribtur.feature.shared.sdo.LendeeSecuritySettingsRdo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,8 +31,14 @@ public class UserRntSeekResource implements UserRntSeekFacade {
     }
 
     @Override
-    @PostMapping("/notification-preferences")
+    @PostMapping("/find-notification-preferences")
     public LendeeNotificationPreferences getNotificationPreferences() {
         return userRntSeek.getNotificationPreferences();
+    }
+
+    @Override
+    @PostMapping("/find-security-settings/query")
+    public LendeeSecuritySettingsRdo getSecuritySettings() {
+        return userRntSeek.getSecuritySettings();
     }
 } 

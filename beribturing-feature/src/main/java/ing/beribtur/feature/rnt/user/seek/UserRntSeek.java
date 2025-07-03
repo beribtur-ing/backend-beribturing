@@ -7,9 +7,11 @@ import ing.beribtur.aggregate.user.entity.Lendee;
 import ing.beribtur.aggregate.user.entity.vo.LendeeNotificationPreferences;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import ing.beribtur.aggregate.user.entity.vo.LendeePrivacySettings;
+import ing.beribtur.aggregate.user.entity.vo.LendeeSecuritySettings;
 import ing.beribtur.aggregate.user.logic.LendeeLogic;
 import ing.beribtur.feature.shared.sdo.UserMeRdo;
 import ing.beribtur.feature.shared.sdo.LendeePrivacySettingsRdo;
+import ing.beribtur.feature.shared.sdo.LendeeSecuritySettingsRdo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -69,5 +71,17 @@ public class UserRntSeek {
             return LendeeNotificationPreferences.createDefault();
         }
         return preferences;
+    }
+
+    public LendeeSecuritySettingsRdo getSecuritySettings() {
+        String username = SpaceContext.get().getUsername();
+        Lendee lendee = lendeeLogic.findByPhoneNumber(username);
+        
+        LendeeSecuritySettings securitySettings = lendee.getSecuritySettings();
+        if (securitySettings == null) {
+            securitySettings = LendeeSecuritySettings.getDefaultSettings();
+        }
+        
+        return LendeeSecuritySettingsRdo.from(securitySettings);
     }
 } 
