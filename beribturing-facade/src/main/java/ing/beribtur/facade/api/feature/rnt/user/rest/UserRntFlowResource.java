@@ -6,6 +6,7 @@ import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
 import ing.beribtur.facade.api.feature.rnt.user.command.ModifyProfileRntCommand;
 import ing.beribtur.facade.api.feature.rnt.user.command.UpdateNotificationPreferencesRntCommand;
+import ing.beribtur.facade.api.feature.own.user.command.UpdatePrivacySettingsOwnCommand;
 import ing.beribtur.feature.rnt.user.flow.UserRntFlow;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,8 +61,15 @@ public class UserRntFlowResource implements UserRntFlowFacade {
         return new CommandResponse<>(entityId);
     }
 
-    @GetMapping("/notification-preferences")
-    public LendeeNotificationPreferences getNotificationPreferences() {
-        return userRntFlow.getNotificationPreferences();
+    @Override
+    @PostMapping("/update-privacy-settings/command")
+    public CommandResponse<String> updatePrivacySettings(@RequestBody UpdatePrivacySettingsOwnCommand command) throws Exception {
+        command.validate();
+        
+        String entityId = userRntFlow.updatePrivacySettings(
+            command.getProfileVisibility(),
+            command.getDataAndLocation()
+        );
+        return new CommandResponse<>(entityId);
     }
 }

@@ -3,9 +3,11 @@ package ing.beribtur.facade.api.feature.rnt.user.rest;
 import ing.beribtur.accent.message.CommandResponse;
 import ing.beribtur.facade.api.feature.rnt.user.command.ModifyProfileRntCommand;
 import ing.beribtur.facade.api.feature.rnt.user.command.UpdateNotificationPreferencesRntCommand;
+import ing.beribtur.facade.api.feature.own.user.command.UpdatePrivacySettingsOwnCommand;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UserRntFlowFacade {
     CommandResponse<String> modifyProfile(ModifyProfileRntCommand command, MultipartFile image) throws Exception;
     CommandResponse<String> updateNotificationPreferences(UpdateNotificationPreferencesRntCommand command) throws Exception;
+    CommandResponse<String> updatePrivacySettings(UpdatePrivacySettingsOwnCommand command) throws Exception;
 } 

@@ -6,6 +6,7 @@ import ing.beribtur.aggregate.user.entity.Lendee;
 import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
+import ing.beribtur.aggregate.user.entity.vo.LendeePrivacySettings;
 import ing.beribtur.aggregate.user.logic.LendeeLogic;
 import ing.beribtur.proxy.minio.MinioService;
 import lombok.RequiredArgsConstructor;
@@ -89,14 +90,15 @@ public class UserRntFlow {
         return lendee.getId();
     }
 
-    public LendeeNotificationPreferences getNotificationPreferences() {
+    public String updatePrivacySettings(LendeePrivacySettings.ProfileVisibility profileVisibility,
+                                      LendeePrivacySettings.DataAndLocation dataAndLocation) {
         String username = SpaceContext.get().getUsername();
         Lendee lendee = lendeeLogic.findByPhoneNumber(username);
         
-        LendeeNotificationPreferences preferences = lendee.getNotificationPreferences();
-        if (preferences == null) {
-            return LendeeNotificationPreferences.createDefault();
-        }
-        return preferences;
+        LendeePrivacySettings privacySettings = new LendeePrivacySettings(profileVisibility, dataAndLocation);
+        lendee.setPrivacySettings(privacySettings);
+        lendeeLogic.update(lendee);
+        
+        return lendee.getId();
     }
 } 

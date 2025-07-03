@@ -1,11 +1,15 @@
 package ing.beribtur.feature.rnt.user.seek;
 
+import ing.beribtur.accent.context.SpaceContext;
 import ing.beribtur.aggregate.account.entity.Account;
 import ing.beribtur.aggregate.account.logic.AccountLogic;
 import ing.beribtur.aggregate.user.entity.Lendee;
+import ing.beribtur.aggregate.user.entity.vo.LendeeNotificationPreferences;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
+import ing.beribtur.aggregate.user.entity.vo.LendeePrivacySettings;
 import ing.beribtur.aggregate.user.logic.LendeeLogic;
 import ing.beribtur.feature.shared.sdo.UserMeRdo;
+import ing.beribtur.feature.shared.sdo.LendeePrivacySettingsRdo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,5 +44,30 @@ public class UserRntSeek {
                 .name(lendee.getName())
                 .notificationPreferences(lendee.getNotificationPreferences())
                 .build();
+    }
+
+    public LendeePrivacySettingsRdo getPrivacySettings() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        String phoneNumber = securityContext.getAuthentication().getName();
+        Account account = accountLogic.findByPhoneNumberAndRole(phoneNumber, ROLE_RENTER.name());
+        Lendee lendee = lendeeLogic.retrieve(account.getId());
+        
+        LendeePrivacySettings privacySettings = lendee.getPrivacySettings();
+        if (privacySettings == null) {
+            privacySettings = LendeePrivacySettings.getDefaultSettings();
+        }
+        
+        return LendeePrivacySettingsRdo.from(privacySettings);
+    }
+
+    public LendeeNotificationPreferences getNotificationPreferences() {
+        String username = SpaceContext.get().getUsername();
+        Lendee lendee = lendeeLogic.findByPhoneNumber(username);
+
+        LendeeNotificationPreferences preferences = lendee.getNotificationPreferences();
+        if (preferences == null) {
+            return LendeeNotificationPreferences.createDefault();
+        }
+        return preferences;
     }
 } 

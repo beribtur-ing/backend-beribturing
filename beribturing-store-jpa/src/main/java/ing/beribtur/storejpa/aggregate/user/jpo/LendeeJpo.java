@@ -3,6 +3,7 @@ package ing.beribtur.storejpa.aggregate.user.jpo;
 import ing.beribtur.accent.domain.DomainEntityJpo;
 import ing.beribtur.aggregate.user.entity.Lendee;
 import ing.beribtur.aggregate.user.entity.vo.LendeeNotificationPreferences;
+import ing.beribtur.aggregate.user.entity.vo.LendeePrivacySettings;
 import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
@@ -50,6 +51,9 @@ public class LendeeJpo extends DomainEntityJpo {
     @Column(columnDefinition = "TEXT")
     private String notificationPreferences;
 
+    @Column(columnDefinition = "TEXT")
+    private String privacySettings;
+
     public LendeeJpo(Lendee lendee) {
         super(lendee);
         BeanUtils.copyProperties(lendee, this);
@@ -72,6 +76,7 @@ public class LendeeJpo extends DomainEntityJpo {
         }
 
         this.setNotificationPreferencesFromDomain(lendee.getNotificationPreferences());
+        this.setPrivacySettingsFromDomain(lendee.getPrivacySettings());
     }
 
     public Lendee toDomain() {
@@ -97,6 +102,7 @@ public class LendeeJpo extends DomainEntityJpo {
 
         lendee.setProfile(profile);
         lendee.setNotificationPreferences(getNotificationPreferencesAsDomain());
+        lendee.setPrivacySettings(getPrivacySettingsAsDomain());
         return lendee;
     }
 
@@ -124,6 +130,29 @@ public class LendeeJpo extends DomainEntityJpo {
             return mapper.readValue(notificationPreferences, LendeeNotificationPreferences.class);
         } catch (JsonProcessingException e) {
             return LendeeNotificationPreferences.createDefault();
+        }
+    }
+
+    private void setPrivacySettingsFromDomain(LendeePrivacySettings settings) {
+        if (settings != null) {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                this.privacySettings = mapper.writeValueAsString(settings);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Failed to serialize privacy settings", e);
+            }
+        }
+    }
+
+    private LendeePrivacySettings getPrivacySettingsAsDomain() {
+        if (privacySettings == null || privacySettings.isEmpty()) {
+            return LendeePrivacySettings.getDefaultSettings();
+        }
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(privacySettings, LendeePrivacySettings.class);
+        } catch (JsonProcessingException e) {
+            return LendeePrivacySettings.getDefaultSettings();
         }
     }
 }
