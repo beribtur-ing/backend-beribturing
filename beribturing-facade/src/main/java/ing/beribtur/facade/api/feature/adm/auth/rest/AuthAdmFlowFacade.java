@@ -11,5 +11,5 @@ public interface AuthAdmFlowFacade {
     CommandResponse<Boolean> sendOtp(SendOtpAdmCommand command);
     CommandResponse<Boolean> sendResetPasswordOTP(SendOtpAdmCommand command);
     CommandResponse<Boolean> resetPassword(ResetPasswordAdmCommand command);
-    QueryResponse<AccountSignInTokenRdo> refreshToken(RefreshTokenAdmCommand command);
+    CommandResponse<AccountSignInTokenRdo> refreshToken(RefreshTokenAdmCommand command);
 }

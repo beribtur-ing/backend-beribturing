@@ -51,13 +51,13 @@ public class AuthAdmFlowResource implements AuthAdmFlowFacade {
 
         return new CommandResponse<>(response);
     }
-    
+
     @Override
-    @PostMapping("/refresh-token/query")
-    public QueryResponse<AccountSignInTokenRdo> refreshToken(@RequestBody RefreshTokenAdmCommand command) {
+    @PostMapping("/refresh-token/comand")
+    public CommandResponse<AccountSignInTokenRdo> refreshToken(@RequestBody RefreshTokenAdmCommand command) {
         //
         command.validate();
         AccountSignInTokenRdo rdo = this.authAdmFlow.refreshToken(command.getRefreshToken());
-        return new QueryResponse<>(rdo);
+        return new CommandResponse<>(rdo);
     }
 }

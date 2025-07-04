@@ -67,13 +67,13 @@ public class AuthRntFlowResource implements AuthRntFlowFacade {
 
         return new CommandResponse<>(response);
     }
-    
+
     @Override
-    @PostMapping("/refresh-token/query")
-    public QueryResponse<AccountSignInTokenRdo> refreshToken(@RequestBody RefreshTokenRntCommand command) {
+    @PostMapping("/refresh-token/command")
+    public CommandResponse<AccountSignInTokenRdo> refreshToken(@RequestBody RefreshTokenRntCommand command) {
         //
         command.validate();
         AccountSignInTokenRdo rdo = this.authRntFlow.refreshToken(command.getRefreshToken());
-        return new QueryResponse<>(rdo);
+        return new CommandResponse<>(rdo);
     }
 }

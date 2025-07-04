@@ -1,7 +1,6 @@
 package ing.beribtur.facade.api.feature.rnt.auth.rest;
 
 import ing.beribtur.accent.message.CommandResponse;
-import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.facade.api.feature.rnt.auth.command.RefreshTokenRntCommand;
 import ing.beribtur.facade.api.feature.rnt.auth.command.ResetPasswordRntCommand;
 import ing.beribtur.facade.api.feature.rnt.auth.command.SendOtpRntCommand;
@@ -13,5 +12,5 @@ public interface AuthRntFlowFacade {
     CommandResponse<Boolean> verifyOtpAndSignUp(VerifyOtpAndSignUpRntCommand command);
     CommandResponse<Boolean> sendResetPasswordOTP(SendOtpRntCommand command);
     CommandResponse<Boolean> resetPassword(ResetPasswordRntCommand command);
-    QueryResponse<AccountSignInTokenRdo> refreshToken(RefreshTokenRntCommand command);
+    CommandResponse<AccountSignInTokenRdo> refreshToken(RefreshTokenRntCommand command);
 }

@@ -13,5 +13,5 @@ public interface AuthOwnFlowFacade {
     CommandResponse<Boolean> sendResetPasswordOTP(SendOtpOwnCommand command);
     CommandResponse<Boolean> verifyOtpAndSignUp(VerifyOtpAndSignUpOwnCommand command);
     CommandResponse<Boolean> resetPassword(ResetPasswordOwnCommand command);
-    QueryResponse<AccountSignInTokenRdo> refreshToken(RefreshTokenOwnCommand command);
+    CommandResponse<AccountSignInTokenRdo> refreshToken(RefreshTokenOwnCommand command);
 }

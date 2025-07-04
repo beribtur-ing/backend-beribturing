@@ -69,13 +69,13 @@ public class AuthOwnFlowResource implements AuthOwnFlowFacade {
 
         return new CommandResponse<>(response);
     }
-    
+
     @Override
-    @PostMapping("/refresh-token/query")
-    public QueryResponse<AccountSignInTokenRdo> refreshToken(@RequestBody RefreshTokenOwnCommand command) {
+    @PostMapping("/refresh-token/command")
+    public CommandResponse<AccountSignInTokenRdo> refreshToken(@RequestBody RefreshTokenOwnCommand command) {
         //
         command.validate();
         AccountSignInTokenRdo rdo = this.authOwnFlow.refreshToken(command.getRefreshToken());
-        return new QueryResponse<>(rdo);
+        return new CommandResponse<>(rdo);
     }
 }
