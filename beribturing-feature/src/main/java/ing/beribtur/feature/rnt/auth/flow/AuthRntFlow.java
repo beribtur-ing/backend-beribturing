@@ -7,7 +7,6 @@ import ing.beribtur.aggregate.account.logic.AccountLogic;
 import ing.beribtur.aggregate.notification.entity.Notification;
 import ing.beribtur.aggregate.notification.entity.sdo.ContactCdo;
 import ing.beribtur.aggregate.notification.logic.ContactLogic;
-import ing.beribtur.aggregate.user.entity.Lendee;
 import ing.beribtur.aggregate.user.entity.sdo.LendeeCdo;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import ing.beribtur.aggregate.user.logic.LendeeLogic;

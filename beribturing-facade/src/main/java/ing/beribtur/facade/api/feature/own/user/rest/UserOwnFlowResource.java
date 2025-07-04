@@ -1,19 +1,13 @@
 package ing.beribtur.facade.api.feature.own.user.rest;
 
 import ing.beribtur.accent.message.CommandResponse;
-import ing.beribtur.aggregate.user.entity.vo.LenderNotificationPreferences;
 import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
 import ing.beribtur.facade.api.feature.own.user.command.ModifyProfileOwnCommand;
 import ing.beribtur.facade.api.feature.own.user.command.UpdateNotificationPreferencesOwnCommand;
 import ing.beribtur.feature.own.user.flow.UserOwnFlow;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 

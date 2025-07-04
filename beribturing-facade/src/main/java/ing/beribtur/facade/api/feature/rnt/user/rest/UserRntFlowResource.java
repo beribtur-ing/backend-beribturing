@@ -3,18 +3,14 @@ package ing.beribtur.facade.api.feature.rnt.user.rest;
 import ing.beribtur.accent.message.CommandResponse;
 import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
+import ing.beribtur.facade.api.feature.own.user.command.UpdatePrivacySettingsOwnCommand;
 import ing.beribtur.facade.api.feature.rnt.user.command.ModifyProfileRntCommand;
+import ing.beribtur.facade.api.feature.rnt.user.command.UpdateAppearanceSettingsRntCommand;
 import ing.beribtur.facade.api.feature.rnt.user.command.UpdateNotificationPreferencesRntCommand;
 import ing.beribtur.facade.api.feature.rnt.user.command.UpdateSecuritySettingsRntCommand;
-import ing.beribtur.facade.api.feature.rnt.user.command.UpdateAppearanceSettingsRntCommand;
-import ing.beribtur.facade.api.feature.own.user.command.UpdatePrivacySettingsOwnCommand;
 import ing.beribtur.feature.rnt.user.flow.UserRntFlow;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -65,7 +61,7 @@ public class UserRntFlowResource implements UserRntFlowFacade {
     @PostMapping("/update-privacy-settings/command")
     public CommandResponse<String> updatePrivacySettings(@RequestBody UpdatePrivacySettingsOwnCommand command) throws Exception {
         command.validate();
-        
+
         String entityId = userRntFlow.updatePrivacySettings(
             command.getProfileVisibility(),
             command.getDataAndLocation()
@@ -77,7 +73,7 @@ public class UserRntFlowResource implements UserRntFlowFacade {
     @PostMapping("/update-security-settings/command")
     public CommandResponse<String> updateSecuritySettings(@RequestBody UpdateSecuritySettingsRntCommand command) throws Exception {
         command.validate();
-        
+
         String entityId = userRntFlow.updateSecuritySettings(
             command.isTwoFactorAuthentication(),
             command.isLoginAlertsForNewDevices(),
@@ -90,7 +86,7 @@ public class UserRntFlowResource implements UserRntFlowFacade {
     @PostMapping("/update-appearance-settings/command")
     public CommandResponse<String> updateAppearanceSettings(@RequestBody UpdateAppearanceSettingsRntCommand command) throws Exception {
         command.validate();
-        
+
         String entityId = userRntFlow.updateAppearanceSettings(
             command.isDarkMode(),
             command.isCompactView(),

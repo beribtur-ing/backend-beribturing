@@ -6,7 +6,6 @@ import ing.beribtur.aggregate.notification.entity.Notification;
 import ing.beribtur.facade.api.feature.notification.query.FindReceivedNotificationsQuery;
 import ing.beribtur.facade.api.feature.notification.query.FindUnreadNotificationsQuery;
 import ing.beribtur.feature.notification.NotificationSeek;
-import ing.beribtur.feature.notification.sdo.NotificationSearchQdo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PostMapping;
