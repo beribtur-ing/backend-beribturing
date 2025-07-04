@@ -1,13 +1,18 @@
 package ing.beribtur.feature.rnt.user.flow;
 
 import ing.beribtur.accent.context.SpaceContext;
+import ing.beribtur.aggregate.account.entity.Account;
+import ing.beribtur.aggregate.account.entity.vo.Role;
+import ing.beribtur.aggregate.account.logic.AccountLogic;
 import ing.beribtur.aggregate.user.entity.Lendee;
 import ing.beribtur.aggregate.user.entity.vo.*;
 import ing.beribtur.aggregate.user.logic.LendeeLogic;
 import ing.beribtur.proxy.minio.MinioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -17,6 +22,8 @@ public class UserRntFlow {
     //
     private final LendeeLogic lendeeLogic;
     private final MinioService minioService;
+    private final AccountLogic accountLogic;
+    private final PasswordEncoder passwordEncoder;
 
     public String modifyProfile(String name, Gender gender, String email, String address, GeoLocation location, MultipartFile image) throws Exception {
         //
@@ -135,5 +142,18 @@ public class UserRntFlow {
         lendeeLogic.modifyLendee(lendee);
 
         return lendee.getId();
+    }
+
+    public String changePassword(String currentPassword, String newPassword) {
+        String username = SpaceContext.get().getUsername();
+        Account account = accountLogic.findByPhoneNumberAndRole(username, Role.ROLE_RENTER.name());
+        
+        Assert.isTrue(passwordEncoder.matches(currentPassword, account.getPassword()), 
+            "Current password is incorrect");
+        
+        account.setPassword(passwordEncoder.encode(newPassword));
+        accountLogic.update(account);
+        
+        return account.getId();
     }
 }
