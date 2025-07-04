@@ -3,11 +3,7 @@ package ing.beribtur.feature.rnt.user.flow;
 import ing.beribtur.accent.context.SpaceContext;
 import ing.beribtur.aggregate.user.entity.vo.LendeeNotificationPreferences;
 import ing.beribtur.aggregate.user.entity.Lendee;
-import ing.beribtur.aggregate.user.entity.vo.Gender;
-import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
-import ing.beribtur.aggregate.user.entity.vo.Profile;
-import ing.beribtur.aggregate.user.entity.vo.LendeePrivacySettings;
-import ing.beribtur.aggregate.user.entity.vo.LendeeSecuritySettings;
+import ing.beribtur.aggregate.user.entity.vo.*;
 import ing.beribtur.aggregate.user.entity.vo.LendeeAppearanceSettings;
 import ing.beribtur.aggregate.user.logic.LendeeLogic;
 import ing.beribtur.proxy.minio.MinioService;
@@ -39,107 +35,107 @@ public class UserRntFlow {
             String path = minioService.uploadFile(image);
             profile.setAvatarUrl(path);
         }
-        lendeeLogic.update(lendee);
+        lendeeLogic.modifyLendee(lendee);
 
         return lendee.getId();
     }
 
     public String updateNotificationPreferences(boolean emailRentalReminders,
-                                              boolean emailNewMessages,
-                                              boolean pushRentalReminders,
-                                              boolean pushNewMessages,
-                                              boolean pushPromotionsAndDeals,
-                                              boolean smsRentalReminders,
-                                              boolean smsNewMessages,
-                                              boolean marketingPromotionsAndDeals,
-                                              boolean marketingEmails) {
+                                                boolean emailNewMessages,
+                                                boolean pushRentalReminders,
+                                                boolean pushNewMessages,
+                                                boolean pushPromotionsAndDeals,
+                                                boolean smsRentalReminders,
+                                                boolean smsNewMessages,
+                                                boolean marketingPromotionsAndDeals,
+                                                boolean marketingEmails) {
         //
         String username = SpaceContext.get().getUsername();
 
         Lendee lendee = lendeeLogic.findByPhoneNumber(username);
-        
+
         LendeeNotificationPreferences.EmailNotifications lendeeEmailNotifications = new LendeeNotificationPreferences.EmailNotifications(
             emailRentalReminders,
             emailNewMessages
         );
-        
+
         LendeeNotificationPreferences.PushNotifications lendeePushNotifications = new LendeeNotificationPreferences.PushNotifications(
             pushRentalReminders,
             pushNewMessages,
             pushPromotionsAndDeals
         );
-        
+
         LendeeNotificationPreferences.SmsNotifications lendeeSmsNotifications = new LendeeNotificationPreferences.SmsNotifications(
             smsRentalReminders,
             smsNewMessages
         );
-        
+
         LendeeNotificationPreferences.MarketingNotifications lendeeMarketingNotifications = new LendeeNotificationPreferences.MarketingNotifications(
             marketingPromotionsAndDeals,
             marketingEmails
         );
-        
+
         LendeeNotificationPreferences notificationPreferences = new LendeeNotificationPreferences(
             lendeeEmailNotifications,
             lendeePushNotifications,
             lendeeSmsNotifications,
             lendeeMarketingNotifications
         );
-        
+
         lendee.setNotificationPreferences(notificationPreferences);
-        lendeeLogic.update(lendee);
+        lendeeLogic.modifyLendee(lendee);
 
         return lendee.getId();
     }
 
     public String updatePrivacySettings(LendeePrivacySettings.ProfileVisibility profileVisibility,
-                                      LendeePrivacySettings.DataAndLocation dataAndLocation) {
+                                        LendeePrivacySettings.DataAndLocation dataAndLocation) {
         String username = SpaceContext.get().getUsername();
         Lendee lendee = lendeeLogic.findByPhoneNumber(username);
-        
+
         LendeePrivacySettings privacySettings = new LendeePrivacySettings(profileVisibility, dataAndLocation);
         lendee.setPrivacySettings(privacySettings);
-        lendeeLogic.update(lendee);
-        
+        lendeeLogic.modifyLendee(lendee);
+
         return lendee.getId();
     }
 
     public String updateSecuritySettings(boolean twoFactorAuthentication,
-                                       boolean loginAlertsForNewDevices,
-                                       int sessionTimeoutMinutes) {
+                                         boolean loginAlertsForNewDevices,
+                                         int sessionTimeoutMinutes) {
         String username = SpaceContext.get().getUsername();
         Lendee lendee = lendeeLogic.findByPhoneNumber(username);
-        
+
         LendeeSecuritySettings securitySettings = new LendeeSecuritySettings(
             twoFactorAuthentication,
             loginAlertsForNewDevices,
             sessionTimeoutMinutes
         );
         lendee.setSecuritySettings(securitySettings);
-        lendeeLogic.update(lendee);
-        
+        lendeeLogic.modifyLendee(lendee);
+
         return lendee.getId();
     }
 
-    public String updateAppearanceSettings(boolean darkMode, 
-                                         boolean compactView, 
+    public String updateAppearanceSettings(boolean darkMode,
+                                         boolean compactView,
                                          String defaultLanguage) {
         String username = SpaceContext.get().getUsername();
         Lendee lendee = lendeeLogic.findByPhoneNumber(username);
-        
+
         LendeeAppearanceSettings.Theme theme = new LendeeAppearanceSettings.Theme(
-            darkMode, 
+            darkMode,
             compactView
         );
-        
+
         LendeeAppearanceSettings appearanceSettings = new LendeeAppearanceSettings(
-            theme, 
+            theme,
             defaultLanguage
         );
-        
+
         lendee.setAppearanceSettings(appearanceSettings);
         lendeeLogic.update(lendee);
         
         return lendee.getId();
     }
-} 
+}

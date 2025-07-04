@@ -49,23 +49,23 @@ public class DiscountAdmSeekResource implements DiscountAdmSeekFacade {
 
     @Override
     @PostMapping("/find-expired/query")
-    public QueryResponse<List<Discount>> findExpiredDiscounts(FindExpiredDiscountsAdmQuery query) {
+    public QueryResponse<List<Discount>> findExpiredDiscounts(@RequestBody FindExpiredDiscountsAdmQuery query) {
         var discounts = discountAdmSeek.findExpiredDiscounts();
         return new QueryResponse<>(discounts);
     }
 
     @Override
     @PostMapping("/find-valid/query")
-    public QueryResponse<List<Discount>> findValidDiscounts(FindValidDiscountsAdmQuery query) {
+    public QueryResponse<List<Discount>> findValidDiscounts(@RequestBody FindValidDiscountsAdmQuery query) {
         var discounts = discountAdmSeek.findValidDiscounts();
         return new QueryResponse<>(discounts);
     }
 
     @Override
     @PostMapping("/find-applicable/query")
-    public QueryResponse<List<Discount>> findApplicableDiscounts(FindApplicableDiscountsAdmQuery query) {
+    public QueryResponse<List<Discount>> findApplicableDiscounts(@RequestBody FindApplicableDiscountsAdmQuery query) {
         query.validate();
         var discounts = discountAdmSeek.findApplicableDiscounts(query.getTargetId(), query.getScope());
         return new QueryResponse<>(discounts);
     }
-} 
+}

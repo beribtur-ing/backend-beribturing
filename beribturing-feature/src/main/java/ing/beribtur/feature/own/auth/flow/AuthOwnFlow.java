@@ -104,16 +104,15 @@ public class AuthOwnFlow {
 
         //create lender
         String accountId = accountLogic.findByPhoneNumberAndRole(phoneNumber, roleName.name()).getId();
-        lenderLogic.create(new Lender(
-                LenderCdo.builder()
-                        .name(name)
-                        .phoneNumber(phoneNumber)
-                        .lenderType(lenderType)
-                        .active(true)
-                        .profile(profile)
-                        .accountId(accountId)
-                        .build()
-        ));
+        LenderCdo lenderCdo = LenderCdo.builder()
+            .name(name)
+            .phoneNumber(phoneNumber)
+            .lenderType(lenderType)
+            .active(true)
+            .profile(profile)
+            .accountId(accountId)
+            .build();
+        lenderLogic.registerLender(lenderCdo);
         redisService.delete(phoneNumber);
         this.contactLogic.registerContact(new ContactCdo(accountId, phoneNumber, profile.getEmail()));
         return true;

@@ -1,7 +1,6 @@
 package ing.beribtur.facade.api.feature.adm.user.rest;
 
 import ing.beribtur.accent.message.QueryResponse;
-import ing.beribtur.facade.api.feature.adm.user.query.UserMeAdmQuery;
 import ing.beribtur.feature.adm.user.seek.UserAdmSeek;
 import ing.beribtur.feature.shared.sdo.UserMeRdo;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ public class UserAdmSeekResource implements UserAdmSeekFacade {
 
     @Override
     @PostMapping("/me/query")
-    public QueryResponse<UserMeRdo> userMe(UserMeAdmQuery query) {
+    public QueryResponse<UserMeRdo> userMe() {
         UserMeRdo rdo = userAdmSeek.userMe();
         return new QueryResponse<>(rdo);
     }

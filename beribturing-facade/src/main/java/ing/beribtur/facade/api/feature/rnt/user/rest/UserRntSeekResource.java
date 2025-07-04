@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/feature/renter/user")
 @RequiredArgsConstructor
 public class UserRntSeekResource implements UserRntSeekFacade {
+    //
     private final UserRntSeek userRntSeek;
 
     @Override

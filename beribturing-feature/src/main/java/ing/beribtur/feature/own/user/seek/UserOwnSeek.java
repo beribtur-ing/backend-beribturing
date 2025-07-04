@@ -1,10 +1,8 @@
 package ing.beribtur.feature.own.user.seek;
 
-import ing.beribtur.accent.context.SpaceContext;
 import ing.beribtur.aggregate.account.entity.Account;
 import ing.beribtur.aggregate.account.logic.AccountLogic;
 import ing.beribtur.aggregate.user.entity.Lender;
-import ing.beribtur.aggregate.user.entity.vo.LenderNotificationPreferences;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import ing.beribtur.aggregate.user.logic.LenderLogic;
 import ing.beribtur.feature.shared.sdo.UserMeRdo;
@@ -29,7 +27,7 @@ public class UserOwnSeek {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         String phoneNumber = securityContext.getAuthentication().getName();
         Account account = accountLogic.findByPhoneNumberAndRole(phoneNumber, ROLE_OWNER.name());
-        Lender lender = lenderLogic.retrieve(account.getId());
+        Lender lender = lenderLogic.findLender(account.getId());
 
         return UserMeRdo.builder()
                 .avatarUrl(Optional.ofNullable(lender.getProfile()).map(Profile::getAvatarUrl).orElse(null))
@@ -53,4 +51,4 @@ public class UserOwnSeek {
         }
         return preferences;
     }
-} 
+}

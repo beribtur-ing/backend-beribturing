@@ -36,8 +36,8 @@ public class UserRntSeek {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         String phoneNumber = securityContext.getAuthentication().getName();
         Account account = accountLogic.findByPhoneNumberAndRole(phoneNumber, ROLE_RENTER.name());
-        Lendee lendee = lendeeLogic.retrieve(account.getId());
-        
+        Lendee lendee = lendeeLogic.findLendee(account.getId());
+
         return UserMeRdo.builder()
                 .avatarUrl(Optional.ofNullable(lendee.getProfile()).map(Profile::getAvatarUrl).orElse(null))
                 .address(Optional.ofNullable(lendee.getProfile()).map(Profile::getAddress).orElse(null))
@@ -58,7 +58,7 @@ public class UserRntSeek {
         if (privacySettings == null) {
             privacySettings = LendeePrivacySettings.getDefaultSettings();
         }
-        
+
         LendeeSecuritySettings securitySettings = lendee.getSecuritySettings();
         if (securitySettings == null) {
             securitySettings = LendeeSecuritySettings.getDefaultSettings();
@@ -68,12 +68,12 @@ public class UserRntSeek {
         if (appearanceSettings == null) {
             appearanceSettings = LendeeAppearanceSettings.getDefaultSettings();
         }
-        
+
         LendeeNotificationPreferences notificationPreferences = lendee.getNotificationPreferences();
         if (notificationPreferences == null) {
             notificationPreferences = LendeeNotificationPreferences.createDefault();
         }
-        
+
         return new LendeeAllSettingsRdo(
             LendeePrivacySettingsRdo.from(privacySettings),
             LendeeSecuritySettingsRdo.from(securitySettings),

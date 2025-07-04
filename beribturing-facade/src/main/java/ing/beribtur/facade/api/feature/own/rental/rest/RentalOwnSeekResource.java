@@ -5,12 +5,12 @@ import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.aggregate.rental.entity.ItemConditionCheck;
 import ing.beribtur.aggregate.rental.entity.ItemConditionPhoto;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
-import ing.beribtur.aggregate.rental.entity.Reservation;
 import ing.beribtur.aggregate.rental.entity.vo.RentalStatus;
 import ing.beribtur.aggregate.rental.entity.vo.ReservationStatus;
 import ing.beribtur.facade.api.feature.own.rental.query.*;
 import ing.beribtur.feature.own.rental.seek.RentalOwnSeek;
 import ing.beribtur.feature.shared.sdo.RentalRecordRdo;
+import ing.beribtur.feature.shared.sdo.ReservationDetailRdo;
 import ing.beribtur.feature.shared.sdo.ReservationRdo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,12 +30,23 @@ public class RentalOwnSeekResource implements RentalOwnSeekFacade {
 
     @Override
     @PostMapping("/find-reservation-rdos/query")
-    public QueryResponse<List<ReservationRdo>> findReservationRdos(FindReservationRdosOwnQuery query) {
+    public QueryResponse<List<ReservationRdo>> findReservationRdos(@RequestBody FindReservationRdosOwnQuery query) {
         //
         query.validate();
         ReservationStatus status = query.getStatus();
         Offset offset = query.getOffset();
         Page<ReservationRdo> response = rentalOwnSeek.findReservationRdos(status, offset);
+        query.setResponse(response);
+        return query.getResponse();
+    }
+
+    @Override
+    @PostMapping("/find-reservation-detail/query")
+    public QueryResponse<ReservationDetailRdo> findReservationDetail(@RequestBody FindReservationDetailOwnQuery query) {
+        //
+        query.validate();
+        String reservationId = query.getReservationId();
+        ReservationDetailRdo response = rentalOwnSeek.findReservationDetail(reservationId);
         query.setResponse(response);
         return query.getResponse();
     }
@@ -53,7 +64,7 @@ public class RentalOwnSeekResource implements RentalOwnSeekFacade {
 
     @Override
     @PostMapping("/find-rental-record-rdos/query")
-    public QueryResponse<List<RentalRecordRdo>> findRentalRecords(FindRentalRecordsOwnQuery query) {
+    public QueryResponse<List<RentalRecordRdo>> findRentalRecords(@RequestBody FindRentalRecordsOwnQuery query) {
         //
         query.validate();
         RentalStatus status = query.getStatus();

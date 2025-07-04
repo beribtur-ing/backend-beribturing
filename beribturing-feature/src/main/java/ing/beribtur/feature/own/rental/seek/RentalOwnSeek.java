@@ -3,25 +3,38 @@ package ing.beribtur.feature.own.rental.seek;
 import ing.beribtur.accent.context.SpaceContext;
 import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.account.entity.vo.Role;
+import ing.beribtur.aggregate.item.entity.Product;
+import ing.beribtur.aggregate.item.entity.ProductImage;
+import ing.beribtur.aggregate.item.entity.ProductVariant;
+import ing.beribtur.aggregate.item.logic.ProductImageLogic;
+import ing.beribtur.aggregate.item.logic.ProductLogic;
+import ing.beribtur.aggregate.item.logic.ProductVariantLogic;
 import ing.beribtur.aggregate.rental.entity.ItemConditionCheck;
 import ing.beribtur.aggregate.rental.entity.ItemConditionPhoto;
 import ing.beribtur.aggregate.rental.entity.RentalRecord;
+import ing.beribtur.aggregate.rental.entity.Reservation;
 import ing.beribtur.aggregate.rental.entity.vo.RentalStatus;
 import ing.beribtur.aggregate.rental.entity.vo.ReservationStatus;
 import ing.beribtur.aggregate.rental.logic.ItemConditionCheckLogic;
 import ing.beribtur.aggregate.rental.logic.ItemConditionPhotoLogic;
 import ing.beribtur.aggregate.rental.logic.RentalRecordLogic;
+import ing.beribtur.aggregate.rental.logic.ReservationLogic;
+import ing.beribtur.aggregate.user.entity.Lendee;
 import ing.beribtur.aggregate.user.entity.Lender;
+import ing.beribtur.aggregate.user.logic.LendeeLogic;
 import ing.beribtur.aggregate.user.logic.LenderLogic;
 import ing.beribtur.feature.shared.action.AuthHelper;
 import ing.beribtur.feature.shared.customstore.RentalRecordCustomStore;
 import ing.beribtur.feature.shared.customstore.ReservationCustomStore;
 import ing.beribtur.feature.shared.sdo.RentalRecordRdo;
+import ing.beribtur.feature.shared.sdo.ReservationDetailRdo;
 import ing.beribtur.feature.shared.sdo.ReservationRdo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -35,6 +48,11 @@ public class RentalOwnSeek {
     private final ReservationCustomStore reservationCustomStore;
     private final AuthHelper authHelper;
     private final LenderLogic lenderLogic;
+    private final ReservationLogic reservationLogic;
+    private final ProductVariantLogic productVariantLogic;
+    private final ProductLogic productLogic;
+    private final ProductImageLogic productImageLogic;
+    private final LendeeLogic lendeeLogic;
 
     public RentalRecord findRentalRecordById(String rentalRecordId) {
         //
@@ -57,6 +75,25 @@ public class RentalOwnSeek {
         return reservationCustomStore.findReservationRdos(ownerId, status, offset);
     }
 
+    public ReservationDetailRdo findReservationDetail(String reservationId) {
+        //
+        Reservation reservation = reservationLogic.findReservation(reservationId);
+        String variantId = reservation.getProductVariantId();
+        ProductVariant variant = productVariantLogic.findProductVariant(variantId);
+        Product product = productLogic.findProduct(variant.getProductId());
+        List<ProductImage> images = productImageLogic.findProductImagesByVariantId(variantId);
+        Lender owner = lenderLogic.findLender(reservation.getOwnerId());
+        Lendee requester = lendeeLogic.findLendee(reservation.getRequesterId());
+
+        return ReservationDetailRdo.builder()
+            .reservation(reservation)
+            .variant(variant)
+            .product(product)
+            .images(images)
+            .owner(owner)
+            .requester(requester)
+            .build();
+    }
 
     public Page<RentalRecordRdo> findRentalRecords(RentalStatus status, String searchKeyword, Offset offset) {
         //

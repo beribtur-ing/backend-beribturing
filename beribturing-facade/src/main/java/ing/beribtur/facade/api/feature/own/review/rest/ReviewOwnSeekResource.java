@@ -45,7 +45,7 @@ public class ReviewOwnSeekResource implements ReviewOwnSeekFacade {
 
     @Override
     @PostMapping("/find-reviews-by-product-variant-id/query")
-    public QueryResponse<List<Review>> findReviewsByVariantId(FindReviewsByProductVariantIdOwnQuery query) {
+    public QueryResponse<List<Review>> findReviewsByVariantId(@RequestBody FindReviewsByProductVariantIdOwnQuery query) {
         //
         query.validate();
         String productVariantId = query.getProductVariantId();
