@@ -16,6 +16,7 @@ import ing.beribtur.feature.shared.sdo.RentalRecordRdo;
 import ing.beribtur.storejpa.aggregate.item.jpo.ProductCategoryJpo;
 import ing.beribtur.storejpa.aggregate.item.jpo.ProductJpo;
 import ing.beribtur.storejpa.aggregate.item.jpo.ProductVariantJpo;
+import ing.beribtur.storejpa.aggregate.item.jpo.ProductImageJpo;
 import ing.beribtur.storejpa.aggregate.payment.jpo.RentalDepositJpo;
 import ing.beribtur.storejpa.aggregate.rental.jpo.RentalRecordJpo;
 import ing.beribtur.storejpa.aggregate.user.jpo.LendeeJpo;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 import static ing.beribtur.storejpa.aggregate.item.jpo.QProductCategoryJpo.productCategoryJpo;
 import static ing.beribtur.storejpa.aggregate.item.jpo.QProductJpo.productJpo;
 import static ing.beribtur.storejpa.aggregate.item.jpo.QProductVariantJpo.productVariantJpo;
+import static ing.beribtur.storejpa.aggregate.item.jpo.QProductImageJpo.productImageJpo;
 import static ing.beribtur.storejpa.aggregate.payment.jpo.QRentalDepositJpo.rentalDepositJpo;
 import static ing.beribtur.storejpa.aggregate.rental.jpo.QRentalRecordJpo.rentalRecordJpo;
 import static ing.beribtur.storejpa.aggregate.user.jpo.QLendeeJpo.lendeeJpo;
@@ -113,6 +115,7 @@ public class RentalRecordQueryDslStore implements RentalRecordCustomStore {
         Map<String, Lendee> lendeeMap = fetchLendeesByIds(lendeeIds);
         Map<String, ProductVariantJpo> productVariantMap = fetchProductVariantsByIds(productVariantIds);
         Map<String, RentalDeposit> rentalDepositMap = fetchRentalDepositsByIds(depositIds);
+        Map<String, List<ProductImageJpo>> productImageMap = fetchProductImagesByVariantIds(productVariantIds);
 
         // Extract product and category IDs from variants
         Set<String> productIds = productVariantMap.values().stream()
@@ -133,7 +136,7 @@ public class RentalRecordQueryDslStore implements RentalRecordCustomStore {
         return rentalRecordJpos.stream()
                 .map(RentalRecordJpo::toDomain)
                 .map(domain -> buildRentalRecordRdo(domain, lendeeMap, productVariantMap,
-                        productMap, categoryMap, rentalDepositMap))
+                        productMap, categoryMap, rentalDepositMap, productImageMap))
                 .collect(Collectors.toList());
     }
 
@@ -150,7 +153,8 @@ public class RentalRecordQueryDslStore implements RentalRecordCustomStore {
                                                  Map<String, ProductVariantJpo> productVariantMap,
                                                  Map<String, ProductJpo> productMap,
                                                  Map<String, ProductCategoryJpo> categoryMap,
-                                                 Map<String, RentalDeposit> rentalDepositMap) {
+                                                 Map<String, RentalDeposit> rentalDepositMap,
+                                                 Map<String, List<ProductImageJpo>> productImageMap) {
         //
 
         RentalRecordRdo.RentalRecordRdoBuilder builder = RentalRecordRdo.builder()
@@ -169,7 +173,8 @@ public class RentalRecordQueryDslStore implements RentalRecordCustomStore {
                     ProductJpo product = productMap.get(variant.getProductId());
                     if (product != null) {
                         ProductCategoryJpo category = categoryMap.get(product.getCategoryId());
-                        builder.productRentalRecordRdo(createProductRentalRecordRdo(product, variant, category));
+                        List<ProductImageJpo> images = productImageMap.get(variant.getId());
+                        builder.productRentalRecordRdo(createProductRentalRecordRdo(product, variant, category, images));
                     }
                 });
 
@@ -178,7 +183,8 @@ public class RentalRecordQueryDslStore implements RentalRecordCustomStore {
 
     private ProductRentalRecordRdo createProductRentalRecordRdo(ProductJpo product,
                                                                 ProductVariantJpo variant,
-                                                                ProductCategoryJpo category) {
+                                                                ProductCategoryJpo category,
+                                                                List<ProductImageJpo> images) {
         //
         return ProductRentalRecordRdo.builder()
                 .productId(product.getId())
@@ -193,6 +199,7 @@ public class RentalRecordQueryDslStore implements RentalRecordCustomStore {
                 .unit(Optional.ofNullable(variant.getPriceUnit())
                         .map(PriceUnit::valueOf)
                         .orElse(null))
+                .images(images != null ? images.stream().map(ProductImageJpo::toDomain).collect(Collectors.toList()) : Collections.emptyList())
                 .build();
     }
 
@@ -254,5 +261,17 @@ public class RentalRecordQueryDslStore implements RentalRecordCustomStore {
                         .fetch()
                         .stream()
                         .collect(Collectors.toMap(RentalDepositJpo::getId, RentalDepositJpo::toDomain));
+    }
+
+    private Map<String, List<ProductImageJpo>> fetchProductImagesByVariantIds(Set<String> productVariantIds) {
+        //
+        return productVariantIds.isEmpty() ? Collections.emptyMap() :
+                jpaQueryFactory.selectFrom(productImageJpo)
+                        .where(productImageJpo.variantId.in(productVariantIds)
+                                .and(productImageJpo.active.eq(true)))
+                        .orderBy(productImageJpo.order.asc())
+                        .fetch()
+                        .stream()
+                        .collect(Collectors.groupingBy(ProductImageJpo::getVariantId));
     }
 }
