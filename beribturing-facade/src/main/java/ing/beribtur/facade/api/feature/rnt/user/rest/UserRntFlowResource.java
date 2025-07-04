@@ -6,6 +6,7 @@ import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
 import ing.beribtur.facade.api.feature.rnt.user.command.ModifyProfileRntCommand;
 import ing.beribtur.facade.api.feature.rnt.user.command.UpdateNotificationPreferencesRntCommand;
 import ing.beribtur.facade.api.feature.rnt.user.command.UpdateSecuritySettingsRntCommand;
+import ing.beribtur.facade.api.feature.rnt.user.command.UpdateAppearanceSettingsRntCommand;
 import ing.beribtur.facade.api.feature.own.user.command.UpdatePrivacySettingsOwnCommand;
 import ing.beribtur.feature.rnt.user.flow.UserRntFlow;
 import lombok.RequiredArgsConstructor;
@@ -81,6 +82,19 @@ public class UserRntFlowResource implements UserRntFlowFacade {
             command.isTwoFactorAuthentication(),
             command.isLoginAlertsForNewDevices(),
             command.getSessionTimeoutMinutes()
+        );
+        return new CommandResponse<>(entityId);
+    }
+
+    @Override
+    @PostMapping("/update-appearance-settings/command")
+    public CommandResponse<String> updateAppearanceSettings(@RequestBody UpdateAppearanceSettingsRntCommand command) throws Exception {
+        command.validate();
+        
+        String entityId = userRntFlow.updateAppearanceSettings(
+            command.isDarkMode(),
+            command.isCompactView(),
+            command.getDefaultLanguage()
         );
         return new CommandResponse<>(entityId);
     }

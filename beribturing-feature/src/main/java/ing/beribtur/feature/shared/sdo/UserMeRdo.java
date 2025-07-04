@@ -1,6 +1,5 @@
 package ing.beribtur.feature.shared.sdo;
 
-import ing.beribtur.aggregate.user.entity.vo.NotificationPreferences;
 import ing.beribtur.aggregate.account.entity.vo.Role;
 import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
@@ -20,5 +19,4 @@ public class UserMeRdo {
     private String email;
     private Role role;
     private String name;
-    private NotificationPreferences notificationPreferences;
 }

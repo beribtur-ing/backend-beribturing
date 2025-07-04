@@ -54,9 +54,4 @@ public class UserOwnFlowResource implements UserOwnFlowFacade {
         String entityId = userOwnFlow.updateNotificationPreferences(emailNewBookingsAndReservations, emailMessagesFromCustomers, emailPaymentConfirmations, smsNewBookingsAndReservations, smsMessagesFromCustomers, smsPaymentConfirmations);
         return new CommandResponse<>(entityId);
     }
-
-    @GetMapping("/notification-preferences")
-    public LenderNotificationPreferences getNotificationPreferences() {
-        return userOwnFlow.getNotificationPreferences();
-    }
 }

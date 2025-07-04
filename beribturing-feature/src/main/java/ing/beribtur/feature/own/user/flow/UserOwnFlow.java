@@ -70,15 +70,4 @@ public class UserOwnFlow {
 
         return lender.getId();
     }
-
-    public LenderNotificationPreferences getNotificationPreferences() {
-        String username = SpaceContext.get().getUsername();
-        Lender lender = lenderLogic.findByPhoneNumber(username);
-        
-        LenderNotificationPreferences preferences = lender.getNotificationPreferences();
-        if (preferences == null) {
-            return LenderNotificationPreferences.createDefault();
-        }
-        return preferences;
-    }
 }

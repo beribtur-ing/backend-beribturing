@@ -8,6 +8,7 @@ import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import ing.beribtur.aggregate.user.entity.vo.LendeePrivacySettings;
 import ing.beribtur.aggregate.user.entity.vo.LendeeSecuritySettings;
+import ing.beribtur.aggregate.user.entity.vo.LendeeAppearanceSettings;
 import ing.beribtur.aggregate.user.logic.LendeeLogic;
 import ing.beribtur.proxy.minio.MinioService;
 import lombok.RequiredArgsConstructor;
@@ -115,6 +116,28 @@ public class UserRntFlow {
             sessionTimeoutMinutes
         );
         lendee.setSecuritySettings(securitySettings);
+        lendeeLogic.update(lendee);
+        
+        return lendee.getId();
+    }
+
+    public String updateAppearanceSettings(boolean darkMode, 
+                                         boolean compactView, 
+                                         String defaultLanguage) {
+        String username = SpaceContext.get().getUsername();
+        Lendee lendee = lendeeLogic.findByPhoneNumber(username);
+        
+        LendeeAppearanceSettings.Theme theme = new LendeeAppearanceSettings.Theme(
+            darkMode, 
+            compactView
+        );
+        
+        LendeeAppearanceSettings appearanceSettings = new LendeeAppearanceSettings(
+            theme, 
+            defaultLanguage
+        );
+        
+        lendee.setAppearanceSettings(appearanceSettings);
         lendeeLogic.update(lendee);
         
         return lendee.getId();
