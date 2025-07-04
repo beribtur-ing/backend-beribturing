@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class LenderNotificationPreferences extends NotificationPreferences{
+public class LenderNotificationPreferences {
     
     private EmailNotifications emailNotifications;
     private SmsNotifications smsNotifications;

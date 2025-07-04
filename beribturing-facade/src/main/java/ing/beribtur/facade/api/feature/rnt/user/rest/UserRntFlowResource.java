@@ -7,6 +7,7 @@ import ing.beribtur.facade.api.feature.rnt.user.command.ModifyProfileRntCommand;
 import ing.beribtur.facade.api.feature.rnt.user.command.UpdateNotificationPreferencesRntCommand;
 import ing.beribtur.facade.api.feature.rnt.user.command.UpdateSecuritySettingsRntCommand;
 import ing.beribtur.facade.api.feature.rnt.user.command.UpdateAppearanceSettingsRntCommand;
+import ing.beribtur.facade.api.feature.rnt.user.command.ChangePasswordRntCommand;
 import ing.beribtur.facade.api.feature.own.user.command.UpdatePrivacySettingsRntCommand;
 import ing.beribtur.feature.rnt.user.flow.UserRntFlow;
 import lombok.RequiredArgsConstructor;
@@ -95,6 +96,18 @@ public class UserRntFlowResource implements UserRntFlowFacade {
             command.isDarkMode(),
             command.isCompactView(),
             command.getDefaultLanguage()
+        );
+        return new CommandResponse<>(entityId);
+    }
+
+    @Override
+    @PostMapping("/change-password/command")
+    public CommandResponse<String> changePassword(@RequestBody ChangePasswordRntCommand command) throws Exception {
+        command.validate();
+        
+        String entityId = userRntFlow.changePassword(
+            command.getCurrentPassword(),
+            command.getNewPassword()
         );
         return new CommandResponse<>(entityId);
     }
