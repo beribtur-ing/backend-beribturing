@@ -36,7 +36,7 @@ public class UserRntFlow {
             String path = minioService.uploadFile(image);
             profile.setAvatarUrl(path);
         }
-        lendeeLogic.update(lendee);
+        lendeeLogic.modifyLendee(lendee);
 
         return lendee.getId();
     }
@@ -54,37 +54,37 @@ public class UserRntFlow {
         String username = SpaceContext.get().getUsername();
 
         Lendee lendee = lendeeLogic.findByPhoneNumber(username);
-        
+
         LendeeNotificationPreferences.EmailNotifications lendeeEmailNotifications = new LendeeNotificationPreferences.EmailNotifications(
             emailRentalReminders,
             emailNewMessages
         );
-        
+
         LendeeNotificationPreferences.PushNotifications lendeePushNotifications = new LendeeNotificationPreferences.PushNotifications(
             pushRentalReminders,
             pushNewMessages,
             pushPromotionsAndDeals
         );
-        
+
         LendeeNotificationPreferences.SmsNotifications lendeeSmsNotifications = new LendeeNotificationPreferences.SmsNotifications(
             smsRentalReminders,
             smsNewMessages
         );
-        
+
         LendeeNotificationPreferences.MarketingNotifications lendeeMarketingNotifications = new LendeeNotificationPreferences.MarketingNotifications(
             marketingPromotionsAndDeals,
             marketingEmails
         );
-        
+
         LendeeNotificationPreferences notificationPreferences = new LendeeNotificationPreferences(
             lendeeEmailNotifications,
             lendeePushNotifications,
             lendeeSmsNotifications,
             lendeeMarketingNotifications
         );
-        
+
         lendee.setNotificationPreferences(notificationPreferences);
-        lendeeLogic.update(lendee);
+        lendeeLogic.modifyLendee(lendee);
 
         return lendee.getId();
     }
@@ -92,11 +92,11 @@ public class UserRntFlow {
     public LendeeNotificationPreferences getNotificationPreferences() {
         String username = SpaceContext.get().getUsername();
         Lendee lendee = lendeeLogic.findByPhoneNumber(username);
-        
+
         LendeeNotificationPreferences preferences = lendee.getNotificationPreferences();
         if (preferences == null) {
             return LendeeNotificationPreferences.createDefault();
         }
         return preferences;
     }
-} 
+}

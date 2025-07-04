@@ -33,7 +33,7 @@ public class ReportRntSeekResource implements ReportRntSeekFacade {
 
     @Override
     @PostMapping("/find-reports-by-reporter/query")
-    public QueryResponse<List<Report>> findReportsByReporter(FindReportsByReporterRntQuery query) {
+    public QueryResponse<List<Report>> findReportsByReporter(@RequestBody FindReportsByReporterRntQuery query) {
         query.validate();
         String reporterId = query.getReporterId();
         List<Report> response = reportRntSeek.findReportsByReporterId(reporterId);
@@ -42,7 +42,7 @@ public class ReportRntSeekResource implements ReportRntSeekFacade {
 
     @Override
     @PostMapping("/find-reports-by-reporter-and-resolved-state/query")
-    public QueryResponse<List<Report>> findReportsByResolvedState(FindReportsByReporterAndResolvedStateRntQuery query) {
+    public QueryResponse<List<Report>> findReportsByResolvedState(@RequestBody FindReportsByReporterAndResolvedStateRntQuery query) {
         query.validate();
         String reporterId = query.getReporterId();
         Boolean resolved = query.getResolved();

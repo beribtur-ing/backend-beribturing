@@ -1,5 +1,6 @@
 package ing.beribtur.storejpa.aggregate.user;
 
+import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.user.entity.Lender;
 import ing.beribtur.aggregate.user.entity.vo.LenderType;
 import ing.beribtur.aggregate.user.store.LenderStore;
@@ -8,10 +9,13 @@ import ing.beribtur.storejpa.aggregate.user.repository.LenderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,49 +25,69 @@ public class LenderJpaStore implements LenderStore {
 
     @Override
     public void create(Lender lender) {
+        //
         LenderJpo lenderJpo = new LenderJpo(lender);
         lenderRepository.save(lenderJpo);
         lender.setId(lenderJpo.getId());
     }
 
     @Override
+    public void createAll(List<Lender> lenders) {
+        //
+        lenderRepository.saveAll(lenders.stream().map(LenderJpo::new).collect(Collectors.toList()));
+    }
+
+    @Override
     public Lender retrieve(String id) {
-        LenderJpo lenderJpo = lenderRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Lender not found: " + id));
-        return lenderJpo.toDomain();
+        //
+        return lenderRepository.findById(id)
+                .map(LenderJpo::toDomain)
+                .orElse(null);
     }
 
     @Override
     public List<Lender> retrieveAll(List<String> ids) {
-        List<LenderJpo> lenderJpos = lenderRepository.findAllById(ids);
-        return LenderJpo.toDomains(lenderJpos);
+        //
+        Iterable<LenderJpo> allById = lenderRepository.findAllById(ids);
+        return LenderJpo.toDomains(StreamSupport.stream(allById.spliterator(), false).collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<Lender> retrieveList(Offset offset) {
+        //
+        Pageable pageable = PageRequest.of(offset.page(), offset.limit());
+        return lenderRepository.findAll(pageable).map(LenderJpo::toDomain).toList();
     }
 
     @Override
     public void update(Lender lender) {
-        LenderJpo existingJpo = lenderRepository.findById(lender.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Lender not found: " + lender.getId()));
+        //
+        lenderRepository.save(new LenderJpo(lender));
+    }
 
-        LenderJpo updatedJpo = new LenderJpo(lender);
-        updatedJpo.setEntityVersion(existingJpo.getEntityVersion());
-        updatedJpo.setRegisteredBy(existingJpo.getRegisteredBy());
-        updatedJpo.setRegisteredOn(existingJpo.getRegisteredOn());
-
-        lenderRepository.save(updatedJpo);
+    @Override
+    public void delete(Lender lender) {
+        //
+        lenderRepository.delete(new LenderJpo(lender));
     }
 
     @Override
     public void delete(String id) {
+        //
         lenderRepository.deleteById(id);
     }
 
-    // Additional query methods
+    @Override
+    public boolean exists(String id) {
+        //
+        return lenderRepository.existsById(id);
+    }
+
+    @Override
     public Lender findByPhoneNumber(String phoneNumber) {
+        //
         LenderJpo lenderJpo = lenderRepository.findByPhoneNumber(phoneNumber);
-        if (lenderJpo == null) {
-            throw new IllegalArgumentException("Lender not found with phone number: " + phoneNumber);
-        }
-        return lenderJpo.toDomain();
+        return lenderJpo != null ? lenderJpo.toDomain() : null;
     }
 
     public List<Lender> findByEmail(String email) {

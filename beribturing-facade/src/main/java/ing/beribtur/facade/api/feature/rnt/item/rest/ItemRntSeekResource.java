@@ -66,7 +66,7 @@ public class ItemRntSeekResource implements ItemRntSeekFacade {
 
     @Override
     @PostMapping("/find-popular-product-rdos/query")
-    public QueryResponse<List<PopularProductRdo>> findPopularProductRdos(FindPopularProductRdosRntQuery query) {
+    public QueryResponse<List<PopularProductRdo>> findPopularProductRdos(@RequestBody FindPopularProductRdosRntQuery query) {
         //
         query.validate();
         Integer maxCount = query.getMaxCount();

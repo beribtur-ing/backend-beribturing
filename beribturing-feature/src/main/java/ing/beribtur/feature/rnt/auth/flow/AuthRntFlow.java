@@ -104,15 +104,14 @@ public class AuthRntFlow {
 
         //create lendee
         String accountId = accountLogic.findByPhoneNumberAndRole(phoneNumber, roleRenter.name()).getId();
-        lendeeLogic.create(new Lendee(
-                LendeeCdo.builder()
-                        .name(name)
-                        .phoneNumber(phoneNumber)
-                        .active(true)
-                        .profile(profile)
-                        .accountId(accountId)
-                        .build()
-        ));
+        LendeeCdo lendeeCdo = LendeeCdo.builder()
+            .name(name)
+            .phoneNumber(phoneNumber)
+            .active(true)
+            .profile(profile)
+            .accountId(accountId)
+            .build();
+        lendeeLogic.registerLendee(lendeeCdo);
         redisService.delete(phoneNumber);
         this.contactLogic.registerContact(new ContactCdo(accountId, phoneNumber, profile.getEmail()));
         this.notificationSenderService.registerUserForNotification(phoneNumber);

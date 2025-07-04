@@ -6,6 +6,7 @@ import ing.beribtur.feature.rnt.user.seek.UserRntSeek;
 import ing.beribtur.feature.shared.sdo.UserMeRdo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,8 +18,8 @@ public class UserRntSeekResource implements UserRntSeekFacade {
 
     @Override
     @PostMapping("/me/query")
-    public QueryResponse<UserMeRdo> userMe(UserMeRntQuery query) {
+    public QueryResponse<UserMeRdo> userMe(@RequestBody UserMeRntQuery query) {
         UserMeRdo rdo = userRntSeek.userMe();
         return new QueryResponse<>(rdo);
     }
-} 
+}

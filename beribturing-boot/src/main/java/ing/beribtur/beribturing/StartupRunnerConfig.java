@@ -45,15 +45,15 @@ public class StartupRunnerConfig {
                         .role(Role.ROLE_OWNER)
                         .build()));
 
-                lenderLogic.create(new Lender(
-                        LenderCdo.builder()
-                                .phoneNumber(number)
-                                .name("Lender Name")
-                                .lenderType(LenderType.Business)
-                                .active(true)
-                                .accountId(accountLogic.findByPhoneNumberAndRole(number, Role.ROLE_OWNER.name()).getId())
-                                .build()
-                ));
+                LenderCdo lenderCdo = LenderCdo.builder()
+                    .phoneNumber(number)
+                    .name("Lender Name")
+                    .lenderType(LenderType.Business)
+                    .active(true)
+                    .accountId(accountLogic.findByPhoneNumberAndRole(number, Role.ROLE_OWNER.name()).getId())
+                    .build();
+
+                lenderLogic.registerLender(lenderCdo);
             }
             //renter
             if (!accountLogic.existsPhoneAndRole(number, Role.ROLE_RENTER.name())) {
@@ -64,14 +64,14 @@ public class StartupRunnerConfig {
                         .role(Role.ROLE_RENTER)
                         .build()));
 
-                lendeeLogic.create(new Lendee(
-                        LendeeCdo.builder()
-                                .name("Lendee Name")
-                                .phoneNumber(number)
-                                .active(true)
-                                .accountId(accountLogic.findByPhoneNumberAndRole(number, Role.ROLE_RENTER.name()).getId())
-                                .build()
-                ));
+                LendeeCdo lendeeCdo = LendeeCdo.builder()
+                    .name("Lendee Name")
+                    .phoneNumber(number)
+                    .active(true)
+                    .accountId(accountLogic.findByPhoneNumberAndRole(number, Role.ROLE_RENTER.name()).getId())
+                    .build();
+
+                lendeeLogic.registerLendee(lendeeCdo);
             }
         };
     }

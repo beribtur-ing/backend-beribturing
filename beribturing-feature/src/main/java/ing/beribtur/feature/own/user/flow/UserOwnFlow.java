@@ -36,7 +36,7 @@ public class UserOwnFlow {
             String path = minioService.uploadFile(image);
             profile.setAvatarUrl(path);
         }
-        lenderLogic.update(lender);
+        lenderLogic.modifyLender(lender);
 
         return lender.getId();
     }
@@ -66,7 +66,7 @@ public class UserOwnFlow {
 
         LenderNotificationPreferences notificationPreferences = new LenderNotificationPreferences(lenderEmailNotifications, lenderSmsNotifications);
         lender.setNotificationPreferences(notificationPreferences);
-        lenderLogic.update(lender);
+        lenderLogic.modifyLender(lender);
 
         return lender.getId();
     }
@@ -74,7 +74,7 @@ public class UserOwnFlow {
     public LenderNotificationPreferences getNotificationPreferences() {
         String username = SpaceContext.get().getUsername();
         Lender lender = lenderLogic.findByPhoneNumber(username);
-        
+
         LenderNotificationPreferences preferences = lender.getNotificationPreferences();
         if (preferences == null) {
             return LenderNotificationPreferences.createDefault();

@@ -8,6 +8,7 @@ import ing.beribtur.feature.own.report.seek.ReportOwnSeek;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,7 @@ public class ReportOwnSeekResource implements ReportOwnSeekFacade {
 
     @Override
     @PostMapping("/find-reports-by-product-variant-id/query")
-    public QueryResponse<List<Report>> findReportsByProductVariantId(FindReportsByProductVariantIdOwnQuery query) {
+    public QueryResponse<List<Report>> findReportsByProductVariantId(@RequestBody FindReportsByProductVariantIdOwnQuery query) {
         //
         query.validate();
         String productVariantId = query.getProductVariantId();

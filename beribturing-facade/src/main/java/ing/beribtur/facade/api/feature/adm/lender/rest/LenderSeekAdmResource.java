@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,7 @@ public class LenderSeekAdmResource implements LenderAdmSeekFacade {
     @Override
     @PostMapping("/find-disabled-lenders/query")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public QueryResponse<List<Lender>> findDisabledLendersAdmin(FindDisabledLendersAdmQuery query) {
+    public QueryResponse<List<Lender>> findDisabledLendersAdmin(@RequestBody FindDisabledLendersAdmQuery query) {
         query.validate();
         int page = query.getPage();
         int size = query.getSize();

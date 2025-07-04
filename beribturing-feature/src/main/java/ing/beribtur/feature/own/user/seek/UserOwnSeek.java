@@ -27,7 +27,7 @@ public class UserOwnSeek {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         String phoneNumber = securityContext.getAuthentication().getName();
         Account account = accountLogic.findByPhoneNumberAndRole(phoneNumber, ROLE_OWNER.name());
-        Lender lender = lenderLogic.retrieve(account.getId());
+        Lender lender = lenderLogic.findLender(account.getId());
 
         return UserMeRdo.builder()
                 .avatarUrl(Optional.ofNullable(lender.getProfile()).map(Profile::getAvatarUrl).orElse(null))
@@ -41,4 +41,4 @@ public class UserOwnSeek {
                 .notificationPreferences(lender.getNotificationPreferences())
                 .build();
     }
-} 
+}

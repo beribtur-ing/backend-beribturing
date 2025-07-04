@@ -44,7 +44,7 @@ public class ReportAdmSeekResource implements ReportAdmSeekFacade {
 
     @Override
     @PostMapping("/find-reports-by-reporter/query")
-    public QueryResponse<List<Report>> findReportsByReporter(FindReportsByReporterAdmQuery query) {
+    public QueryResponse<List<Report>> findReportsByReporter(@RequestBody FindReportsByReporterAdmQuery query) {
         query.validate();
         String reporterId = query.getReporterId();
         List<Report> response = reportAdmSeek.findReportsByReporterId(reporterId);
@@ -53,7 +53,7 @@ public class ReportAdmSeekResource implements ReportAdmSeekFacade {
 
     @Override
     @PostMapping("/find-reports-by-resolved-state/query")
-    public QueryResponse<List<Report>> findReportsByResolvedState(FindReportsByResolvedStateAdmQuery query) {
+    public QueryResponse<List<Report>> findReportsByResolvedState(@RequestBody FindReportsByResolvedStateAdmQuery query) {
         query.validate();
         Boolean resolved = query.getResolved();
         List<Report> response = reportAdmSeek.findReportsByResolved(resolved);
