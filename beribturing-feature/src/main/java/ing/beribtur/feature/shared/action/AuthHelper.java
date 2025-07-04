@@ -38,19 +38,7 @@ public class AuthHelper {
             throw new RuntimeException("Role not found in refresh token");
         }
         
-        String[] usernameParts = username.split("-");
-        if (usernameParts.length != 2) {
-            throw new RuntimeException("Invalid username format in token");
-        }
-        
-        String phoneNumber = usernameParts[0];
-        String tokenRole = usernameParts[1];
-        
-        if (!role.equals(tokenRole)) {
-            throw new RuntimeException("Role mismatch in token");
-        }
-        
-        Account account = accountLogic.findByPhoneNumberAndRole(phoneNumber, role);
+        Account account = accountLogic.findByPhoneNumberAndRole(username, role);
         
         if (!account.isEnabled() || !account.isAccountNonExpired() || !account.isAccountNonLocked()) {
             throw new RuntimeException("Account is not active");
