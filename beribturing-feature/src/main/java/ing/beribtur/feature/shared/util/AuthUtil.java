@@ -21,7 +21,7 @@ public class AuthUtil {
         Assert.hasText(password, "password must not be empty");
         Assert.isTrue(password.length() >= 6, "password must be at least 6 characters long");
         // Contains at least one digit, one lowercase letter, one uppercase letter, and one special character
-        Assert.isTrue(password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^*&+=!.,]).{6,}$"),
+        Assert.isTrue(password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^*&+=!.,-]).{6,}$"),
                 "password must contain at least one digit, one lowercase letter, one uppercase letter, and one special character");
     }
 }
