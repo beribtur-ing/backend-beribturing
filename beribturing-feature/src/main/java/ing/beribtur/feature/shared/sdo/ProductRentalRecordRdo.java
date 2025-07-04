@@ -1,11 +1,13 @@
 package ing.beribtur.feature.shared.sdo;
 
+import ing.beribtur.aggregate.item.entity.ProductImage;
 import ing.beribtur.aggregate.item.entity.vo.PriceUnit;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,4 +27,5 @@ public class ProductRentalRecordRdo {
     private String productVariantId;
     private String model;
     private PriceUnit unit;
+    private List<ProductImage> images;
 }
