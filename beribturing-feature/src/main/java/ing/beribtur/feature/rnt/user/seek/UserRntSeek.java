@@ -52,7 +52,7 @@ public class UserRntSeek {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         String phoneNumber = securityContext.getAuthentication().getName();
         Account account = accountLogic.findByPhoneNumberAndRole(phoneNumber, ROLE_RENTER.name());
-        Lendee lendee = lendeeLogic.retrieve(account.getId());
+        Lendee lendee = lendeeLogic.findLendee(account.getId());
 
         LendeePrivacySettings privacySettings = lendee.getPrivacySettings();
         if (privacySettings == null) {
