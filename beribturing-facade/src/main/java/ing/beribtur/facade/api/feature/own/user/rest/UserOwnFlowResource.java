@@ -5,6 +5,7 @@ import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
 import ing.beribtur.facade.api.feature.own.user.command.ModifyProfileOwnCommand;
 import ing.beribtur.facade.api.feature.own.user.command.UpdateNotificationPreferencesOwnCommand;
+import ing.beribtur.facade.api.feature.own.user.command.ChangePasswordOwnCommand;
 import ing.beribtur.feature.own.user.flow.UserOwnFlow;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,18 @@ public class UserOwnFlowResource implements UserOwnFlowFacade {
         boolean smsPaymentConfirmations = command.getSmsNotifications().isPaymentConfirmations();
 
         String entityId = userOwnFlow.updateNotificationPreferences(emailNewBookingsAndReservations, emailMessagesFromCustomers, emailPaymentConfirmations, smsNewBookingsAndReservations, smsMessagesFromCustomers, smsPaymentConfirmations);
+        return new CommandResponse<>(entityId);
+    }
+
+    @Override
+    @PostMapping("/change-password/command")
+    public CommandResponse<String> changePassword(@RequestBody ChangePasswordOwnCommand command) throws Exception {
+        command.validate();
+        
+        String entityId = userOwnFlow.changePassword(
+            command.getCurrentPassword(),
+            command.getNewPassword()
+        );
         return new CommandResponse<>(entityId);
     }
 }
