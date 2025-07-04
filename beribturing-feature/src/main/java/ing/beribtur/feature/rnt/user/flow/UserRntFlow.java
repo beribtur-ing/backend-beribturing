@@ -134,7 +134,7 @@ public class UserRntFlow {
         );
 
         lendee.setAppearanceSettings(appearanceSettings);
-        lendeeLogic.update(lendee);
+        lendeeLogic.modifyLendee(lendee);
         
         return lendee.getId();
     }

@@ -1,8 +1,10 @@
 package ing.beribtur.feature.own.user.seek;
 
+import ing.beribtur.accent.context.SpaceContext;
 import ing.beribtur.aggregate.account.entity.Account;
 import ing.beribtur.aggregate.account.logic.AccountLogic;
 import ing.beribtur.aggregate.user.entity.Lender;
+import ing.beribtur.aggregate.user.entity.vo.LenderNotificationPreferences;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import ing.beribtur.aggregate.user.logic.LenderLogic;
 import ing.beribtur.feature.shared.sdo.UserMeRdo;

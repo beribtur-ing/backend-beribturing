@@ -2,7 +2,6 @@ package ing.beribtur.facade.api.feature.own.user.rest;
 
 import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.aggregate.user.entity.vo.LenderNotificationPreferences;
-import ing.beribtur.facade.api.feature.own.user.query.UserMeOwnQuery;
 import ing.beribtur.feature.own.user.seek.UserOwnSeek;
 import ing.beribtur.feature.shared.sdo.UserMeRdo;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ public class UserOwnSeekResource implements UserOwnSeekFacade {
 
     @Override
     @PostMapping("/me/query")
-    public QueryResponse<UserMeRdo> userMe(UserMeOwnQuery query) {
+    public QueryResponse<UserMeRdo> userMe() {
         UserMeRdo rdo = userOwnSeek.userMe();
         return new QueryResponse<>(rdo);
     }
