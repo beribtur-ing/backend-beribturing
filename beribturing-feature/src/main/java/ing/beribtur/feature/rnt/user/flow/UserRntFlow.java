@@ -1,10 +1,8 @@
 package ing.beribtur.feature.rnt.user.flow;
 
 import ing.beribtur.accent.context.SpaceContext;
-import ing.beribtur.aggregate.user.entity.vo.LendeeNotificationPreferences;
 import ing.beribtur.aggregate.user.entity.Lendee;
 import ing.beribtur.aggregate.user.entity.vo.*;
-import ing.beribtur.aggregate.user.entity.vo.LendeeAppearanceSettings;
 import ing.beribtur.aggregate.user.logic.LendeeLogic;
 import ing.beribtur.proxy.minio.MinioService;
 import lombok.RequiredArgsConstructor;
@@ -135,7 +133,7 @@ public class UserRntFlow {
 
         lendee.setAppearanceSettings(appearanceSettings);
         lendeeLogic.modifyLendee(lendee);
-        
+
         return lendee.getId();
     }
 }

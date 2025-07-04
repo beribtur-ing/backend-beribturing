@@ -1,10 +1,10 @@
 package ing.beribtur.feature.own.user.flow;
 
 import ing.beribtur.accent.context.SpaceContext;
-import ing.beribtur.aggregate.user.entity.vo.LenderNotificationPreferences;
 import ing.beribtur.aggregate.user.entity.Lender;
 import ing.beribtur.aggregate.user.entity.vo.Gender;
 import ing.beribtur.aggregate.user.entity.vo.GeoLocation;
+import ing.beribtur.aggregate.user.entity.vo.LenderNotificationPreferences;
 import ing.beribtur.aggregate.user.entity.vo.Profile;
 import ing.beribtur.aggregate.user.logic.LenderLogic;
 import ing.beribtur.proxy.minio.MinioService;

@@ -2,8 +2,8 @@ package ing.beribtur.feature.adm.payment.seek;
 
 import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.payment.entity.Discount;
-import ing.beribtur.aggregate.payment.logic.DiscountLogic;
 import ing.beribtur.aggregate.payment.entity.vo.DiscountScope;
+import ing.beribtur.aggregate.payment.logic.DiscountLogic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,4 +55,4 @@ public class DiscountAdmSeek {
     public List<Discount> findByTargetId(String targetId) {
         return discountLogic.findByTargetId(targetId);
     }
-} 
+}
