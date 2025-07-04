@@ -7,7 +7,7 @@ import ing.beribtur.facade.api.feature.rnt.user.command.ModifyProfileRntCommand;
 import ing.beribtur.facade.api.feature.rnt.user.command.UpdateNotificationPreferencesRntCommand;
 import ing.beribtur.facade.api.feature.rnt.user.command.UpdateSecuritySettingsRntCommand;
 import ing.beribtur.facade.api.feature.rnt.user.command.UpdateAppearanceSettingsRntCommand;
-import ing.beribtur.facade.api.feature.own.user.command.UpdatePrivacySettingsOwnCommand;
+import ing.beribtur.facade.api.feature.own.user.command.UpdatePrivacySettingsRntCommand;
 import ing.beribtur.feature.rnt.user.flow.UserRntFlow;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,7 +63,7 @@ public class UserRntFlowResource implements UserRntFlowFacade {
 
     @Override
     @PostMapping("/update-privacy-settings/command")
-    public CommandResponse<String> updatePrivacySettings(@RequestBody UpdatePrivacySettingsOwnCommand command) throws Exception {
+    public CommandResponse<String> updatePrivacySettings(@RequestBody UpdatePrivacySettingsRntCommand command) throws Exception {
         command.validate();
         
         String entityId = userRntFlow.updatePrivacySettings(

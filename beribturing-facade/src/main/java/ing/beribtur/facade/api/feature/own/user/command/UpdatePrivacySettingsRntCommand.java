@@ -8,7 +8,7 @@ import org.springframework.util.Assert;
 
 @Getter
 @Setter
-public class UpdatePrivacySettingsOwnCommand extends CommandRequest<String> {
+public class UpdatePrivacySettingsRntCommand extends CommandRequest<String> {
     private LendeePrivacySettings.ProfileVisibility profileVisibility;
     private LendeePrivacySettings.DataAndLocation dataAndLocation;
 
