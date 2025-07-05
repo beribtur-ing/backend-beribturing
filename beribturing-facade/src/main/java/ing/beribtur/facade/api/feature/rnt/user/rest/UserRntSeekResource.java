@@ -27,12 +27,14 @@ public class UserRntSeekResource implements UserRntSeekFacade {
     @Override
     @PostMapping("/find-all-settings/query")
     public QueryResponse<LendeeAllSettingsRdo> getAllSettings() {
+        //
         return new QueryResponse<>(userRntSeek.getAllSettings());
     }
 
     @Override
-    @PostMapping("/gen-lendee-current-statistic/query")
+    @PostMapping("/find-lendee-current-info/query")
     public QueryResponse<LendeeCurrentInfoRdo> genLendeeCurrentStatistic() {
+        //
         return new QueryResponse<>(userRntSeek.genLendeeCurrentStatistic());
     }
 }

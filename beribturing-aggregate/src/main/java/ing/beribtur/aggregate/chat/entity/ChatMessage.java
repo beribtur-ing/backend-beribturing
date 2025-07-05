@@ -3,11 +3,13 @@ package ing.beribtur.aggregate.chat.entity;
 import ing.beribtur.accent.domain.DomainEntity;
 import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
+import ing.beribtur.aggregate.chat.entity.sdo.ChatMessageCdo;
 import ing.beribtur.aggregate.user.entity.vo.Communicable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
@@ -26,8 +28,13 @@ public class ChatMessage extends DomainEntity {
     private transient Communicable sender;
     private transient Communicable receiver;
 
+    public ChatMessage(ChatMessageCdo chatMessageCdo) {
+        //
+        BeanUtils.copyProperties(chatMessageCdo,this);
+    }
+
     @Override
-    protected void modifyAttributes(NameValueList nameValues) {
+    public void modifyAttributes(NameValueList nameValues) {
         //
         for (NameValue nameValue : nameValues.list()) {
             String value = nameValue.getValue();
