@@ -43,6 +43,7 @@ public class UserOwnFlow {
             String path = minioService.uploadFile(image);
             profile.setAvatarUrl(path);
         }
+        lender.setProfile(profile);
         lenderLogic.modifyLender(lender);
 
         return lender.getId();

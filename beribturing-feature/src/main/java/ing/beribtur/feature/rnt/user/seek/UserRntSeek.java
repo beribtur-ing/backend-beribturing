@@ -36,7 +36,7 @@ public class UserRntSeek {
                 .location(Optional.ofNullable(lendee.getProfile()).map(Profile::getLocation).orElse(null))
                 .gender(Optional.ofNullable(lendee.getProfile()).map(Profile::getGender).orElse(null))
                 .phoneNumber(account.getPhoneNumber())
-                .email(account.getEmail())
+                .email(Optional.ofNullable(lendee.getProfile()).map(Profile::getEmail).orElse(null))
                 .role(account.getRole())
                 .name(lendee.getName())
                 .build();

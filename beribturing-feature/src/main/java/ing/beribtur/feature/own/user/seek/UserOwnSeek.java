@@ -37,7 +37,7 @@ public class UserOwnSeek {
                 .location(Optional.ofNullable(lender.getProfile()).map(Profile::getLocation).orElse(null))
                 .gender(Optional.ofNullable(lender.getProfile()).map(Profile::getGender).orElse(null))
                 .phoneNumber(account.getPhoneNumber())
-                .email(account.getEmail())
+                .email(Optional.ofNullable(lender.getProfile()).map(Profile::getEmail).orElse(null))
                 .role(account.getRole())
                 .name(lender.getName())
                 .build();

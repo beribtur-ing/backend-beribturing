@@ -40,6 +40,7 @@ public class UserRntFlow {
             String path = minioService.uploadFile(image);
             profile.setAvatarUrl(path);
         }
+        lendee.setProfile(profile);
         lendeeLogic.modifyLendee(lendee);
 
         return lendee.getId();
