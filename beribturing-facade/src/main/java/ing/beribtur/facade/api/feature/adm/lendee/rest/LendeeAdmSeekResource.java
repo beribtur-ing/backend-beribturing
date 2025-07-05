@@ -4,12 +4,8 @@ import ing.beribtur.accent.message.Offset;
 import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.accent.util.QueryResponseUtil;
 import ing.beribtur.aggregate.user.entity.Lendee;
-import ing.beribtur.aggregate.user.entity.Lender;
 import ing.beribtur.facade.api.feature.adm.lendee.query.FindLendeesAdmQuery;
-import ing.beribtur.facade.api.feature.adm.lender.query.FindLendersAdmQuery;
-import ing.beribtur.facade.api.feature.adm.lender.rest.LenderAdmSeekFacade;
 import ing.beribtur.feature.adm.lendee.seek.LendeeSeek;
-import ing.beribtur.feature.adm.lender.seek.LenderSeek;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/feature/admin/lendee")
 @RequiredArgsConstructor
-public class LendeeSeekAdmResource implements LendeeAdmSeekFacade {
+public class LendeeAdmSeekResource implements LendeeAdmSeekFacade {
     private final LendeeSeek lendeeSeek;
 
     @Override
