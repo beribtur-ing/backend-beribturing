@@ -28,6 +28,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -117,6 +118,7 @@ public class ProductQueryDslStore implements ProductCustomStore {
             whereClause.and(productVariantJpo.priceUnit.eq(qdo.getPriceUnit().name()));
         }
 
+
         // Availability filters
         if (qdo.getActive() != null) {
             if (hasVariantFilters)
@@ -125,72 +127,35 @@ public class ProductQueryDslStore implements ProductCustomStore {
         }
 
         if (qdo.getAvailableFrom() != null) {
-            whereClause.and(productVariantJpo.availableFrom.goe(qdo.getAvailableFrom()));
+            whereClause.and(
+                    productVariantJpo.availableFrom.isNotNull()
+                            .and(productVariantJpo.availableFrom.goe(qdo.getAvailableFrom()))
+            );
         }
 
         if (qdo.getAvailableUntil() != null) {
-            whereClause.and(productVariantJpo.availableUntil.loe(qdo.getAvailableUntil()));
+            whereClause.and(
+                    productVariantJpo.availableUntil.isNotNull()
+                            .and(productVariantJpo.availableUntil.loe(qdo.getAvailableUntil()))
+            );
         }
+
 
         if (qdo.getIsAvailable() != null) {
+            LocalDateTime now = LocalDateTime.now();
             if (qdo.getIsAvailable()) {
-                // Product is currently available
                 whereClause.and(productVariantJpo.active.isTrue())
-                    .and(productVariantJpo.availableFrom.loe(java.time.LocalDateTime.now()))
-                    .and(productVariantJpo.availableUntil.goe(java.time.LocalDateTime.now()));
+                        .and(productVariantJpo.availableFrom.isNull().or(productVariantJpo.availableFrom.loe(now)))
+                        .and(productVariantJpo.availableUntil.isNull().or(productVariantJpo.availableUntil.goe(now)));
             } else {
-                // Product is not currently available
-                whereClause.and(productVariantJpo.active.isFalse()
-                    .or(productVariantJpo.availableFrom.gt(java.time.LocalDateTime.now()))
-                    .or(productVariantJpo.availableUntil.lt(java.time.LocalDateTime.now())));
+                whereClause.and(
+                        productVariantJpo.active.isFalse()
+                                .or(productVariantJpo.availableFrom.isNotNull().and(productVariantJpo.availableFrom.gt(now)))
+                                .or(productVariantJpo.availableUntil.isNotNull().and(productVariantJpo.availableUntil.lt(now)))
+                );
             }
         }
 
-        // Date filters
-        if (qdo.getCreatedAfter() != null) {
-            whereClause.and(productJpo.registeredOn.after(qdo.getCreatedAfter()));
-        }
-
-        if (qdo.getCreatedBefore() != null) {
-            whereClause.and(productJpo.registeredOn.before(qdo.getCreatedBefore()));
-        }
-
-        if (qdo.getUpdatedAfter() != null) {
-            whereClause.and(productJpo.modifiedOn.after(qdo.getUpdatedAfter()));
-        }
-
-        if (qdo.getUpdatedBefore() != null) {
-            whereClause.and(productJpo.modifiedOn.before(qdo.getUpdatedBefore()));
-        }
-
-        // Administrative filters
-        if (qdo.getHasVariants() != null) {
-            if (qdo.getHasVariants()) {
-                // Products that have at least one variant
-                whereClause.and(productVariantJpo.id.isNotNull());
-            } else {
-                // Products that have no variants
-                whereClause.and(productVariantJpo.id.isNull());
-            }
-        }
-
-        if (qdo.getHasImages() != null) {
-            if (qdo.getHasImages()) {
-                // Products that have at least one image (via their variants)
-                whereClause.and(jpaQueryFactory
-                    .selectOne()
-                    .from(productImageJpo)
-                    .where(productImageJpo.variantId.eq(productVariantJpo.id))
-                    .exists());
-            } else {
-                // Products that have no images
-                whereClause.and(jpaQueryFactory
-                    .selectOne()
-                    .from(productImageJpo)
-                    .where(productImageJpo.variantId.eq(productVariantJpo.id))
-                    .notExists());
-            }
-        }
 
         OrderSpecifier<?>[] orderSpecifiers = {
             productJpo.registeredOn.desc()
@@ -202,7 +167,7 @@ public class ProductQueryDslStore implements ProductCustomStore {
             from = jpaQueryFactory
                 .from(productJpo)
                 .leftJoin(productCategoryJpo).on(productJpo.categoryId.eq(productCategoryJpo.id))
-                .leftJoin(productVariantJpo).on(productJpo.id.eq(productVariantJpo.productId))
+                .innerJoin(productVariantJpo).on(productJpo.id.eq(productVariantJpo.productId))
                 .where(whereClause)
                 .distinct();
         } else {
