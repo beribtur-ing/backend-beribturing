@@ -19,7 +19,7 @@ public class MinioService {
     public MinioService(
             MinioClient minioClient,
             @Value("${minio.bucket.name}") String bucketName,
-            @Value("${minio.presigned.expiry:3600}") int presignedExpirySeconds // default 1 hour
+            @Value("${minio.presigned.expiry:315360000}") int presignedExpirySeconds // default 1 hour
     ) {
         this.minioClient = minioClient;
         this.bucketName = bucketName;
