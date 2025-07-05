@@ -89,27 +89,5 @@ public class LenderJpaStore implements LenderStore {
         LenderJpo lenderJpo = lenderRepository.findByPhoneNumber(phoneNumber);
         return lenderJpo != null ? lenderJpo.toDomain() : null;
     }
-
-    public List<Lender> findByEmail(String email) {
-        return LenderJpo.toDomains(lenderRepository.findByEmail(email));
-    }
-
-//    public List<Lender> findByIsActive(boolean isActive) {
-//        return LenderJpo.toDomains(lenderRepository.findByIsActive(isActive));
-//    }
-
-    public List<Lender> findByLanderType(LenderType landerType) {
-        return LenderJpo.toDomains(lenderRepository.findByLenderType(landerType.name()));
-    }
-
-    @Override
-    public Page<Lender> findDisabledLenders(Pageable pageable) {
-        Page<LenderJpo> lenderJpos = lenderRepository.findByActive(false, pageable);
-        return new PageImpl<>(
-                LenderJpo.toDomains(lenderJpos.getContent()),
-                pageable,
-                lenderJpos.getTotalElements()
-        );
-    }
 }
 

@@ -18,7 +18,5 @@ public interface LenderStore {
     void delete(Lender lender);
     void delete(String id);
     boolean exists(String id);
-    Page<Lender> findDisabledLenders(Pageable pageable);
-
     Lender findByPhoneNumber(String username);
 }
