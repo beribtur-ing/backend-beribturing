@@ -102,4 +102,9 @@ public class LenderLogic {
     public Lender findByPhoneNumber(String username) {
         return lenderStore.findByPhoneNumber(username);
     }
+
+    public long countActiveUsers() {
+        //
+        return lenderStore.countActiveUsers();
+    }
 }

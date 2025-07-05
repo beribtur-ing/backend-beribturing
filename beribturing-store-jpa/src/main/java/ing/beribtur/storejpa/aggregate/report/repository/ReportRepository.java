@@ -11,4 +11,7 @@ public interface ReportRepository extends JpaRepository<ReportJpo, String> {
     List<ReportJpo> findByResolved(Boolean resolved);
 
     List<ReportJpo> findByReporterIdAndResolved(String reporterId, Boolean resolved);
+    
+    // Count methods for statistics
+    long countByResolved(Boolean resolved);
 }

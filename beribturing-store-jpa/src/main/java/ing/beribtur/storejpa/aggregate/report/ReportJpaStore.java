@@ -101,6 +101,10 @@ public class ReportJpaStore implements ReportStore {
         //
         return ReportJpo.toDomains(reportRepository.findByResolved(resolved));
     }
+
+    public long countByResolved(Boolean resolved) {
+        return reportRepository.countByResolved(resolved);
+    }
 }
 
 

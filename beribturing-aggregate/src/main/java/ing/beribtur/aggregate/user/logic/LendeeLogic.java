@@ -84,4 +84,9 @@ public class LendeeLogic {
     public Lendee findByPhoneNumber(String username) {
         return lendeeStore.findByPhoneNumber(username);
     }
+
+    public long countActiveUsers() {
+        //
+        return lendeeStore.countActiveUsers();
+    }
 }

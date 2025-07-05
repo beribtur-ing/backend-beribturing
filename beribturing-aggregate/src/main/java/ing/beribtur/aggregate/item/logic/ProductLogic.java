@@ -100,4 +100,9 @@ public class ProductLogic {
         //
         return productStore.countOfProductsByOwnerId(ownerId);
     }
+
+    public long countActiveProducts() {
+        //
+        return productStore.countActiveProducts();
+    }
 }

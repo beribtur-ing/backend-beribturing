@@ -105,4 +105,9 @@ public class ReservationLogic {
         //
         return reservationStore.countOfActiveBookingsByOwnerId(ownerId);
     }
+
+    public long countByStatus(ReservationStatus status) {
+        //
+        return reservationStore.countByStatus(status.name());
+    }
 }

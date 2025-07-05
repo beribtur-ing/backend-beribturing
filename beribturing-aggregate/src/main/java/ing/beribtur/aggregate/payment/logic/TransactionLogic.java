@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -140,5 +141,10 @@ public class TransactionLogic {
     public double calculateMonthlyRevenueOfOwner(String ownerId, LocalDateTime startOfMonth, LocalDateTime endOfMonth) {
         //
         return transactionStore.calculateMonthlyRevenueByOwnerId(ownerId, startOfMonth, endOfMonth);
+    }
+
+    public BigDecimal calculateOverallRevenue() {
+        //
+        return transactionStore.calculateOverallRevenue();
     }
 }

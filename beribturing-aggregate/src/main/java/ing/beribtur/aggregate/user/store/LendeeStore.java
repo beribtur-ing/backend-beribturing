@@ -18,4 +18,7 @@ public interface LendeeStore {
     boolean exists(String id);
 
     Lendee findByPhoneNumber(String username);
+    
+    // Count methods for statistics
+    long countActiveUsers();
 }

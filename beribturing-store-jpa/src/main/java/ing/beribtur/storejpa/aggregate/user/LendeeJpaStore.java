@@ -94,5 +94,10 @@ public class LendeeJpaStore implements LendeeStore {
     public List<Lendee> findByIsActive(boolean isActive) {
         return LendeeJpo.toDomains(lendeeRepository.findByActive(isActive));
     }
+
+    public long countActiveUsers() {
+        //
+        return lendeeRepository.countByActive(true);
+    }
 }
 

@@ -4,6 +4,7 @@ import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.payment.entity.Transaction;
 import ing.beribtur.aggregate.payment.entity.vo.PaymentStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -24,4 +25,5 @@ public interface TransactionStore {
     List<Transaction> retrieveByStatus(PaymentStatus status);
 
     double calculateMonthlyRevenueByOwnerId(String ownerId, LocalDateTime startOfMonth, LocalDateTime endOfMonth);
+    BigDecimal calculateOverallRevenue();
 }

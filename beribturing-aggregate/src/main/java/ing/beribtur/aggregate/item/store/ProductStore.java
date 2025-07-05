@@ -24,4 +24,7 @@ public interface ProductStore {
     List<Product> retrieveByActive(boolean active);
 
     int countOfProductsByOwnerId(String username);
+    
+    // Count methods for statistics
+    long countActiveProducts();
 }

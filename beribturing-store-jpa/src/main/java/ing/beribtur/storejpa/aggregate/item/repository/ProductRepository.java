@@ -10,4 +10,7 @@ public interface ProductRepository extends JpaRepository<ProductJpo, String> {
     List<ProductJpo> findByActive(boolean active);
 
     int countByOwnerId(String ownerId);
+    
+    // Count methods for statistics
+    long countByActive(boolean active);
 }

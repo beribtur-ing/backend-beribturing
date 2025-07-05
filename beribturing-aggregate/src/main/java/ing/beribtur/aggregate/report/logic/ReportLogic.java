@@ -105,5 +105,10 @@ public class ReportLogic {
         //
         return reportStore.retrieveByReporterIdAndResolved(reporterId, resolved);
     }
+
+    public long countUnresolvedReports() {
+        //
+        return reportStore.countByResolved(false);
+    }
 }
 

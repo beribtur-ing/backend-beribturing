@@ -9,5 +9,8 @@ public interface LendeeRepository extends JpaRepository<LendeeJpo, String> {
     LendeeJpo findByPhoneNumber(String phoneNumber);
     List<LendeeJpo> findByEmail(String email);
     List<LendeeJpo> findByActive(boolean isActive);
+    
+    // Count methods for statistics
+    long countByActive(boolean isActive);
 }
 

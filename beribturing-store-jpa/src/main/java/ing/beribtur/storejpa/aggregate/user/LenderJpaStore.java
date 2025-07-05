@@ -111,5 +111,10 @@ public class LenderJpaStore implements LenderStore {
                 lenderJpos.getTotalElements()
         );
     }
+
+    public long countActiveUsers() {
+        //
+        return lenderRepository.countByActive(true);
+    }
 }
 

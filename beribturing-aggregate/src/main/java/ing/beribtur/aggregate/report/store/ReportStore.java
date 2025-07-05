@@ -23,4 +23,7 @@ public interface ReportStore {
     List<Report> retrieveByResolved(Boolean resolved);
 
     List<Report> retrieveByReporterIdAndResolved(String reporterId, Boolean resolved);
+    
+    // Count methods for statistics
+    long countByResolved(Boolean resolved);
 }

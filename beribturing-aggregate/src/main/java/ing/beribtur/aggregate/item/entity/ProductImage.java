@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import java.time.LocalDateTime;
+
 @Setter
 @Getter
 @AllArgsConstructor
@@ -20,6 +22,7 @@ public class ProductImage extends DomainEntity {
     private String url;
     private int order;
     private boolean active;
+    private LocalDateTime expiresAt;
 
     // Domain relationships
     private transient ProductVariant variant;
@@ -50,6 +53,9 @@ public class ProductImage extends DomainEntity {
                     break;
                 case "active":
                     this.active = Boolean.parseBoolean(value);
+                    break;
+                case "expiresAt":
+                    this.expiresAt = LocalDateTime.parse(value);
                     break;
                 default:
                     throw new IllegalArgumentException("Update not allowed: " + nameValue);

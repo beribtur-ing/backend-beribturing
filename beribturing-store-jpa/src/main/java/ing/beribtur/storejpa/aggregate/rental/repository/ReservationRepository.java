@@ -14,4 +14,7 @@ public interface ReservationRepository extends JpaRepository<ReservationJpo, Str
     List<ReservationJpo> findAllByOwnerIdAndStatusIsOrStatusIsNull(String ownerId, String status, Pageable pageable);
     List<ReservationJpo> findByProductVariantIdAndStatus(String productVariantId, String status);
     int countByOwnerIdAndStatus(String ownerId, String status);
+    
+    // Count methods for statistics
+    long countByStatus(String status);
 }

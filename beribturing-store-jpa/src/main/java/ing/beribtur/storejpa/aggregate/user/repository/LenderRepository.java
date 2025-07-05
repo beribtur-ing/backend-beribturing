@@ -12,5 +12,8 @@ public interface LenderRepository extends JpaRepository<LenderJpo, String> {
     List<LenderJpo> findByEmail(String email);
     Page<LenderJpo> findByActive(boolean isActive, Pageable pageable);
     List<LenderJpo> findByLenderType(String landerType);
+    
+    // Count methods for statistics
+    long countByActive(boolean isActive);
 }
 

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor
@@ -29,6 +30,8 @@ public class ProductImageJpo extends DomainEntityJpo {
 
     @Column(nullable = false)
     private boolean active = true;
+
+    private LocalDateTime expiresAt;
 
     public ProductImageJpo(ProductImage productImage) {
         //

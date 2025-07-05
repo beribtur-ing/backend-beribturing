@@ -97,4 +97,8 @@ public class ProductJpaStore implements ProductStore {
         //
         return productRepository.countByOwnerId(ownerId);
     }
+
+    public long countActiveProducts() {
+        return productRepository.countByActive(true);
+    }
 }

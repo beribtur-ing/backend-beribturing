@@ -21,4 +21,7 @@ public interface LenderStore {
     Page<Lender> findDisabledLenders(Pageable pageable);
 
     Lender findByPhoneNumber(String username);
+    
+    // Count methods for statistics
+    long countActiveUsers();
 }

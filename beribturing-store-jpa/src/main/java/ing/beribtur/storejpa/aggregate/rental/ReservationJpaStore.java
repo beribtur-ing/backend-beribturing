@@ -131,4 +131,9 @@ public class ReservationJpaStore implements ReservationStore {
         //
         return this.reservationRepository.countByOwnerIdAndStatus(ownerId, ReservationStatus.Approved.name());
     }
+
+    public long countByStatus(String status) {
+        //
+        return reservationRepository.countByStatus(status);
+    }
 }

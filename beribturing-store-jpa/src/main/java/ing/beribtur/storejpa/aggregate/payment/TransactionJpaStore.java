@@ -10,6 +10,7 @@ import ing.beribtur.storejpa.aggregate.payment.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -128,5 +129,11 @@ public class TransactionJpaStore implements TransactionStore {
         double monthlyRevenue;
         monthlyRevenue = transactionJpos.stream().mapToDouble(trns -> trns.getPayeeAmount().doubleValue()).sum();
         return monthlyRevenue;
+    }
+
+    @Override
+    public BigDecimal calculateOverallRevenue() {
+        //
+        return this.transactionRepository.getTotalAmountNative();
     }
 }
