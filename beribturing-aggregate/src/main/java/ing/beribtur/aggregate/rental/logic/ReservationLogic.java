@@ -100,4 +100,9 @@ public class ReservationLogic {
         }
         return reservationStore.retrieveAllByOwnerId(ownerId, status.name(), offset);
     }
+
+    public int countActiveBookingsOfOwner(String ownerId) {
+        //
+        return reservationStore.countOfActiveBookingsByOwnerId(ownerId);
+    }
 }

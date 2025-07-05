@@ -8,4 +8,6 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<ProductJpo, String> {
     List<ProductJpo> findByCategoryId(String categoryId);
     List<ProductJpo> findByActive(boolean active);
+
+    int countByOwnerId(String ownerId);
 }

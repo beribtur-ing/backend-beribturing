@@ -22,4 +22,6 @@ public interface ProductStore {
 
     // Additional active filtering methods (requested API)
     List<Product> retrieveByActive(boolean active);
+
+    int countOfProductsByOwnerId(String username);
 }

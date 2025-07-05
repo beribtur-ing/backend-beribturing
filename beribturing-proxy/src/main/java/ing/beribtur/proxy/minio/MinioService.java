@@ -67,6 +67,7 @@ public class MinioService {
     }
 
     public String generatePresignedUrl(String fileName) throws Exception {
+        //
         return minioClient.getPresignedObjectUrl(
                 GetPresignedObjectUrlArgs.builder()
                         .method(Method.GET)

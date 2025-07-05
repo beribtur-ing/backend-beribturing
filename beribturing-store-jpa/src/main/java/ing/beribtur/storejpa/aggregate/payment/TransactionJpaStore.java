@@ -9,6 +9,7 @@ import ing.beribtur.storejpa.aggregate.payment.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -84,7 +85,7 @@ public class TransactionJpaStore implements TransactionStore {
 
     public List<Transaction> findByRentalRecordIdAndStatus(String rentalRecordId, PaymentStatus status) {
         return TransactionJpo.toDomains(
-            transactionRepository.findByRentalRecordIdAndStatus(rentalRecordId, status.name())
+                transactionRepository.findByRentalRecordIdAndStatus(rentalRecordId, status.name())
         );
     }
 
@@ -100,6 +101,7 @@ public class TransactionJpaStore implements TransactionStore {
 
     @Override
     public List<Transaction> retrieveByRentalRecordId(UUID rentalRecordId) {
+        //
         return List.of();
     }
 
@@ -116,5 +118,12 @@ public class TransactionJpaStore implements TransactionStore {
     @Override
     public List<Transaction> retrieveByStatus(PaymentStatus status) {
         return List.of();
+    }
+
+    @Override
+    public double calculateMonthlyRevenueByOwnerId(String ownerId, LocalDateTime startOfMonth, LocalDateTime endOfMonth) {
+        //
+        List<TransactionJpo> transactionJpos = this.transactionRepository.findAllByPayeeIdAndCompletedAtBetween(ownerId, startOfMonth, endOfMonth);
+        return 0;
     }
 }

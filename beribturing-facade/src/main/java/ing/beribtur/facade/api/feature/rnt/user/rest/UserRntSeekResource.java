@@ -4,6 +4,7 @@ import ing.beribtur.accent.message.QueryResponse;
 import ing.beribtur.feature.rnt.user.seek.UserRntSeek;
 import ing.beribtur.feature.shared.sdo.LendeeAllSettingsRdo;
 import ing.beribtur.feature.shared.sdo.UserMeRdo;
+import ing.beribtur.feature.rnt.user.rdo.LendeeCurrentInfoRdo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +28,11 @@ public class UserRntSeekResource implements UserRntSeekFacade {
     @PostMapping("/find-all-settings/query")
     public QueryResponse<LendeeAllSettingsRdo> getAllSettings() {
         return new QueryResponse<>(userRntSeek.getAllSettings());
+    }
+
+    @Override
+    @PostMapping("/gen-lendee-current-statistic/query")
+    public QueryResponse<LendeeCurrentInfoRdo> genLendeeCurrentStatistic() {
+        return new QueryResponse<>(userRntSeek.genLendeeCurrentStatistic());
     }
 }

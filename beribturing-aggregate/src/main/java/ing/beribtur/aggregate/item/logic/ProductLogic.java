@@ -21,7 +21,6 @@ public class ProductLogic {
     //
     private final ProductStore productStore;
 
-
     public String registerProduct(ProductCdo productCdo) {
         //
         Product product = new Product(productCdo);
@@ -95,5 +94,10 @@ public class ProductLogic {
         product.setVariantSequence(sequence + 1);
         productStore.update(product);
         return sequence;
+    }
+
+    public int countOwnedProducts(String ownerId) {
+        //
+        return productStore.countOfProductsByOwnerId(ownerId);
     }
 }

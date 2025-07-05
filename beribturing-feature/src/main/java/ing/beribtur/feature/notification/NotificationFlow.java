@@ -15,14 +15,14 @@ import java.util.List;
 @Service
 public class NotificationFlow {
     //
-    @Value("${nats.subjects.notification}")
-    private String notificationSubject;
+    private final String notificationSubject;
 
     private final NotificationLogic notificationLogic;
     private final NatsPublisherService natsPublisherService;
 
-    public NotificationFlow(NotificationLogic notificationLogic, NatsPublisherService natsPublisherService) {
+    public NotificationFlow(@Value("${nats.subjects.notification}") String notificationSubject, NotificationLogic notificationLogic, NatsPublisherService natsPublisherService) {
         //
+        this.notificationSubject = notificationSubject;
         this.notificationLogic = notificationLogic;
         this.natsPublisherService = natsPublisherService;
     }

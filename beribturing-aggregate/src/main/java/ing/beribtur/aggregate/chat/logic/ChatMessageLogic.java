@@ -9,4 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ChatMessageLogic {
     //
+    public int countUnreadMessageOfUser(String username) {
+        return 0;
+    }
 }

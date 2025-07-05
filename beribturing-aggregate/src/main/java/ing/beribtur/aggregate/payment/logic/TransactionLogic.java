@@ -136,4 +136,9 @@ public class TransactionLogic {
         //
         return transactionStore.retrieveByStatus(PaymentStatus.SUCCESSFUL);
     }
+
+    public double calculateMonthlyRevenueOfOwner(String ownerId, LocalDateTime startOfMonth, LocalDateTime endOfMonth) {
+        //
+        return transactionStore.calculateMonthlyRevenueByOwnerId(ownerId, startOfMonth, endOfMonth);
+    }
 }

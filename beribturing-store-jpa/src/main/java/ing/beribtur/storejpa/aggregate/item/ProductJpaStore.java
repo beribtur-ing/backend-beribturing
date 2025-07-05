@@ -91,4 +91,10 @@ public class ProductJpaStore implements ProductStore {
         //
         return productRepository.findByActive(active).stream().map(ProductJpo::toDomain).collect(Collectors.toList());
     }
+
+    @Override
+    public int countOfProductsByOwnerId(String ownerId) {
+        //
+        return productRepository.countByOwnerId(ownerId);
+    }
 }

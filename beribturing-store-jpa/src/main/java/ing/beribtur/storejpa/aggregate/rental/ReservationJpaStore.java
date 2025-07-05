@@ -2,6 +2,7 @@ package ing.beribtur.storejpa.aggregate.rental;
 
 import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.rental.entity.Reservation;
+import ing.beribtur.aggregate.rental.entity.vo.ReservationStatus;
 import ing.beribtur.aggregate.rental.store.ReservationStore;
 import ing.beribtur.storejpa.aggregate.rental.jpo.ReservationJpo;
 import ing.beribtur.storejpa.aggregate.rental.repository.ReservationRepository;
@@ -123,5 +124,11 @@ public class ReservationJpaStore implements ReservationStore {
     // Additional methods for specific queries
     public List<Reservation> findByProductVariantIdAndStatus(String productVariantId, String status) {
         return ReservationJpo.toDomains(reservationRepository.findByProductVariantIdAndStatus(productVariantId, status));
+    }
+
+    @Override
+    public int countOfActiveBookingsByOwnerId(String ownerId) {
+        //
+        return this.reservationRepository.countByOwnerIdAndStatus(ownerId, ReservationStatus.Approved.name());
     }
 }
