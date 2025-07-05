@@ -4,6 +4,7 @@ import ing.beribtur.accent.message.Offset;
 import ing.beribtur.aggregate.payment.entity.Transaction;
 import ing.beribtur.aggregate.payment.entity.vo.PaymentStatus;
 import ing.beribtur.aggregate.payment.store.TransactionStore;
+import ing.beribtur.storejpa.aggregate.item.jpo.ProductImageJpo;
 import ing.beribtur.storejpa.aggregate.payment.jpo.TransactionJpo;
 import ing.beribtur.storejpa.aggregate.payment.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
@@ -124,6 +125,8 @@ public class TransactionJpaStore implements TransactionStore {
     public double calculateMonthlyRevenueByOwnerId(String ownerId, LocalDateTime startOfMonth, LocalDateTime endOfMonth) {
         //
         List<TransactionJpo> transactionJpos = this.transactionRepository.findAllByPayeeIdAndCompletedAtBetween(ownerId, startOfMonth, endOfMonth);
-        return 0;
+        double monthlyRevenue;
+        monthlyRevenue = transactionJpos.stream().mapToDouble(trns -> trns.getPayeeAmount().doubleValue()).sum();
+        return monthlyRevenue;
     }
 }
