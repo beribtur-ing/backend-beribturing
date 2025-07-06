@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class StatisticsSeekResource implements StatisticsSeekFacade {
     //
-    private StatisticsSeek statisticsSeek;
+    private final StatisticsSeek statisticsSeek;
 
     @Override
     @PostMapping("/find-overview/query")

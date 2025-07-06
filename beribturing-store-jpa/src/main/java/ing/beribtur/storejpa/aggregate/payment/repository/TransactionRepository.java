@@ -17,6 +17,6 @@ public interface TransactionRepository extends JpaRepository<TransactionJpo, Str
     List<TransactionJpo> findByRentalRecordIdAndStatus(String rentalRecordId, String status);
 
     List<TransactionJpo> findAllByPayeeIdAndCompletedAtBetween(String payeeId, LocalDateTime completedAtAfter, LocalDateTime completedAtBefore);
-    @Query(value = "SELECT SUM(amount) FROM transactions", nativeQuery = true)
+    @Query(value = "SELECT SUM(payee_amount) FROM transaction", nativeQuery = true)
     BigDecimal getTotalAmountNative();
 }
