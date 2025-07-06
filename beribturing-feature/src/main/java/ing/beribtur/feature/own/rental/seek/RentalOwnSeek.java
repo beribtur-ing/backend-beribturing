@@ -29,11 +29,13 @@ import ing.beribtur.feature.shared.customstore.ReservationCustomStore;
 import ing.beribtur.feature.shared.sdo.RentalRecordRdo;
 import ing.beribtur.feature.shared.sdo.ReservationDetailRdo;
 import ing.beribtur.feature.shared.sdo.ReservationRdo;
+import ing.beribtur.proxy.minio.MinioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -53,6 +55,7 @@ public class RentalOwnSeek {
     private final ProductLogic productLogic;
     private final ProductImageLogic productImageLogic;
     private final LendeeLogic lendeeLogic;
+    private final MinioService minioService;
 
     public RentalRecord findRentalRecordById(String rentalRecordId) {
         //
@@ -75,13 +78,14 @@ public class RentalOwnSeek {
         return reservationCustomStore.findReservationRdos(ownerId, status, offset);
     }
 
-    public ReservationDetailRdo findReservationDetail(String reservationId) {
+    public ReservationDetailRdo findReservationDetail(String reservationId) throws Exception {
         //
         Reservation reservation = reservationLogic.findReservation(reservationId);
         String variantId = reservation.getProductVariantId();
         ProductVariant variant = productVariantLogic.findProductVariant(variantId);
         Product product = productLogic.findProduct(variant.getProductId());
         List<ProductImage> images = productImageLogic.findProductImagesByVariantId(variantId);
+        this.checkAndUpdateProductImageExpireDate(images);
         Lender owner = lenderLogic.findLender(reservation.getOwnerId());
         Lendee requester = lendeeLogic.findLendee(reservation.getRequesterId());
 
@@ -100,5 +104,17 @@ public class RentalOwnSeek {
         String username = SpaceContext.get().getUsername();
         Lender lender = lenderLogic.findByPhoneNumber(username);
         return rentalRecordCustomStore.findRentalRecords(lender.getId(), status, searchKeyword, offset);
+    }
+
+    private void checkAndUpdateProductImageExpireDate(List<ProductImage> productImages) throws Exception {
+        //
+        for (ProductImage productImage : productImages) {
+            if (productImage.getExpiresAt().isBefore(LocalDateTime.now())) {
+                String newUrl = minioService.generatePresignedUrl(productImage.getFilename());
+                productImage.setUrl(newUrl);
+                productImage.setExpiresAt(productImage.getExpiresAt().plusDays(minioService.getPresignedExpirySeconds()));
+                this.productImageLogic.modifyProductImage(productImage);
+            }
+        }
     }
 }

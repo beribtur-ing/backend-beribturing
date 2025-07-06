@@ -21,7 +21,7 @@ spring:
       connection-test-query: SELECT 1
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     database: postgresql
     properties:
       hibernate:
@@ -56,6 +56,8 @@ minio:
   bucket:
     name: beribturing
   publicUrl: ${MINIO_PUBLIC_URL:https://cdn.beribtur.ing/minio/ui}
+  presigned:
+    expiry: 360000
 
 server:
   port: 9093

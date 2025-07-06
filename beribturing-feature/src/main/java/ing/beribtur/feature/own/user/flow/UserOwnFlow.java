@@ -40,7 +40,7 @@ public class UserOwnFlow {
         profile.setAddress(address);
         profile.setLocation(location);
         if (image != null && !image.isEmpty()) {
-            String path = minioService.uploadFile(image);
+            String path = minioService.uploadFile(image).getObjectName();
             profile.setAvatarUrl(path);
         }
         lender.setProfile(profile);
@@ -82,13 +82,13 @@ public class UserOwnFlow {
     public String changePassword(String currentPassword, String newPassword) {
         String username = SpaceContext.get().getUsername();
         Account account = accountLogic.findByPhoneNumberAndRole(username, Role.ROLE_OWNER.name());
-        
-        Assert.isTrue(passwordEncoder.matches(currentPassword, account.getPassword()), 
+
+        Assert.isTrue(passwordEncoder.matches(currentPassword, account.getPassword()),
             "Current password is incorrect");
-        
+
         account.setPassword(passwordEncoder.encode(newPassword));
         accountLogic.modifyAccount(account);
-        
+
         return account.getId();
     }
 }

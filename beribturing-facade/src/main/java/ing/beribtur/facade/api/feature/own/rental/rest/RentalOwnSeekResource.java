@@ -42,7 +42,7 @@ public class RentalOwnSeekResource implements RentalOwnSeekFacade {
 
     @Override
     @PostMapping("/find-reservation-detail/query")
-    public QueryResponse<ReservationDetailRdo> findReservationDetail(@RequestBody FindReservationDetailOwnQuery query) {
+    public QueryResponse<ReservationDetailRdo> findReservationDetail(@RequestBody FindReservationDetailOwnQuery query) throws Exception {
         //
         query.validate();
         String reservationId = query.getReservationId();

@@ -1,15 +1,21 @@
 package ing.beribtur.proxy.minio;
 
+import ing.beribtur.proxy.minio.rdo.MinioFileInfo;
 import io.minio.*;
 import io.minio.http.Method;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
+@Setter
+@Getter
 public class MinioService {
 
     private final MinioClient minioClient;
@@ -26,7 +32,8 @@ public class MinioService {
         this.presignedExpirySeconds = presignedExpirySeconds;
     }
 
-    public String uploadFile(MultipartFile file) throws Exception {
+    public MinioFileInfo uploadFile(MultipartFile file) throws Exception {
+        //
         String originalFilename = file.getOriginalFilename();
         String extension = (originalFilename != null && originalFilename.contains("."))
                 ? originalFilename.substring(originalFilename.lastIndexOf("."))
@@ -42,10 +49,12 @@ public class MinioService {
                         .build()
         );
 
-        return generatePresignedUrl(uniqueFileName);
+        String url = generatePresignedUrl(uniqueFileName);
+        return new MinioFileInfo(uniqueFileName, url, LocalDateTime.now().plusSeconds(presignedExpirySeconds));
     }
 
     public InputStream downloadFile(String fileName) throws Exception {
+        //
         return minioClient.getObject(
                 GetObjectArgs.builder()
                         .bucket(bucketName)
@@ -55,6 +64,7 @@ public class MinioService {
     }
 
     public void deleteFile(String imageUrlOrKey) throws Exception {
+        //
         String fileName = extractFileNameFromUrl(imageUrlOrKey);
         if (fileName != null && !fileName.isBlank()) {
             minioClient.removeObject(

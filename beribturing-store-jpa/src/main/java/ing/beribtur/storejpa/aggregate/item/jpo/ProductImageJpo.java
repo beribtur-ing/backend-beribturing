@@ -23,8 +23,15 @@ public class ProductImageJpo extends DomainEntityJpo {
     @Column(nullable = false)
     private String variantId;
 
+    //@Column(nullable = false)
+    private String filename;
+
+    //@Column(nullable = false)
+    private String originalFilename;
+
     @Column(nullable = false)
     private String url;
+
     @Column(name = "\"order\"")
     private int order;
 

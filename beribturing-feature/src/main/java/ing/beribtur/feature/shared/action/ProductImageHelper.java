@@ -36,13 +36,15 @@ public class ProductImageHelper {
         int imageSequence = 1;
         List<ProductImageCdo> imageCdos = new ArrayList<>();
         for (MultipartFile image : images) {
-            String path = minioService.uploadFile(image);
+            var minioFileInfo = minioService.uploadFile(image);
             ProductImageCdo imageCdo = ProductImageCdo.builder()
-                .variantId(variantId)
-                .url(path)
-                .order(imageSequence)
-                .sequence(imageSequence++)
-                .build();
+                    .variantId(variantId)
+                    .url(minioFileInfo.getUrl())
+                    .filename(minioFileInfo.getObjectName())
+                    .expiresAt(minioFileInfo.getExpiresAt())
+                    .order(imageSequence)
+                    .sequence(imageSequence++)
+                    .build();
             imageCdos.add(imageCdo);
         }
         productImageLogic.registerProductImages(imageCdos);

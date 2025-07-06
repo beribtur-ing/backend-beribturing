@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 public class ProductImage extends DomainEntity {
     //
     private String variantId; // Reference to the product variant this image belongs to
+    private String filename;
+    private String originalFilename;
     private String url;
     private int order;
     private boolean active;

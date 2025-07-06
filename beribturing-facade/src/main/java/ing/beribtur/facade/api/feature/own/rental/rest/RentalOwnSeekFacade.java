@@ -14,7 +14,7 @@ import java.util.List;
 public interface RentalOwnSeekFacade {
     //
     QueryResponse<List<ReservationRdo>> findReservationRdos(FindReservationRdosOwnQuery query);
-    QueryResponse<ReservationDetailRdo> findReservationDetail(FindReservationDetailOwnQuery query);
+    QueryResponse<ReservationDetailRdo> findReservationDetail(FindReservationDetailOwnQuery query) throws Exception;
     QueryResponse<RentalRecord> findRentalRecord(FindRentalRecordOwnQuery query);
     QueryResponse<List<RentalRecordRdo>> findRentalRecords(FindRentalRecordsOwnQuery query);
     QueryResponse<ItemConditionCheck> findItemConditionCheck(FindItemConditionCheckOwnQuery query);
