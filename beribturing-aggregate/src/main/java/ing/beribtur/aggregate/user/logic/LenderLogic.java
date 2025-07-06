@@ -85,11 +85,6 @@ public class LenderLogic {
         return lenderStore.retrieveAll(ids);
     }
 
-    public Page<Lender> findDisabledLendersAdmin(int page, int size, String sort) {
-        Pageable pageable = PageRequest.of(page, size, sort != null ? Sort.by(sort) : Sort.unsorted());
-        return lenderStore.findDisabledLenders(pageable);
-    }
-
     public long nextProductSequence(String lenderId) {
         //
         Lender lender = findLender(lenderId);

@@ -26,7 +26,7 @@ public class UserAdmFlow {
             "Current password is incorrect");
         
         account.setPassword(passwordEncoder.encode(newPassword));
-        accountLogic.update(account);
+        accountLogic.modifyAccount(account);
         
         return account.getId();
     }

@@ -129,7 +129,7 @@ public class AuthRntFlow {
         if ("123456".equals(otp) || otp.equals(otpInRedis)) {
             Account account = accountLogic.findByPhoneNumberAndRole(phoneNumber, roleName);
             account.setPassword(passwordEncoder.encode(newPassword));
-            accountLogic.update(account);
+            accountLogic.modifyAccount(account);
             return true;
         }
         return false;
