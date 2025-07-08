@@ -73,4 +73,9 @@ public class NameValueList implements JsonSerializable {
         }
         this.nameValues.add(nameValue);
     }
+
+    public boolean isEmpty() {
+        //
+        return this.nameValues.isEmpty();
+    }
 }
