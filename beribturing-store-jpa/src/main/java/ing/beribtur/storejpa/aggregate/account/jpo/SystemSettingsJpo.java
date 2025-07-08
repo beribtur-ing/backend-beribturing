@@ -1,7 +1,6 @@
 package ing.beribtur.storejpa.aggregate.account.jpo;
 
 import ing.beribtur.accent.domain.DomainEntityJpo;
-import ing.beribtur.accent.util.JsonUtil;
 import ing.beribtur.aggregate.account.entity.SystemSettings;
 import ing.beribtur.aggregate.account.entity.vo.NotificationSettings;
 import ing.beribtur.aggregate.account.entity.vo.PaymentSettings;
@@ -13,6 +12,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -20,40 +23,113 @@ import org.springframework.beans.BeanUtils;
 @Entity
 @Table(name = "SYSTEM_SETTINGS")
 public class SystemSettingsJpo extends DomainEntityJpo {
-    //
+
+    @Column(nullable = false)
     private String platformName;
+
+    @Column(nullable = false)
     private String supportEmail;
+
+    @Column(length = 1000)
     private String platformDescription;
+
     private boolean maintenanceMode;
 
-    @Column(nullable = false)
-    private String paymentSettingsJson;
+    // PaymentSettings
+    private int commissionRate;
+    private String defaultCurrency;
+    private String publicKey;
+    private boolean enableAutomaticPayouts;
 
-    @Column(nullable = false)
-    private String notificationSettingsJson;
+    // NotificationSettings
+    private boolean emailNotifications;
+    private boolean smsNotifications;
+    private boolean pushNotifications;
+    private String notificationEmailTemplate;
 
-    @Column(nullable = false)
-    private String securitySettingsJson;
+    // SecuritySettings
+    private int sessionTimoutMinutes;
+    private int maxLoginAttempts;
+    private boolean requireTwoFactorAuthentication;
+    private boolean enforcePasswordComplexity;
+    private boolean enableAuditLogging;
 
     public SystemSettingsJpo(SystemSettings systemSettings) {
         //
         super(systemSettings);
-        BeanUtils.copyProperties(systemSettings, this, "paymentSettings", "notificationSettings", "securitySettings");
+        BeanUtils.copyProperties(systemSettings, this);
 
-        this.paymentSettingsJson = JsonUtil.toJson(systemSettings.getPaymentSettings());
-        this.notificationSettingsJson = JsonUtil.toJson(systemSettings.getNotificationSettings());
-        this.securitySettingsJson = JsonUtil.toJson(systemSettings.getSecuritySettings());
+        // PaymentSettings
+        if (systemSettings.getPaymentSettings() != null) {
+            PaymentSettings payment = systemSettings.getPaymentSettings();
+            this.commissionRate = payment.getCommissionRate();
+            this.defaultCurrency = payment.getDefaultCurrency();
+            this.publicKey = payment.getPublicKey();
+            this.enableAutomaticPayouts = payment.isEnableAutomaticPayouts();
+        }
+
+        // NotificationSettings
+        if (systemSettings.getNotificationSettings() != null) {
+            NotificationSettings notification = systemSettings.getNotificationSettings();
+            this.emailNotifications = notification.isEmailNotifications();
+            this.smsNotifications = notification.isSmsNotifications();
+            this.pushNotifications = notification.isPushNotifications();
+            this.notificationEmailTemplate = notification.getNotificationEmailTemplate();
+        }
+
+        // SecuritySettings
+        if (systemSettings.getSecuritySettings() != null) {
+            SecuritySettings security = systemSettings.getSecuritySettings();
+            this.sessionTimoutMinutes = security.getSessionTimoutMinutes();
+            this.maxLoginAttempts = security.getMaxLoginAttempts();
+            this.requireTwoFactorAuthentication = security.isRequireTwoFactorAuthentication();
+            this.enforcePasswordComplexity = security.isEnforcePasswordComplexity();
+            this.enableAuditLogging = security.isEnableAuditLogging();
+        }
+    }
+
+    public static List<SystemSettings> toDomains(List<SystemSettingsJpo> jpos) {
+        //
+        return jpos.stream().map(SystemSettingsJpo::toDomain).toList();
+    }
+
+    public static Page<SystemSettings> toDomains(Page<SystemSettingsJpo> jpoPage) {
+        //
+        List<SystemSettingsJpo> content = jpoPage.getContent();
+        List<SystemSettings> domains = toDomains(content);
+        return new PageImpl<>(domains, jpoPage.getPageable(), jpoPage.getTotalElements());
     }
 
     public SystemSettings toDomain() {
         //
-        SystemSettings domain = new SystemSettings();
-        BeanUtils.copyProperties(this, domain, "paymentSettingsJson", "notificationSettingsJson", "securitySettingsJson");
+        SystemSettings systemSettings = new SystemSettings();
+        BeanUtils.copyProperties(this, systemSettings);
 
-        domain.setPaymentSettings(JsonUtil.fromJson(this.paymentSettingsJson, PaymentSettings.class));
-        domain.setNotificationSettings(JsonUtil.fromJson(this.notificationSettingsJson, NotificationSettings.class));
-        domain.setSecuritySettings(JsonUtil.fromJson(this.securitySettingsJson, SecuritySettings.class));
+        // PaymentSettings
+        systemSettings.setPaymentSettings(new PaymentSettings(
+                this.commissionRate,
+                this.defaultCurrency,
+                this.publicKey,
+                this.enableAutomaticPayouts
+        ));
 
-        return domain;
+        // NotificationSettings
+        systemSettings.setNotificationSettings(new NotificationSettings(
+                this.emailNotifications,
+                this.smsNotifications,
+                this.pushNotifications,
+                this.notificationEmailTemplate
+        ));
+
+        // SecuritySettings
+        systemSettings.setSecuritySettings(new SecuritySettings(
+                this.sessionTimoutMinutes,
+                this.maxLoginAttempts,
+                this.requireTwoFactorAuthentication,
+                this.enforcePasswordComplexity,
+                this.enableAuditLogging
+        ));
+
+        return systemSettings;
     }
 }
