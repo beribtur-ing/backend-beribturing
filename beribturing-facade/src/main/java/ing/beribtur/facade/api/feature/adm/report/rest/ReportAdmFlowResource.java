@@ -5,6 +5,7 @@ import ing.beribtur.facade.api.feature.adm.report.command.ResolveReportAdmComman
 import ing.beribtur.feature.adm.report.flow.ReportAdmFlow;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,7 @@ public class ReportAdmFlowResource implements ReportAdmFlowFacade {
 
     @Override
     @PostMapping("/resolve-report/command")
-    public CommandResponse<String> resolveReport(ResolveReportAdmCommand command) {
+    public CommandResponse<String> resolveReport(@RequestBody ResolveReportAdmCommand command) {
         //
         String reportId = command.getReportId();
         String entityId = reportAdmFlow.resolve(reportId);
