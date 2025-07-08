@@ -88,7 +88,7 @@ public class MinioService {
         );
     }
 
-    private String extractFileNameFromUrl(String imageUrl) {
+    public String extractFileNameFromUrl(String imageUrl) {
         if (imageUrl == null || imageUrl.isBlank()) return null;
         int lastSlashIndex = imageUrl.lastIndexOf('/');
         return (lastSlashIndex >= 0 && lastSlashIndex < imageUrl.length() - 1)
