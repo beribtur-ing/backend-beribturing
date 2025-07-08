@@ -40,7 +40,7 @@ public class UserOwnFlow {
         profile.setAddress(address);
         profile.setLocation(location);
         if (image != null && !image.isEmpty()) {
-            String path = minioService.uploadFile(image).getObjectName();
+            String path = minioService.uploadFile(image).getUrl();
             profile.setAvatarUrl(path);
         }
         lender.setProfile(profile);
