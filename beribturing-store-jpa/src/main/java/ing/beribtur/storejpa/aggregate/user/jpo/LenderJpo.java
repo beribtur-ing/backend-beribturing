@@ -42,6 +42,7 @@ public class LenderJpo extends DomainEntityJpo {
     private String gender;    // Gender enum name
     private String email;
     private String address;
+    @Column(columnDefinition = "varchar(500)")
     private String avatarUrl;
 
     // Flattened GeoLocation fields
