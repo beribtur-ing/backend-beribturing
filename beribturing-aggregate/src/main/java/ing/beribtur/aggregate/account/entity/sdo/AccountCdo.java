@@ -11,6 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountCdo extends CreationDataObject {
+    //
     private String phoneNumber;
     private String password;
     private String email;

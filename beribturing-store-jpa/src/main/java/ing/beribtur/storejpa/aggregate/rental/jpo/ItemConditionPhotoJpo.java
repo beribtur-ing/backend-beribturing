@@ -21,8 +21,8 @@ public class ItemConditionPhotoJpo extends DomainEntityJpo {
 
     @Column(nullable = false)
     private String checkId;
-    
-    @Column(nullable = false)
+
+    @Column(nullable = false, columnDefinition = "varchar(500)")
     private String url;
 
     public ItemConditionPhotoJpo(ItemConditionPhoto itemConditionPhoto) {

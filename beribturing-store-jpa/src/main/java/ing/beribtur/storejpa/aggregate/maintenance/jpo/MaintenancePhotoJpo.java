@@ -20,6 +20,7 @@ import java.util.List;
 public class MaintenancePhotoJpo extends DomainEntityJpo {
     //
     private String maintenanceRequestId;
+    @Column(columnDefinition = "varchar(500)")
     private String url;
     @Column(columnDefinition = "text")
     private String description;

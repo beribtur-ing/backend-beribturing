@@ -29,7 +29,7 @@ public class ProductImageJpo extends DomainEntityJpo {
     //@Column(nullable = false)
     private String originalFilename;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "varchar(500)")
     private String url;
 
     @Column(name = "\"order\"")

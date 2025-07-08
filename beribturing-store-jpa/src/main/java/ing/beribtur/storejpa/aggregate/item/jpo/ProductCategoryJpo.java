@@ -24,6 +24,7 @@ public class ProductCategoryJpo extends DomainEntityJpo {
 
     private String description;
 
+    @Column(columnDefinition = "varchar(500)")
     private String iconUrl;
 
     private String parentId;
