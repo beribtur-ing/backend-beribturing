@@ -2,6 +2,7 @@ package ing.beribtur.aggregate.account.entity.sdo;
 
 
 import ing.beribtur.accent.domain.CreationDataObject;
+import ing.beribtur.aggregate.account.entity.SystemSettings;
 import ing.beribtur.aggregate.account.entity.vo.NotificationSettings;
 import ing.beribtur.aggregate.account.entity.vo.PaymentSettings;
 import ing.beribtur.aggregate.account.entity.vo.SecuritySettings;
@@ -23,4 +24,9 @@ public class SystemSettingsCdo extends CreationDataObject {
     private PaymentSettings paymentSettings;
     private NotificationSettings notificationSettings;
     private SecuritySettings securitySettings;
+
+    public String genId() {
+        //
+        return SystemSettings.genId();
+    }
 }

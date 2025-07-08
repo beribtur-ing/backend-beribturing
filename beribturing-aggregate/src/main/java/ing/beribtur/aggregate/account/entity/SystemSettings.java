@@ -35,6 +35,11 @@ public class SystemSettings extends DomainEntity {
         BeanUtils.copyProperties(systemSettingsCdo, this);
     }
 
+    public static String genId() {
+        //
+        return "default-system-settings-id";
+    }
+
     @Override
     protected void modifyAttributes(NameValueList nameValues) {
         //
