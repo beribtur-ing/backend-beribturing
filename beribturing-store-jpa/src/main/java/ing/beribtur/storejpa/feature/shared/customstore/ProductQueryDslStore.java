@@ -326,6 +326,7 @@ public class ProductQueryDslStore implements ProductCustomStore {
                 double avgRating = Optional.ofNullable(tuple.get(8, Double.class)).orElse(0.0);
 
                 return PopularProductRdo.builder()
+                    .productId(tuple.get(0, String.class))
                     .title(tuple.get(1, String.class))
                     .averageRating((int) Math.round(avgRating))
                     .reviewCount(Optional.ofNullable(tuple.get(9, Long.class)).orElse(0L).intValue())

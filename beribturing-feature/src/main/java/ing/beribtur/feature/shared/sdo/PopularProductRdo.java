@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 public class PopularProductRdo {
     //
     //from ProductJpo
+    private String productId;
     private String title;
 
     //from ReviewJpo
