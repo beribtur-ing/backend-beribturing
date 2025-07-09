@@ -103,7 +103,7 @@ public class RentalOwnSeek {
         //
         String username = SpaceContext.get().getUsername();
         Lender lender = lenderLogic.findByPhoneNumber(username);
-        return rentalRecordCustomStore.findRentalRecords(lender.getId(), status, searchKeyword, offset);
+        return rentalRecordCustomStore.findRentalRecordsByOwner(lender.getId(), status, searchKeyword, offset);
     }
 
     private void checkAndUpdateProductImageExpireDate(List<ProductImage> productImages) throws Exception {

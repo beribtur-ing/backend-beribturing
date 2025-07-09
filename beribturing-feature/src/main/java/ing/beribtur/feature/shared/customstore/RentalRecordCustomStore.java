@@ -7,5 +7,6 @@ import org.springframework.data.domain.Page;
 
 public interface RentalRecordCustomStore {
     //
-    Page<RentalRecordRdo> findRentalRecords(String ownerId, RentalStatus status, String searchKeyword, Offset offset);
+    Page<RentalRecordRdo> findRentalRecordsByOwner(String ownerId, RentalStatus status, String searchKeyword, Offset offset);
+    Page<RentalRecordRdo> findRentalRecordsByLendee(String lendeeId, Offset offset);
 }

@@ -44,7 +44,7 @@ public class RentalRecordQueryDslStore implements RentalRecordCustomStore {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Page<RentalRecordRdo> findRentalRecords(String ownerId, RentalStatus status, String searchKeyword, Offset offset) {
+    public Page<RentalRecordRdo> findRentalRecordsByOwner(String ownerId, RentalStatus status, String searchKeyword, Offset offset) {
         //
         Predicate predicate = buildRentalRecordPredicate(ownerId, status, searchKeyword);
 
@@ -67,6 +67,43 @@ public class RentalRecordQueryDslStore implements RentalRecordCustomStore {
                 .leftJoin(productVariantJpo).on(rentalRecordJpo.productVariantId.eq(productVariantJpo.id))
                 .leftJoin(productJpo).on(productVariantJpo.productId.eq(productJpo.id))
                 .where(predicate)
+                .fetchOne();
+
+        long totalCount = totalCountResult != null ? totalCountResult : 0L;
+
+        // Build response efficiently
+        List<RentalRecordRdo> rentalRecordRdos = buildRentalRecordRdos(rentalRecordJpos);
+
+        return new PageImpl<>(rentalRecordRdos, createPageable(offset), totalCount);
+    }
+
+    @Override
+    public Page<RentalRecordRdo> findRentalRecordsByLendee(String lendeeId, Offset offset) {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if (StringUtils.hasText(lendeeId)) {
+            builder.and(rentalRecordJpo.lendeeId.eq(lendeeId));
+        }
+
+        // Main query with pagination
+        List<RentalRecordJpo> rentalRecordJpos = createBaseQuery()
+                .where(builder)
+                .orderBy(rentalRecordJpo.rentedAt.desc())
+                .offset(offset.getOffset())
+                .limit(offset.getLimit())
+                .fetch();
+
+        if (rentalRecordJpos.isEmpty()) {
+            return Page.empty(createPageable(offset));
+        }
+
+        // Count query (only if we have results)
+        Long totalCountResult = jpaQueryFactory
+                .select(rentalRecordJpo.count())
+                .from(rentalRecordJpo)
+                .leftJoin(productVariantJpo).on(rentalRecordJpo.productVariantId.eq(productVariantJpo.id))
+                .leftJoin(productJpo).on(productVariantJpo.productId.eq(productJpo.id))
+                .where(builder)
                 .fetchOne();
 
         long totalCount = totalCountResult != null ? totalCountResult : 0L;
