@@ -37,6 +37,11 @@ public class ActivityLogic {
         return activityStore.findByRelatedEntityId(relatedEntityId);
     }
 
+    public List<Activity> findLatestActivitiesByUserId(String userId, Integer limit) {
+        //
+        return activityStore.findLatestActivitiesByUserId(userId, limit);
+    }
+
     public void create(Activity activity) {
         activityStore.create(activity);
     }

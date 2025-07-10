@@ -15,4 +15,5 @@ public interface ActivityStore {
     List<Activity> findByUserId(String userId);
     List<Activity> findByUserIdAndType(String userId, ActivityType type);
     List<Activity> findByRelatedEntityId(String relatedEntityId);
+    List<Activity> findLatestActivitiesByUserId(String userId, Integer limit);
 }

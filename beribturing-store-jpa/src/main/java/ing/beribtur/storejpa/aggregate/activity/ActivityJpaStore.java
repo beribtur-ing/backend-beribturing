@@ -6,6 +6,7 @@ import ing.beribtur.aggregate.activity.store.ActivityStore;
 import ing.beribtur.storejpa.aggregate.activity.jpo.ActivityJpo;
 import ing.beribtur.storejpa.aggregate.activity.repository.ActivityRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class ActivityJpaStore implements ActivityStore {
     @Override
     public void create(Activity activity) {
         ActivityJpo activityJpo = new ActivityJpo(activity);
-        
+
         activityRepository.save(activityJpo);
         activity.setId(activityJpo.getId());
     }
@@ -80,6 +81,15 @@ public class ActivityJpaStore implements ActivityStore {
     @Override
     public List<Activity> findByRelatedEntityId(String relatedEntityId) {
         List<ActivityJpo> activityJpos = activityRepository.findByRelatedEntityId(relatedEntityId);
+        return activityJpos.stream()
+                .map(ActivityJpo::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Activity> findLatestActivitiesByUserId(String userId, Integer limit) {
+        //
+        List<ActivityJpo> activityJpos = activityRepository.findLatestActivitiesByUserId(userId, PageRequest.of(0, limit));
         return activityJpos.stream()
                 .map(ActivityJpo::toDomain)
                 .collect(Collectors.toList());

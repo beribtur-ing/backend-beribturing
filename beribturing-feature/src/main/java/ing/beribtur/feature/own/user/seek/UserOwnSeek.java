@@ -26,6 +26,7 @@ public class UserOwnSeek {
     private final LenderLogic lenderLogic;
 
     public UserMeRdo userMe() {
+        //
         SecurityContext securityContext = SecurityContextHolder.getContext();
         String phoneNumber = securityContext.getAuthentication().getName();
         Account account = accountLogic.findByPhoneNumberAndRole(phoneNumber, ROLE_OWNER.name());
