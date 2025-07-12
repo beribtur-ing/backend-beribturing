@@ -2,7 +2,6 @@ package ing.beribtur.feature.own.rental.flow;
 
 import ing.beribtur.accent.domain.NameValue;
 import ing.beribtur.accent.domain.NameValueList;
-import ing.beribtur.aggregate.rental.entity.Reservation;
 import ing.beribtur.aggregate.rental.entity.sdo.ItemConditionCheckCdo;
 import ing.beribtur.aggregate.rental.entity.sdo.ItemConditionPhotoCdo;
 import ing.beribtur.aggregate.rental.entity.sdo.RentalRecordCdo;
@@ -46,17 +45,23 @@ public class RentalOwnFlow {
         return itemConditionPhotoLogic.registerItemConditionPhoto(itemConditionPhotoCdo);
     }
 
-    public void approveReservation(String reservationId) {
+    public String approveReservation(String reservationId, RentalRecordCdo rentalRecordCdo) {
         //
-        Reservation reservation = reservationLogic.findReservation(reservationId);
+        if (!reservationLogic.existsReservation(reservationId)) {
+            throw new IllegalArgumentException("Reservation with ID " + reservationId + " does not exist.");
+
+        }
         NameValueList nameValueList = new NameValueList();
         nameValueList.add(new NameValue("status", ReservationStatus.Approved.name()));
         reservationLogic.modifyReservation(reservationId, nameValueList);
+        return registerRentalRecord(rentalRecordCdo);
     }
 
     public void rejectReservation(String reservationId) {
         //
-        Reservation reservation = reservationLogic.findReservation(reservationId);
+        if (!reservationLogic.existsReservation(reservationId)) {
+            throw new IllegalArgumentException("Reservation with ID " + reservationId + " does not exist.");
+        }
         NameValueList nameValueList = new NameValueList();
         nameValueList.add(new NameValue("status", ReservationStatus.Rejected.name()));
         reservationLogic.modifyReservation(reservationId, nameValueList);

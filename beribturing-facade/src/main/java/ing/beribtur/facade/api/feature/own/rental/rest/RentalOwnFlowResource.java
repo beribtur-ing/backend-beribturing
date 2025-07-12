@@ -68,8 +68,9 @@ public class RentalOwnFlowResource implements RentalOwnFlowFacade {
         //
         command.validate();
         String reservationId = command.getReservationId();
-        rentalOwnFlow.approveReservation(reservationId);
-        return new CommandResponse<>(reservationId);
+        RentalRecordCdo rentalRecordCdo = command.getRentalRecordCdo();
+        String rentalRecordId = rentalOwnFlow.approveReservation(reservationId,rentalRecordCdo);
+        return new CommandResponse<>(rentalRecordId);
     }
 
     @Override
